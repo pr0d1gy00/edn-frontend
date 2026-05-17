@@ -5,18 +5,16 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Episode {
-  id: number;
+  id: string;
+  episodeNumber: number;
   title: string;
   description: string;
-  episodeNumber: number;
-  season?: number;
-  releaseDate: string;
-  duration?: string;
-  audioUrl?: string;
-  imageUrl?: string;
+  platformType: 'YOUTUBE' | 'SPOTIFY' | 'OTHER';
+  contentUrl?: string;
   thumbnailUrl?: string;
-  guests?: string[];
-  tags?: string[];
+  publishedAt: string;
+  isExclusive: boolean;
+  durationSeconds?: number;
 }
 
 interface Pagination {
@@ -28,22 +26,37 @@ interface Pagination {
 
 interface EpisodesResponse {
   data: Episode[];
-  pagination?: Pagination;
+  meta: Pagination;
 }
 
-const SEASON_COLORS: Record<number, string> = {
-  1: 'border-l-[#f9c937]',
-  2: 'border-l-[#39FF14]',
-  3: 'border-l-[#8A2BE2]',
-  4: 'border-l-[#ff6b6b]',
-  5: 'border-l-[#48dbfb]',
+const PLATFORM_COLORS: Record<string, string> = {
+  YOUTUBE: 'bg-red-600',
+  SPOTIFY: 'bg-green-500',
+  OTHER: 'bg-gray-500',
 };
 
+const PLATFORM_ICONS: Record<string, string> = {
+  YOUTUBE: '▶',
+  SPOTIFY: '♫',
+  OTHER: '🎧',
+};
+
+function formatDuration(seconds?: number): string {
+  if (!seconds) return '';
+  const mins = Math.floor(seconds / 60);
+  const hrs = Math.floor(mins / 60);
+  const remainingMins = mins % 60;
+  if (hrs > 0) {
+    return `${hrs}h ${remainingMins}m`;
+  }
+  return `${mins}m`;
+}
+
 function EpisodeCard({ episode, index }: { episode: Episode; index: number }) {
-  const [isHovered, setIsHovered] = useState(false);
-  const seasonColor = episode.season ? SEASON_COLORS[episode.season] || SEASON_COLORS[1] : SEASON_COLORS[1];
-  const releaseDate = new Date(episode.releaseDate);
-  const formattedDate = releaseDate.toLocaleDateString('es-AR', {
+  const platformColor = PLATFORM_COLORS[episode.platformType] || PLATFORM_COLORS.OTHER;
+  const platformIcon = PLATFORM_ICONS[episode.platformType] || PLATFORM_ICONS.OTHER;
+  const publishedDate = new Date(episode.publishedAt);
+  const formattedDate = publishedDate.toLocaleDateString('es-AR', {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
@@ -54,23 +67,20 @@ function EpisodeCard({ episode, index }: { episode: Episode; index: number }) {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05, type: 'spring', stiffness: 150, damping: 20 }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       className={`
         relative bg-white border-4 border-black rounded-md overflow-hidden
         shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
         hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]
         hover:translate-x-[-4px] hover:translate-y-[-4px]
         transition-all duration-150 cursor-pointer
-        border-l-8 ${seasonColor}
       `}
     >
       <div className="flex flex-col md:flex-row">
         {/* Thumbnail */}
-        <div className="relative w-full md:w-48 h-48 md:h-auto bg-[#f9c937] flex-shrink-0">
-          {episode.imageUrl || episode.thumbnailUrl ? (
+        <div className="relative w-full md:w-64 h-48 md:h-auto bg-[#f9c937] flex-shrink-0">
+          {episode.thumbnailUrl ? (
             <Image
-              src={episode.imageUrl || episode.thumbnailUrl}
+              src={episode.thumbnailUrl}
               alt={episode.title}
               fill
               className="object-cover"
@@ -84,66 +94,59 @@ function EpisodeCard({ episode, index }: { episode: Episode; index: number }) {
           )}
 
           {/* Episode number badge */}
-          <div className="absolute top-2 left-2 w-12 h-12 bg-black text-[#f9c937] font-archivo-black text-xl flex items-center justify-center rounded-sm border-2 border-black">
-            {episode.episodeNumber}
+          <div className="absolute top-2 left-2 w-14 h-14 bg-black text-[#f9c937] font-archivo-black text-xl flex items-center justify-center rounded-sm border-2 border-black">
+            #{episode.episodeNumber}
           </div>
 
-          {/* Season badge */}
-          {episode.season && (
-            <div className="absolute top-2 right-2 px-2 py-1 bg-black text-white font-archivo-black text-xs rounded-sm border-2 border-black">
-              S{episode.season}
+          {/* Platform badge */}
+          <div className={`absolute top-2 right-2 px-3 py-1 ${platformColor} text-white font-archivo-black text-xs uppercase tracking-wider rounded-sm border-2 border-black`}>
+            {platformIcon} {episode.platformType}
+          </div>
+
+          {/* Exclusive badge */}
+          {episode.isExclusive && (
+            <div className="absolute bottom-2 left-2 px-2 py-1 bg-[#f9c937] text-black font-archivo-black text-xs uppercase tracking-wider rounded-sm border-2 border-black animate-pulse">
+              ★ EXCLUSIVO
             </div>
           )}
         </div>
 
         {/* Content */}
-        <div className="flex-1 p-4">
+        <div className="flex-1 p-5">
           <h3 className="font-syne font-extrabold text-xl md:text-2xl text-black uppercase leading-tight line-clamp-2">
             {episode.title}
           </h3>
 
-          <p className="font-plus-jakarta text-sm text-black/70 mt-2 line-clamp-2">
+          <p className="font-plus-jakarta text-sm text-black/70 mt-3 line-clamp-3">
             {episode.description}
           </p>
 
           {/* Meta info */}
-          <div className="flex flex-wrap items-center gap-3 mt-4">
+          <div className="flex flex-wrap items-center gap-4 mt-4">
             <span className="font-archivo-black text-xs text-black/60 uppercase">
               📅 {formattedDate}
             </span>
-            {episode.duration && (
+            {episode.durationSeconds && (
               <span className="font-archivo-black text-xs text-black/60 uppercase">
-                ⏱ {episode.duration}
+                ⏱ {formatDuration(episode.durationSeconds)}
               </span>
             )}
           </div>
 
-          {/* Tags */}
-          {episode.tags && episode.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-3">
-              {episode.tags.slice(0, 3).map((tag) => (
-                <span
-                  key={tag}
-                  className="px-2 py-1 bg-black/10 font-archivo-black text-xs text-black/70 uppercase rounded-sm"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
-
           {/* Play button */}
-          {episode.audioUrl && (
-            <button
+          {episode.contentUrl && (
+            <a
+              href={episode.contentUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
               className={`
-                mt-4 px-4 py-2 bg-black text-[#f9c937] font-archivo-black text-sm uppercase tracking-wider
-                border-2 border-black rounded-sm flex items-center gap-2
-                hover:bg-black/80 transition-colors
-                ${isHovered ? 'opacity-100' : 'opacity-80'}
+                mt-5 inline-flex items-center gap-2 px-5 py-2.5 bg-black text-[#f9c937] font-archivo-black text-sm uppercase tracking-wider
+                border-2 border-black rounded-sm hover:bg-black/80 transition-colors
               `}
             >
               ▶ ESCUCHAR
-            </button>
+            </a>
           )}
         </div>
       </div>
@@ -220,8 +223,8 @@ function PaginationNav({ pagination, onPageChange }: { pagination: Pagination; o
 }
 
 function EpisodeModal({ episode, onClose }: { episode: Episode; onClose: () => void }) {
-  const releaseDate = new Date(episode.releaseDate);
-  const formattedDate = releaseDate.toLocaleDateString('es-AR', {
+  const publishedDate = new Date(episode.publishedAt);
+  const formattedDate = publishedDate.toLocaleDateString('es-AR', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
@@ -244,9 +247,9 @@ function EpisodeModal({ episode, onClose }: { episode: Episode; onClose: () => v
       >
         {/* Header image */}
         <div className="relative h-64 bg-[#f9c937]">
-          {episode.imageUrl || episode.thumbnailUrl ? (
+          {episode.thumbnailUrl ? (
             <Image
-              src={episode.imageUrl || episode.thumbnailUrl}
+              src={episode.thumbnailUrl}
               alt={episode.title}
               fill
               className="object-cover"
@@ -254,7 +257,7 @@ function EpisodeModal({ episode, onClose }: { episode: Episode; onClose: () => v
           ) : (
             <div className="w-full h-full flex items-center justify-center">
               <span className="font-archivo-black text-9xl text-black/20">
-                {episode.episodeNumber}
+                #{episode.episodeNumber}
               </span>
             </div>
           )}
@@ -265,23 +268,30 @@ function EpisodeModal({ episode, onClose }: { episode: Episode; onClose: () => v
           >
             ✕
           </button>
+
+          {/* Platform & Exclusive badges */}
+          <div className="absolute bottom-4 left-4 flex gap-2">
+            <span className={`px-3 py-1 ${PLATFORM_COLORS[episode.platformType]} text-white font-archivo-black text-sm uppercase tracking-wider rounded-sm border-2 border-black`}>
+              {PLATFORM_ICONS[episode.platformType]} {episode.platformType}
+            </span>
+            {episode.isExclusive && (
+              <span className="px-3 py-1 bg-[#f9c937] text-black font-archivo-black text-sm uppercase tracking-wider rounded-sm border-2 border-black animate-pulse">
+                ★ EXCLUSIVO
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Content */}
         <div className="p-6">
           <div className="flex items-start gap-4">
-            <div className="w-16 h-16 bg-black text-[#f9c937] font-archivo-black text-2xl flex items-center justify-center rounded-sm border-2 border-black flex-shrink-0">
-              {episode.episodeNumber}
+            <div className="w-16 h-16 bg-black text-[#f9c937] font-archivo-black text-xl flex items-center justify-center rounded-sm border-2 border-black flex-shrink-0">
+              #{episode.episodeNumber}
             </div>
             <div>
-              <h2 className="font-syne font-extrabold text-3xl text-black uppercase leading-tight">
+              <h2 className="font-syne font-extrabold text-2xl md:text-3xl text-black uppercase leading-tight">
                 {episode.title}
               </h2>
-              {episode.season && (
-                <span className="inline-block mt-2 px-3 py-1 bg-black text-white font-archivo-black text-sm rounded-sm border-2 border-black">
-                  TEMPORADA {episode.season}
-                </span>
-              )}
             </div>
           </div>
 
@@ -290,51 +300,27 @@ function EpisodeModal({ episode, onClose }: { episode: Episode; onClose: () => v
           </p>
 
           {/* Meta */}
-          <div className="flex flex-wrap gap-4 mt-6 p-4 bg-black/5 border-4 border-black rounded-sm">
+          <div className="flex flex-wrap gap-6 mt-6 p-4 bg-black/5 border-4 border-black rounded-sm">
             <div>
-              <span className="font-archivo-black text-xs text-black/50 uppercase">Fecha</span>
-              <p className="font-archivo-black text-black">{formattedDate}</p>
+              <span className="font-archivo-black text-xs text-black/50 uppercase block">Fecha</span>
+              <span className="font-archivo-black text-lg text-black">{formattedDate}</span>
             </div>
-            {episode.duration && (
+            {episode.durationSeconds && (
               <div>
-                <span className="font-archivo-black text-xs text-black/50 uppercase">Duración</span>
-                <p className="font-archivo-black text-black">{episode.duration}</p>
+                <span className="font-archivo-black text-xs text-black/50 uppercase block">Duración</span>
+                <span className="font-archivo-black text-lg text-black">{formatDuration(episode.durationSeconds)}</span>
               </div>
             )}
+            <div>
+              <span className="font-archivo-black text-xs text-black/50 uppercase block">Episodio</span>
+              <span className="font-archivo-black text-lg text-black">#{episode.episodeNumber}</span>
+            </div>
           </div>
 
-          {/* Guests */}
-          {episode.guests && episode.guests.length > 0 && (
-            <div className="mt-6">
-              <h4 className="font-archivo-black text-sm text-black/50 uppercase mb-2">Invitados</h4>
-              <div className="flex flex-wrap gap-2">
-                {episode.guests.map((guest) => (
-                  <span key={guest} className="px-3 py-2 bg-[#f9c937] border-2 border-black font-archivo-black text-sm text-black rounded-sm">
-                    {guest}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Tags */}
-          {episode.tags && episode.tags.length > 0 && (
-            <div className="mt-6">
-              <h4 className="font-archivo-black text-sm text-black/50 uppercase mb-2">Tags</h4>
-              <div className="flex flex-wrap gap-2">
-                {episode.tags.map((tag) => (
-                  <span key={tag} className="px-3 py-2 bg-black text-[#f9c937] font-archivo-black text-xs uppercase rounded-sm">
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Play button */}
-          {episode.audioUrl && (
+          {episode.contentUrl && (
             <a
-              href={episode.audioUrl}
+              href={episode.contentUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-8 w-full py-5 bg-black text-[#f9c937] font-archivo-black uppercase tracking-wider text-xl rounded-sm border-4 border-black hover:bg-black/80 transition-colors flex items-center justify-center gap-3"
@@ -367,21 +353,8 @@ export default function EpisodesPage() {
         if (!response.ok) throw new Error('Error fetching episodes');
         const data: EpisodesResponse = await response.json();
 
-        // Handle different response structures
-        const episodesArray = Array.isArray(data) ? data : data.data || [];
-        setEpisodes(episodesArray);
-
-        // Extract pagination from various response formats
-        if (data.pagination) {
-          setPagination(data.pagination);
-        } else if (!Array.isArray(data) && (data.total || data.totalPages)) {
-          setPagination({
-            page: currentPage,
-            limit,
-            total: data.total || episodesArray.length,
-            totalPages: data.totalPages || Math.ceil((data.total || episodesArray.length) / limit),
-          });
-        }
+        setEpisodes(data.data || []);
+        setPagination(data.meta);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Error loading episodes');
       } finally {
