@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Link from "next/link";
+import { useAuthStore } from "@/stores/authStore";
 
 // Validation schemas
 const registerSchema = z
@@ -127,7 +128,7 @@ export default function LoginPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          username: data.username,
+          usernameOrEmail: data.username,
           password: data.password,
         }),
       });
@@ -140,11 +141,13 @@ export default function LoginPage() {
         throw new Error(message);
       }
 
-      if (result.accessToken) {
-        localStorage.setItem("accessToken", result.accessToken);
-      }
-      if (result.refreshToken) {
-        localStorage.setItem("refreshToken", result.refreshToken);
+      // Use auth store with cookies instead of localStorage
+      if (result.accessToken && result.user) {
+        useAuthStore.getState().login(
+          { id: result.user.id, username: result.user.username, email: result.user.email },
+          result.accessToken,
+          result.refreshToken
+        );
       }
 
       setSuccess("¡Bienvenido de vuelta, esdenauta!");
