@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface TourShow {
   id: number;
@@ -92,6 +92,8 @@ export default function TourShowsTicker() {
   const [shows, setShows] = useState<TourShow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const tickerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchTourShows = async () => {
@@ -145,13 +147,20 @@ export default function TourShowsTicker() {
       </div>
 
       {/* Scrolling ticker */}
-      <div className="relative overflow-hidden">
+      <div
+        className="relative overflow-hidden"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
         {/* Left fade gradient */}
         <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
         {/* Right fade gradient */}
         <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
 
-        <div className="flex animate-ticker">
+        <div
+          ref={tickerRef}
+          className={`flex animate-ticker ${isPaused ? 'pause-animation' : ''}`}
+        >
           {duplicatedShows.map((show, index) => (
             <TourShowCard key={`${show.id}-${index}`} show={show} />
           ))}

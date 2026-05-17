@@ -164,3 +164,7 @@ body {
 .animate-ticker {
   animation: ticker 30s linear infinite;
 }
+
+.pause-animation {
+  animation-play-state: paused;
+}

@@ -119,89 +119,91 @@ export default function Home() {
   };
 
   return (
-    <div
-      ref={containerRef}
-      className="relative w-full h-[calc(100vh-4rem)] overflow-hidden"
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      {/* Background Image Layer */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="/imagen-inicio-jpg.jpg"
-          alt="EDN Background"
-          fill
-          className="object-cover"
-          priority
-        />
-      </div>
-
-      {/* Canvas Mask Layer - yellow with holes revealing image */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 z-20 pointer-events-none"
-      />
-
-      {/* Content Layer */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
-        className="absolute inset-0 z-30 flex flex-col items-center justify-center"
+    <>
+      <div
+        ref={containerRef}
+        className="relative w-full h-[calc(100vh-4rem)] overflow-hidden"
+        onMouseMove={handleMouseMove}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
-        {/* ESCUELA DE NADA */}
-        <motion.div
-          initial={{ y: 80, opacity: 0, rotate: -3 }}
-          animate={{ y: 0, opacity: 1, rotate: 0 }}
-          transition={{
-            type: "spring",
-            stiffness: 150,
-            damping: 18,
-            delay: 0.3,
-          }}
-          className="text-center"
-        >
-          <h1 className="font-syne text-6xl md:text-8xl lg:text-9xl uppercase tracking-tighter text-black font-extrabold leading-none drop-shadow-[2px_2px_0px_rgba(255,255,255,0.8)]">
-            ESCUELA
-          </h1>
-          <h1 className="font-syne text-6xl md:text-8xl lg:text-9xl uppercase tracking-tighter text-black font-extrabold leading-none -mt-2 md:-mt-4 drop-shadow-[2px_2px_0px_rgba(255,255,255,0.8)]">
-            DE NADA
-          </h1>
-        </motion.div>
+        {/* Background Image Layer */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/imagen-inicio-jpg.jpg"
+            alt="EDN Background"
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
 
-        {/* Subtitle */}
-        <motion.p
-          initial={{ y: 40, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            type: "spring",
-            stiffness: 200,
-            damping: 20,
-            delay: 0.6,
-          }}
-          className="font-syne font-bold text-xl md:text-2xl lg:text-3xl text-black/80 mt-6 md:mt-8 max-w-lg text-center px-4 drop-shadow-[1px_1px_0px_rgba(255,255,255,0.6)]"
-        >
-          el mejor podcast de esta mierda caballero!
-        </motion.p>
-      </motion.div>
+        {/* Canvas Mask Layer - yellow with holes revealing image */}
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 z-20 pointer-events-none"
+        />
 
-      {/* Instructions hint - only when not hovering */}
-      {!isHovering && (
+        {/* Content Layer */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="absolute bottom-8 right-8 z-40"
+          transition={{ duration: 0.3 }}
+          className="absolute inset-0 z-30 flex flex-col items-center justify-center"
         >
-          <span className="font-plus-jakarta text-sm text-white uppercase tracking-wider drop-shadow-[1px_1px_2px_rgba(0,0,0,0.8)]">
-            move your mouse to explore
-          </span>
-        </motion.div>
-      )}
-    </div>
+          {/* ESCUELA DE NADA */}
+          <motion.div
+            initial={{ y: 80, opacity: 0, rotate: -3 }}
+            animate={{ y: 0, opacity: 1, rotate: 0 }}
+            transition={{
+              type: "spring",
+              stiffness: 150,
+              damping: 18,
+              delay: 0.3,
+            }}
+            className="text-center"
+          >
+            <h1 className="font-syne text-6xl md:text-8xl lg:text-9xl uppercase tracking-tighter text-black font-extrabold leading-none drop-shadow-[2px_2px_0px_rgba(255,255,255,0.8)]">
+              ESCUELA
+            </h1>
+            <h1 className="font-syne text-6xl md:text-8xl lg:text-9xl uppercase tracking-tighter text-black font-extrabold leading-none -mt-2 md:-mt-4 drop-shadow-[2px_2px_0px_rgba(255,255,255,0.8)]">
+              DE NADA
+            </h1>
+          </motion.div>
 
-    {/* Tour Shows Ticker - outside the hero container */}
-    <TourShowsTicker />
+          {/* Subtitle */}
+          <motion.p
+            initial={{ y: 40, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 200,
+              damping: 20,
+              delay: 0.6,
+            }}
+            className="font-syne font-bold text-xl md:text-2xl lg:text-3xl text-black/80 mt-6 md:mt-8 max-w-lg text-center px-4 drop-shadow-[1px_1px_0px_rgba(255,255,255,0.6)]"
+          >
+            el mejor podcast de esta mierda caballero!
+          </motion.p>
+        </motion.div>
+
+        {/* Instructions hint - only when not hovering */}
+        {!isHovering && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5 }}
+            className="absolute bottom-8 right-8 z-40"
+          >
+            <span className="font-plus-jakarta text-sm text-white uppercase tracking-wider drop-shadow-[1px_1px_2px_rgba(0,0,0,0.8)]">
+              move your mouse to explore
+            </span>
+          </motion.div>
+        )}
+      </div>
+
+      {/* Tour Shows Ticker - outside the hero container */}
+      <TourShowsTicker />
+    </>
   );
 }
