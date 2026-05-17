@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { useCallback } from "react";
@@ -16,7 +16,6 @@ const navItems: NavItem[] = [
   { href: "/", label: "Inicio" },
   { href: "/#tour-carousel", label: "Tour", hasHash: true },
   { href: "/#episodes", label: "Episodios", hasHash: true },
-  { href: "/bromas", label: "Bromas Internas" },
   { href: "/historias", label: "Historias" },
 ];
 
@@ -86,6 +85,7 @@ export default function Navigation() {
     }
     return "?";
   };
+  console.log(isAuthenticated);
 
   return (
     <motion.nav
@@ -110,7 +110,6 @@ export default function Navigation() {
           </Link>
         </motion.div>
       ))}
-
       {/* Auth section */}
       {isAuthenticated && user ? (
         <div className="flex items-center gap-2">

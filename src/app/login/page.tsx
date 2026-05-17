@@ -8,7 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Link from "next/link";
 import { useAuthStore } from "@/stores/authStore";
-
+import { useRouter } from "next/navigation";
+import { jwtDecode } from "jwt-decode";
 // Validation schemas
 const registerSchema = z
   .object({
@@ -61,6 +62,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const router = useRouter();
 
   const registerForm = useForm<RegisterForm>({
     resolver: zodResolver(registerSchema),
@@ -142,16 +144,29 @@ export default function LoginPage() {
       }
 
       // Use auth store with cookies instead of localStorage
-      if (result.accessToken && result.user) {
+      console.log(result);
+      if (result.accessToken) {
+        const decodedData: {
+          id: string;
+          username: string;
+          email: string;
+        } = jwtDecode(result.accessToken);
         useAuthStore.getState().login(
-          { id: result.user.id, username: result.user.username, email: result.user.email },
+          {
+            id: decodedData.id,
+            username: decodedData.username,
+            email: decodedData.email,
+          },
           result.accessToken,
-          result.refreshToken
+          result.refreshToken,
         );
       }
 
       setSuccess("¡Bienvenido de vuelta, esdenauta!");
-      window.location.href = "/";
+      setTimeout(() => {
+        loginForm.reset();
+        router.push("/");
+      }, 2000);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error en el login");
     } finally {
