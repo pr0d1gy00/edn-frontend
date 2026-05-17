@@ -1,13 +1,14 @@
 'use client';
 
 import Link from 'next/link';
+import { useCallback } from 'react';
 import { motion, Variants } from 'framer-motion';
 
-type NavItem = { href: string; label: string; isSpecial?: boolean };
+type NavItem = { href: string; label: string; isSpecial?: boolean; hasHash?: boolean };
 
 const navItems: NavItem[] = [
   { href: '/', label: 'Inicio' },
-  { href: '/#tour-carousel', label: 'Tour' },
+  { href: '/#tour-carousel', label: 'Tour', hasHash: true },
   { href: '/episodios', label: 'Episodios' },
   { href: '/bromas', label: 'Bromas Internas' },
   { href: '/historias', label: 'Historias' },
@@ -44,6 +45,20 @@ const itemVariants: Variants = {
 };
 
 export default function Navigation() {
+  const handleClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, hasHash?: boolean) => {
+    if (hasHash) {
+      const href = e.currentTarget.getAttribute('href');
+      if (href?.startsWith('/#')) {
+        e.preventDefault();
+        const targetId = href.replace('/#', '');
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }
+  }, []);
+
   return (
     <motion.nav
       variants={containerVariants}
@@ -55,6 +70,7 @@ export default function Navigation() {
         <motion.div key={item.href} variants={itemVariants} whileHover="hover">
           <Link
             href={item.href}
+            onClick={(e) => handleClick(e, item.hasHash)}
             data-testid={item.isSpecial ? 'nav-login' : undefined}
             className={`
               px-4 py-2 font-archivo-black uppercase tracking-wider text-sm font-black

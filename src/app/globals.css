@@ -15,6 +15,33 @@ body {
   background: var(--color-edn-bg);
   color: #ededed;
   font-family: var(--font-plus-jakarta, Arial, Helvetica, sans-serif);
+  scroll-behavior: smooth;
+}
+
+/* Premium scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B0B0B;
+  border-left: 2px solid #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #f9c937;
+  border: 2px solid #000;
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e5b800;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #f9c937 #0B0B0B;
 }
 
 /* Neo-brutalist animation keyframes */
