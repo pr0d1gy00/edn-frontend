@@ -24,7 +24,8 @@ const registerSchema = z
       ),
     password: z
       .string()
-      .min(6, "No te metas en tanta vaina!! Mínimo 6 caracteres"),
+      .min(6, "No te metas en tanta vaina!! Mínimo 6 caracteres")
+      .max(20, "Mira vale! No te metas en tanta vaina, maximo 20 caracteres"),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -364,7 +365,8 @@ export default function LoginPage() {
                     placeholder="Ej: ElQueNoSabeNada"
                   />
                   {registerForm.formState.errors.username && (
-                    <p className="mt-1 font-archivo-black text-red-600 text-xs uppercase">
+                    <p className="mt-2 font-black text-black text-xs uppercase ">
+                      <span className="text-red-600">Alerta! </span>
                       {registerForm.formState.errors.username.message}
                     </p>
                   )}
@@ -381,8 +383,9 @@ export default function LoginPage() {
                     placeholder="tu@email.com"
                   />
                   {registerForm.formState.errors.email && (
-                    <p className="mt-1 font-archivo-black text-red-600 text-xs uppercase">
-                      {registerForm.errors.message}
+                    <p className="mt-2 font-black text-black text-xs uppercase ">
+                      <span className="text-red-600">Alerta! </span>
+                      {registerForm.formState.errors.email.message}
                     </p>
                   )}
                 </div>
@@ -398,7 +401,8 @@ export default function LoginPage() {
                     placeholder="Mínimo 6 caracteres"
                   />
                   {registerForm.formState.errors.password && (
-                    <p className="mt-1 font-archivo-black text-red-600 text-xs uppercase">
+                    <p className="mt-2 font-black text-black text-xs uppercase ">
+                      <span className="text-red-600">Alerta! </span>
                       {registerForm.formState.errors.password.message}
                     </p>
                   )}
@@ -415,7 +419,8 @@ export default function LoginPage() {
                     placeholder="Repetí la contraseña"
                   />
                   {registerForm.formState.errors.confirmPassword && (
-                    <p className="mt-1 font-archivo-black text-red-600 text-xs uppercase">
+                    <p className="mt-2 font-black text-black text-xs uppercase ">
+                      <span className="text-red-600">Alerta! </span>
                       {registerForm.formState.errors.confirmPassword.message}
                     </p>
                   )}
