@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import { Archivo_Black, Plus_Jakarta_Sans, Syne } from "next/font/google";
 import { Header } from "@/components/header";
+import localFont from "next/font/local";
 import "./globals.css";
+
+const juicebox = localFont({
+  src: "../fonts/JuiceboxScript_PERSONAL_USE_ONLY.otf",
+  variable: "--font-juicebox",
+});
 
 const archivoBlack = Archivo_Black({
   weight: "400",
@@ -33,7 +39,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${archivoBlack.variable} ${plusJakarta.variable} ${syne.variable} h-full antialiased`}
+      className={`${archivoBlack.variable} ${plusJakarta.variable} ${syne.variable} ${juicebox.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-plus-jakarta">
         <Header />

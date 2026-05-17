@@ -7,6 +7,7 @@
   --color-edn-neon-green: #39FF14;
   --color-edn-neon-purple: #8A2BE2;
   --color-edn-border: #1E1E1E;
+  --font-juicebox: var(--font-juicebox);
 }
 
 body {
