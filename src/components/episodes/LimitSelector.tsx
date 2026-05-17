@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 const LIMIT_OPTIONS = [6, 12, 15, 24, 30] as const;
 
 interface LimitSelectorProps {
@@ -8,32 +10,79 @@ interface LimitSelectorProps {
 }
 
 export default function LimitSelector({ value, onChange }: LimitSelectorProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <div className="flex items-center gap-3">
-      <label htmlFor="episode-limit" className="font-archivo-black text-xs text-white/60 uppercase tracking-wider">
-        Mostrar:
+    <div className="relative inline-block">
+      <label className="block font-archivo-black text-xs text-white/50 uppercase tracking-wider mb-2">
+        EPISODIOS POR PÁGINA
       </label>
-      <select
-        id="episode-limit"
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="
-          bg-white border-4 border-black rounded-sm font-archivo-black text-black
-          uppercase px-4 py-2
+
+      {/* Custom select trigger */}
+      <div
+        className={`
+          flex items-center justify-between gap-4 px-4 py-3 bg-white border-4 border-black rounded-sm
+          cursor-pointer select-none
           shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
-          hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]
+          hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]
           hover:translate-x-[-2px] hover:translate-y-[-2px]
-          transition-all duration-150 appearance-none cursor-pointer
-          bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M4%206l4%204%204-4%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E')]
-          bg-[length:12px_12px] bg-[right_8px_center] bg-no-repeat pr-10
-        "
+          active:translate-x-0 active:translate-y-0 active:shadow-none
+          transition-all duration-100
+          ${isOpen ? 'bg-[#f9c937] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]' : ''}
+        `}
+        onClick={() => setIsOpen(!isOpen)}
       >
-        {LIMIT_OPTIONS.map((opt) => (
-          <option key={opt} value={opt}>
-            {opt} por p&aacute;gina
-          </option>
-        ))}
-      </select>
+        <span className="font-archivo-black text-black text-lg uppercase">
+          {value}
+        </span>
+        <span className="font-archivo-black text-black/60 text-sm uppercase">por p&aacute;gina</span>
+
+        {/* Custom arrow */}
+        <svg
+          className={`w-6 h-6 text-black transition-transform duration-150 ${isOpen ? 'rotate-180' : ''}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="square" strokeWidth="3" d="M6 9l6 6 6-6" />
+        </svg>
+      </div>
+
+      {/* Dropdown options */}
+      {isOpen && (
+        <>
+          {/* Backdrop to close */}
+          <div
+            className="fixed inset-0 z-10"
+            onClick={() => setIsOpen(false)}
+          />
+
+          {/* Options panel */}
+          <div className="absolute top-full left-0 mt-2 w-full bg-white border-4 border-black rounded-sm shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] z-20 overflow-hidden">
+            {LIMIT_OPTIONS.map((opt) => (
+              <button
+                key={opt}
+                onClick={() => {
+                  onChange(opt);
+                  setIsOpen(false);
+                }}
+                className={`
+                  w-full px-4 py-3 text-left font-archivo-black text-lg uppercase
+                  border-b-2 border-black last:border-b-0
+                  transition-colors duration-100
+                  ${value === opt
+                    ? 'bg-black text-[#f9c937]'
+                    : 'text-black hover:bg-[#f9c937]'
+                  }
+                `}
+              >
+                {opt}
+                <span className="ml-2 text-sm opacity-60">por p&aacute;gina</span>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
