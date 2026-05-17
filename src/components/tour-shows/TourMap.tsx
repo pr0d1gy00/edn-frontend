@@ -319,7 +319,7 @@ export default function TourMap() {
   }
 
   return (
-    <div className="py-8 bg-black border-t-4 border-black">
+    <div className="relative z-40 py-8 bg-black border-t-4 border-black">
       {/* Section header */}
       <div className="px-8 mb-6">
         <h2 className="font-syne text-3xl md:text-4xl font-extrabold text-[#f9c937] uppercase tracking-tight">
