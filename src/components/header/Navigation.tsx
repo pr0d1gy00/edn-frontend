@@ -10,6 +10,7 @@ const navItems: NavItem[] = [
   { href: '/', label: 'Inicio' },
   { href: '/#tour-carousel', label: 'Tour', hasHash: true },
   { href: '/#episodes', label: 'Episodios', hasHash: true },
+  { href: '/all-episodes', label: 'Ver Todos' },
   { href: '/bromas', label: 'Bromas Internas' },
   { href: '/historias', label: 'Historias' },
   { href: '/login', label: 'Login', isSpecial: true },

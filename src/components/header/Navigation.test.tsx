@@ -8,18 +8,19 @@ describe('Navigation', () => {
     expect(screen.getByRole('navigation')).toBeInTheDocument();
   });
 
-  it('renders all 6 navigation links', () => {
+  it('renders all 7 navigation links', () => {
     render(<Navigation />);
     const links = screen.getAllByRole('link');
-    expect(links).toHaveLength(6);
+    expect(links).toHaveLength(7);
   });
 
   it('renders each link with correct label and href', () => {
     render(<Navigation />);
     const expectedLinks = [
       { label: 'Inicio', href: '/' },
-      { label: 'Tour', href: '/tour' },
-      { label: 'Episodios', href: '/episodios' },
+      { label: 'Tour', href: '/#tour-carousel' },
+      { label: 'Episodios', href: '/#episodes' },
+      { label: 'Ver Todos', href: '/all-episodes' },
       { label: 'Bromas Internas', href: '/bromas' },
       { label: 'Historias', href: '/historias' },
       { label: 'Login', href: '/login' },

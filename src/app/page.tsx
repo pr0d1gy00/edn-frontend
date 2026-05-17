@@ -213,8 +213,8 @@ export default function Home() {
         <TourMap />
       </section>
 
-      {/* Episodes Grid */}
-      <EpisodesGrid />
+      {/* Episodes Grid — preview mode */}
+      <EpisodesGrid mode="preview" />
     </>
   );
 }

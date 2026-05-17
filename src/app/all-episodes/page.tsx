@@ -1,6 +1,11 @@
 import { EpisodesGrid } from '@/components/episodes';
 
-export default function EpisodesPage() {
+export const metadata = {
+  title: 'Todos los Episodios — EDN',
+  description: 'Explor&aacute; todos los episodios del podcast Escuela de Nada',
+};
+
+export default function AllEpisodesPage() {
   return (
     <div className="min-h-screen bg-black pt-20">
       {/* Header */}
