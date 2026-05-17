@@ -7,7 +7,7 @@ type NavItem = { href: string; label: string; isSpecial?: boolean };
 
 const navItems: NavItem[] = [
   { href: '/', label: 'Inicio' },
-  { href: '/tour', label: 'Tour' },
+  { href: '/#tour-carousel', label: 'Tour' },
   { href: '/episodios', label: 'Episodios' },
   { href: '/bromas', label: 'Bromas Internas' },
   { href: '/historias', label: 'Historias' },

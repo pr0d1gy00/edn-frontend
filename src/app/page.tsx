@@ -204,10 +204,14 @@ export default function Home() {
       </div>
 
       {/* Tour Shows Ticker - outside the hero container */}
-      <TourShowsTicker />
+      <section id="tour-carousel">
+        <TourShowsTicker />
+      </section>
 
       {/* Tour Map */}
-      <TourMap />
+      <section id="tour-map">
+        <TourMap />
+      </section>
     </>
   );
 }
