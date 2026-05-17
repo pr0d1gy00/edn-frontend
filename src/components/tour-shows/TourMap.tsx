@@ -236,7 +236,7 @@ const MapComponent = dynamic(
         <MapContainer
           center={[20, 0]}
           zoom={2}
-          style={{ height: '100%', width: '100%', background: '#e5e5e5' }}
+          style={{ height: '100%', width: '100%', minHeight: '700px', background: '#e5e5e5' }}
           zoomControl={false}
         >
           <TileLayer
@@ -265,7 +265,7 @@ const MapComponent = dynamic(
 
     return MapWithMarkers;
   }),
-  { ssr: false, loading: () =>         <div className="h-full w-full bg-[#e5e5e5] flex items-center justify-center border-4 border-black">
+  { ssr: false, loading: () =>         <div className="h-full w-full bg-[#e5e5e5] flex items-center justify-center border-4 border-black" style={{ minHeight: '700px' }}>
           <div className="w-16 h-16 border-4 border-black border-t-[#f9c937] rounded-full animate-spin" style={{borderTopColor: '#000'}} />
         </div> }
 );
@@ -332,7 +332,7 @@ export default function TourMap() {
       </div>
 
       {/* Map container - neo-brutalist style */}
-      <div className="relative mx-8 border-4 border-black rounded-md overflow-hidden" style={{ height: '500px' }}>
+      <div className="relative mx-8 border-4 border-black rounded-md overflow-hidden" style={{ minHeight: '700px' }}>
         <div className="absolute inset-0 bg-[#e5e5e5]" /> {/* Light background behind map */}
         <MapComponent shows={shows} onMarkerClick={setSelectedShow} />
 
