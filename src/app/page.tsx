@@ -199,7 +199,9 @@ export default function Home() {
           </span>
         </motion.div>
       )}
-      <TourShowsTicker />
     </div>
+
+    {/* Tour Shows Ticker - outside the hero container */}
+    <TourShowsTicker />
   );
 }

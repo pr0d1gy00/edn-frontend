@@ -99,7 +99,10 @@ export default function TourShowsTicker() {
         const response = await fetch('http://localhost:3000/tour-shows');
         if (!response.ok) throw new Error('Error fetching tour shows');
         const data = await response.json();
-        setShows(data);
+
+        // Handle both array response and { data: [...] } format
+        const showsArray = Array.isArray(data) ? data : data.data || data.shows || [];
+        setShows(showsArray);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Error loading tour shows');
       } finally {
@@ -110,7 +113,7 @@ export default function TourShowsTicker() {
     fetchTourShows();
   }, []);
 
-  if (isLoading) {
+  if (isLoading || shows.length === 0) {
     return (
       <div className="py-8 bg-black border-t-4 border-black">
         <div className="overflow-hidden">
@@ -124,7 +127,7 @@ export default function TourShowsTicker() {
     );
   }
 
-  if (error || shows.length === 0) {
+  if (error) {
     return null;
   }
 
