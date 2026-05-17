@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import Link from "next/link";
 import { useCallback } from "react";
@@ -85,7 +85,6 @@ export default function Navigation() {
     }
     return "?";
   };
-  console.log(isAuthenticated);
 
   return (
     <motion.nav
@@ -110,6 +109,7 @@ export default function Navigation() {
           </Link>
         </motion.div>
       ))}
+
       {/* Auth section */}
       {isAuthenticated && user ? (
         <div className="flex items-center gap-2">
@@ -126,7 +126,7 @@ export default function Navigation() {
 
             {/* Dropdown menu */}
             <div className="absolute right-0 top-full mt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
-              <div className="bg-white border-4 border-black rounded-md shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden min-w-[140px]">
+              <div className="bg-white border-4 border-black rounded-md shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden min-w-[160px]">
                 {/* Username */}
                 <div className="px-4 py-3 bg-edn-neon-yellow border-b-2 border-black">
                   <p className="font-archivo-black text-black text-xs uppercase truncate max-w-[150px]">
@@ -136,6 +136,14 @@ export default function Navigation() {
                     {user.email}
                   </p>
                 </div>
+
+                {/* Dashboard link */}
+                <Link
+                  href="/dashboard"
+                  className="block px-4 py-3 font-archivo-black text-black text-sm uppercase text-left hover:bg-black hover:text-edn-neon-yellow transition-colors border-b-2 border-black"
+                >
+                  Dashboard
+                </Link>
 
                 {/* Logout button */}
                 <button
