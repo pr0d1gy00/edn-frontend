@@ -1,6 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
+import Image from "next/image";
+import { useState, useEffect, useRef } from "react";
 
 interface TourShow {
   id: number;
@@ -9,37 +10,40 @@ interface TourShow {
   venueName: string;
   showDate: string;
   ticketUrl: string;
-  ticketStatus: 'AVAILABLE' | 'FEW_TICKETS' | 'SOLD_OUT';
+  ticketStatus: "AVAILABLE" | "FEW_TICKETS" | "SOLD_OUT";
   latitude?: number;
   longitude?: number;
   images?: string[];
 }
 
 const STATUS_LABELS: Record<string, { text: string; color: string }> = {
-  AVAILABLE: { text: 'ENTRADAS DISPONIBLES', color: 'bg-green-500' },
-  FEW_TICKETS: { text: '¡ULTIMAS ENTRADAS!', color: 'bg-orange-500' },
-  SOLD_OUT: { text: 'AGOTADO', color: 'bg-red-500' },
+  AVAILABLE: { text: "ENTRADAS DISPONIBLES", color: "bg-green-500" },
+  FEW_TICKETS: { text: "¡ULTIMAS ENTRADAS!", color: "bg-orange-500" },
+  SOLD_OUT: { text: "AGOTADO", color: "bg-red-500" },
 };
 
 function TourShowCard({ show }: { show: TourShow }) {
-  const statusInfo = STATUS_LABELS[show.ticketStatus] || STATUS_LABELS.AVAILABLE;
+  const statusInfo =
+    STATUS_LABELS[show.ticketStatus] || STATUS_LABELS.AVAILABLE;
   const date = new Date(show.showDate);
-  const formattedDate = date.toLocaleDateString('es-AR', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
+  const formattedDate = date.toLocaleDateString("es-AR", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
   });
 
   return (
-    <div className="flex-shrink-0 w-72 mx-3">
+    <div className="shrink-0 w-72 mx-3">
       <div className="bg-white border-4 border-black rounded-md shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
         {/* Image area */}
         <div className="relative h-32 bg-[#f9c937] border-b-4 border-black">
           {show.images && show.images.length > 0 ? (
-            <img
+            <Image
               src={show.images[0]}
               alt={show.city}
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              priority
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
@@ -49,7 +53,9 @@ function TourShowCard({ show }: { show: TourShow }) {
             </div>
           )}
           {/* Status badge */}
-          <div className={`absolute top-2 right-2 px-2 py-1 ${statusInfo.color} border-2 border-black rounded-sm`}>
+          <div
+            className={`absolute top-2 right-2 px-2 py-1 ${statusInfo.color} border-2 border-black rounded-sm`}
+          >
             <span className="font-archivo-black text-xs text-white uppercase tracking-wider">
               {statusInfo.text}
             </span>
@@ -71,7 +77,7 @@ function TourShowCard({ show }: { show: TourShow }) {
             <span className="font-archivo-black text-sm text-black">
               {formattedDate}
             </span>
-            {show.ticketStatus !== 'SOLD_OUT' && show.ticketUrl && (
+            {show.ticketStatus !== "SOLD_OUT" && show.ticketUrl && (
               <a
                 href={show.ticketUrl}
                 target="_blank"
@@ -98,15 +104,19 @@ export default function TourShowsTicker() {
   useEffect(() => {
     const fetchTourShows = async () => {
       try {
-        const response = await fetch('http://localhost:3000/tour-shows');
-        if (!response.ok) throw new Error('Error fetching tour shows');
+        const response = await fetch("http://localhost:3000/tour-shows");
+        if (!response.ok) throw new Error("Error fetching tour shows");
         const data = await response.json();
 
         // Handle both array response and { data: [...] } format
-        const showsArray = Array.isArray(data) ? data : data.data || data.shows || [];
+        const showsArray = Array.isArray(data)
+          ? data
+          : data.data || data.shows || [];
         setShows(showsArray);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Error loading tour shows');
+        setError(
+          err instanceof Error ? err.message : "Error loading tour shows",
+        );
       } finally {
         setIsLoading(false);
       }
@@ -121,7 +131,10 @@ export default function TourShowsTicker() {
         <div className="overflow-hidden">
           <div className="flex gap-4 animate-pulse">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="flex-shrink-0 w-72 h-48 bg-white/20 rounded-md" />
+              <div
+                key={i}
+                className="flex-shrink-0 w-72 h-48 bg-white/20 rounded-md"
+              />
             ))}
           </div>
         </div>
@@ -159,7 +172,7 @@ export default function TourShowsTicker() {
 
         <div
           ref={tickerRef}
-          className={`flex animate-ticker ${isPaused ? 'pause-animation' : ''}`}
+          className={`flex animate-ticker ${isPaused ? "pause-animation" : ""}`}
         >
           {duplicatedShows.map((show, index) => (
             <TourShowCard key={`${show.id}-${index}`} show={show} />
