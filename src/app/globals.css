@@ -150,3 +150,17 @@ body {
   transform: translate(2px, 2px);
   box-shadow: none;
 }
+
+/* Tour Shows Ticker animation */
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-25%);
+  }
+}
+
+.animate-ticker {
+  animation: ticker 30s linear infinite;
+}

@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import TourShowsTicker from "@/components/tour-shows/TourShowsTicker";
 
 const SPOTLIGHT_RADIUS = 200;
 const FADE_DELAY = 5000;
@@ -198,6 +199,7 @@ export default function Home() {
           </span>
         </motion.div>
       )}
+      <TourShowsTicker />
     </div>
   );
 }

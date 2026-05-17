@@ -1,0 +1,1 @@
+export { default as TourShowsTicker } from './TourShowsTicker';
