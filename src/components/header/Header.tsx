@@ -11,7 +11,7 @@ export default function Header() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 200, damping: 20 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-edn-neon-yellow border-b-4 border-black"
+      className="top-0 left-0 right-0 z-50 bg-edn-neon-yellow border-b-4 border-black"
     >
       <div className="max-w-7xl mx-auto px-4 h-24 flex items-center justify-between">
         <motion.div

@@ -2,12 +2,69 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import type { Episode } from '@/types/episode';
+import type { Episode, Guest, InsideJoke } from '@/types/episode';
 import { PLATFORM_COLORS, PLATFORM_ICONS, formatDuration } from './EpisodeCard';
 
 interface EpisodeModalProps {
   episode: Episode;
   onClose: () => void;
+}
+
+function GuestCard({ guest }: { guest: Guest }) {
+  return (
+    <div className="p-4 bg-white border-4 border-black rounded-sm shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+      <div className="flex items-center gap-3 mb-2">
+        <div className="w-10 h-10 bg-[#f9c937] border-2 border-black rounded-sm flex items-center justify-center">
+          <span className="font-archivo-black text-lg text-black">{guest.name[0]}</span>
+        </div>
+        <h4 className="font-archivo-black text-lg text-black uppercase">{guest.name}</h4>
+      </div>
+      <p className="font-plus-jakarta text-sm text-black/70 mb-3">{guest.bio}</p>
+      <div className="flex gap-2">
+        {guest.twitterHandle && (
+          <a
+            href={`https://twitter.com/${guest.twitterHandle}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3 py-1.5 bg-black text-white font-archivo-black text-xs uppercase rounded-sm border-2 border-black hover:bg-black/80 transition-colors flex items-center gap-1"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+            @{guest.twitterHandle}
+          </a>
+        )}
+        {guest.instagramHandle && (
+          <a
+            href={`https://instagram.com/${guest.instagramHandle}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3 py-1.5 bg-black text-white font-archivo-black text-xs uppercase rounded-sm border-2 border-black hover:bg-black/80 transition-colors flex items-center gap-1"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+            @{guest.instagramHandle}
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function InsideJokeCard({ joke }: { joke: InsideJoke }) {
+  return (
+    <div className="p-3 bg-[#f9c937]/20 border-2 border-[#f9c937] rounded-sm">
+      <div className="flex items-center gap-2 mb-1">
+        <span className="px-2 py-0.5 bg-[#f9c937] text-black font-archivo-black text-xs uppercase border border-black rounded-sm">
+          ⏱ {joke.startTimeStamp}
+        </span>
+        <span className="font-archivo-black text-xs text-black/60">→ {joke.endTimeStamp}</span>
+      </div>
+      <h5 className="font-archivo-black text-sm text-black uppercase mb-1">{joke.keyConcept}</h5>
+      <p className="font-plus-jakarta text-xs text-black/70 italic">{joke.transcriptContext}</p>
+    </div>
+  );
 }
 
 export default function EpisodeModal({ episode, onClose }: EpisodeModalProps) {
@@ -17,6 +74,9 @@ export default function EpisodeModal({ episode, onClose }: EpisodeModalProps) {
     month: 'long',
     year: 'numeric',
   });
+
+  const hasGuests = episode.guests && episode.guests.length > 0;
+  const hasJokes = episode.insideJokes && episode.insideJokes.length > 0;
 
   return (
     <motion.div
@@ -31,7 +91,7 @@ export default function EpisodeModal({ episode, onClose }: EpisodeModalProps) {
         animate={{ scale: 1, rotate: 0 }}
         exit={{ scale: 0.8, rotate: 2 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-white border-4 border-black rounded-md shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+        className="bg-white border-4 border-black rounded-md shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] w-full max-w-3xl max-h-[90vh] overflow-y-auto"
       >
         <div className="relative h-64 bg-[#f9c937]">
           {episode.thumbnailUrl ? (
@@ -93,6 +153,36 @@ export default function EpisodeModal({ episode, onClose }: EpisodeModalProps) {
               <span className="font-archivo-black text-lg text-black">#{episode.episodeNumber}</span>
             </div>
           </div>
+
+          {/* Guests Section */}
+          {hasGuests && (
+            <div className="mt-8">
+              <h3 className="font-archivo-black text-xl text-black uppercase mb-4 flex items-center gap-2">
+                <span className="w-8 h-8 bg-[#f9c937] border-2 border-black rounded-sm flex items-center justify-center text-lg">👥</span>
+                INVITADOS
+              </h3>
+              <div className="grid gap-3">
+                {episode.guests!.map((guest) => (
+                  <GuestCard key={guest.id} guest={guest} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Inside Jokes / Topics Section */}
+          {hasJokes && (
+            <div className="mt-8">
+              <h3 className="font-archivo-black text-xl text-black uppercase mb-4 flex items-center gap-2">
+                <span className="w-8 h-8 bg-[#f9c937] border-2 border-black rounded-sm flex items-center justify-center text-lg">💬</span>
+                BROMAS INTERNAS / TÓPICOS
+              </h3>
+              <div className="grid gap-3">
+                {episode.insideJokes!.map((joke) => (
+                  <InsideJokeCard key={joke.id} joke={joke} />
+                ))}
+              </div>
+            </div>
+          )}
 
           {episode.contentUrl && (
             <a

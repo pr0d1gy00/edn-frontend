@@ -1,3 +1,20 @@
+export interface Guest {
+  id: string;
+  name: string;
+  bio: string;
+  twitterHandle?: string;
+  instagramHandle?: string;
+}
+
+export interface InsideJoke {
+  id: string;
+  episodeId: string;
+  startTimeStamp: string;
+  endTimeStamp: string;
+  keyConcept: string;
+  transcriptContext: string;
+}
+
 export interface Episode {
   id: string;
   episodeNumber: number;
@@ -9,6 +26,8 @@ export interface Episode {
   publishedAt: string;
   isExclusive: boolean;
   durationSeconds?: number;
+  guests?: Guest[];
+  insideJokes?: InsideJoke[];
 }
 
 export interface Pagination {

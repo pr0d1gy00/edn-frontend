@@ -1,27 +1,37 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { AnimatePresence } from 'framer-motion';
-import type { Episode, Pagination, EpisodesResponse, EpisodesGridProps } from '@/types/episode';
-import EpisodeCard from './EpisodeCard';
-import PaginationNav from './PaginationNav';
-import EpisodeModal from './EpisodeModal';
-import LimitSelector from './LimitSelector';
-import PageIndicator from './PageIndicator';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { AnimatePresence } from "framer-motion";
+import type {
+  Episode,
+  Pagination,
+  EpisodesResponse,
+  EpisodesGridProps,
+} from "@/types/episode";
+import EpisodeCard from "./EpisodeCard";
+import PaginationNav from "./PaginationNav";
+import EpisodeModal from "./EpisodeModal";
+import LimitSelector from "./LimitSelector";
+import PageIndicator from "./PageIndicator";
 
-const DEFAULT_API_BASE = 'http://localhost:3000';
+const DEFAULT_API_BASE = "http://localhost:3000";
 const PREVIEW_LIMIT = 6;
 const FULL_DEFAULT_LIMIT = 15;
 
-export default function EpisodesGrid({ mode, apiBaseUrl = DEFAULT_API_BASE }: EpisodesGridProps) {
+export default function EpisodesGrid({
+  mode,
+  apiBaseUrl = DEFAULT_API_BASE,
+}: EpisodesGridProps) {
   const [episodes, setEpisodes] = useState<Episode[]>([]);
   const [pagination, setPagination] = useState<Pagination | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedEpisode, setSelectedEpisode] = useState<Episode | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [limit, setLimit] = useState(mode === 'preview' ? PREVIEW_LIMIT : FULL_DEFAULT_LIMIT);
+  const [limit, setLimit] = useState(
+    mode === "preview" ? PREVIEW_LIMIT : FULL_DEFAULT_LIMIT,
+  );
 
   const total = pagination?.total ?? 0;
   const totalPages = pagination?.totalPages ?? 0;
@@ -31,14 +41,16 @@ export default function EpisodesGrid({ mode, apiBaseUrl = DEFAULT_API_BASE }: Ep
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch(`${apiBaseUrl}/episodes?page=${currentPage}&limit=${limit}`);
-        if (!response.ok) throw new Error('Error fetching episodes');
+        const response = await fetch(
+          `${apiBaseUrl}/episodes?page=${currentPage}&limit=${limit}`,
+        );
+        if (!response.ok) throw new Error("Error fetching episodes");
         const data: EpisodesResponse = await response.json();
 
         setEpisodes(data.data || []);
         setPagination(data.meta);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Error loading episodes');
+        setError(err instanceof Error ? err.message : "Error loading episodes");
       } finally {
         setIsLoading(false);
       }
@@ -49,7 +61,7 @@ export default function EpisodesGrid({ mode, apiBaseUrl = DEFAULT_API_BASE }: Ep
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleLimitChange = (newLimit: number) => {
@@ -59,21 +71,26 @@ export default function EpisodesGrid({ mode, apiBaseUrl = DEFAULT_API_BASE }: Ep
 
   // Build derived display state
   const displayPage = pagination ? pagination.page : currentPage;
-  const showPagination = mode === 'full' && totalPages > 1;
-  const showPageIndicator = mode === 'full' && total > 0;
-  const showVerTodos = mode === 'preview' && total > PREVIEW_LIMIT;
+  const showPagination = mode === "full" && totalPages > 1;
+  const showPageIndicator = mode === "full" && total > 0;
+  const showVerTodos = mode === "preview" && total > PREVIEW_LIMIT;
 
   const gridContent = (
     <>
       {isLoading ? (
         <div className="grid gap-6 md:grid-cols-2">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-48 bg-white/10 border-4 border-black rounded-md animate-pulse" />
+            <div
+              key={i}
+              className="h-48 bg-white/10 border-4 border-black rounded-md animate-pulse"
+            />
           ))}
         </div>
       ) : error ? (
         <div className="text-center py-16">
-          <p className="font-archivo-black text-2xl text-red-500 uppercase">Error: {error}</p>
+          <p className="font-archivo-black text-2xl text-red-500 uppercase">
+            Error: {error}
+          </p>
           <button
             onClick={() => setCurrentPage(1)}
             className="mt-4 px-6 py-3 bg-[#f9c937] border-4 border-black font-archivo-black text-black uppercase rounded-sm hover:bg-[#e5b800] transition-colors"
@@ -122,7 +139,7 @@ export default function EpisodesGrid({ mode, apiBaseUrl = DEFAULT_API_BASE }: Ep
   );
 
   // PREVIEW MODE: self-contained section with header
-  if (mode === 'preview') {
+  if (mode === "preview") {
     return (
       <section id="episodes" className="py-16 bg-black border-t-4 border-black">
         {/* Header */}
@@ -157,15 +174,16 @@ export default function EpisodesGrid({ mode, apiBaseUrl = DEFAULT_API_BASE }: Ep
 
         {/* Grid */}
         <main className="px-8">
-          <div className="max-w-6xl mx-auto">
-            {gridContent}
-          </div>
+          <div className="max-w-6xl mx-auto">{gridContent}</div>
         </main>
 
         {/* Episode modal */}
         <AnimatePresence>
           {selectedEpisode && (
-            <EpisodeModal episode={selectedEpisode} onClose={() => setSelectedEpisode(null)} />
+            <EpisodeModal
+              episode={selectedEpisode}
+              onClose={() => setSelectedEpisode(null)}
+            />
           )}
         </AnimatePresence>
       </section>
@@ -176,21 +194,22 @@ export default function EpisodesGrid({ mode, apiBaseUrl = DEFAULT_API_BASE }: Ep
   return (
     <>
       {/* Controls bar: limit selector */}
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-8 px-8">
+      <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-4 mb-8 ">
         <LimitSelector value={limit} onChange={handleLimitChange} />
       </div>
 
       {/* Grid */}
       <main className="px-8">
-        <div className="max-w-6xl mx-auto">
-          {gridContent}
-        </div>
+        <div className="max-w-6xl mx-auto">{gridContent}</div>
       </main>
 
       {/* Episode modal */}
       <AnimatePresence>
         {selectedEpisode && (
-          <EpisodeModal episode={selectedEpisode} onClose={() => setSelectedEpisode(null)} />
+          <EpisodeModal
+            episode={selectedEpisode}
+            onClose={() => setSelectedEpisode(null)}
+          />
         )}
       </AnimatePresence>
     </>

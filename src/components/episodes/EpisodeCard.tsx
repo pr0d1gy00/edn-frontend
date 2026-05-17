@@ -43,6 +43,9 @@ export default function EpisodeCard({ episode, index, onClick }: EpisodeCardProp
     year: 'numeric',
   });
 
+  const hasGuests = episode.guests && episode.guests.length > 0;
+  const hasJokes = episode.insideJokes && episode.insideJokes.length > 0;
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 30 }}
@@ -114,6 +117,41 @@ export default function EpisodeCard({ episode, index, onClick }: EpisodeCardProp
               </span>
             )}
           </div>
+
+          {/* Guests */}
+          {hasGuests && (
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              <span className="font-archivo-black text-xs text-black/50 uppercase">Invitados:</span>
+              {episode.guests!.map((guest) => (
+                <span
+                  key={guest.id}
+                  className="px-2 py-1 bg-black text-[#f9c937] font-archivo-black text-xs uppercase rounded-sm border border-[#f9c937]/30"
+                >
+                  {guest.name}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Inside Jokes / Topics */}
+          {hasJokes && (
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <span className="font-archivo-black text-xs text-black/50 uppercase">Tópicos:</span>
+              {episode.insideJokes!.slice(0, 2).map((joke) => (
+                <span
+                  key={joke.id}
+                  className="px-2 py-1 bg-[#f9c937]/20 text-black/70 font-archivo-black text-xs uppercase rounded-sm border border-[#f9c937]"
+                >
+                  {joke.keyConcept}
+                </span>
+              ))}
+              {episode.insideJokes!.length > 2 && (
+                <span className="px-2 py-1 bg-black/10 text-black/50 font-archivo-black text-xs">
+                  +{episode.insideJokes!.length - 2}
+                </span>
+              )}
+            </div>
+          )}
 
           {/* Play button */}
           {episode.contentUrl && (
