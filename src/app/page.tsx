@@ -3,7 +3,8 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useSpring } from "framer-motion";
-import TourShowsTicker, { TourMap } from "@/components/tour-shows";
+import { TourShowsTicker } from "@/components/tour-shows";
+import { TourMap } from "@/components/tour-shows";
 
 const SPOTLIGHT_RADIUS = 200;
 const FADE_DELAY = 5000;

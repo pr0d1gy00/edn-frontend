@@ -36,7 +36,7 @@ function TourShowCard({ show }: { show: TourShow }) {
     <div className="shrink-0 w-72 mx-3">
       <div className="bg-white border-4 border-black rounded-md shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
         {/* Image area */}
-        <div className="relative h-32 bg-[#f9c937] border-b-4 border-black">
+        <div className="relative h-32 bg-edn-neon-yellow border-b-4 border-black">
           {show.images && show.images.length > 0 ? (
             <Image
               src={show.images[0]}
