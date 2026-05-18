@@ -75,9 +75,29 @@ const quickActions = [
 
 export default function DashboardPage() {
   return (
-    <div className="bg-white min-h-screen p-8">
+    <div className="bg-white min-h-screen p-8 relative overflow-hidden">
+      {/* Subtle grid pattern */}
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-[0.03]"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, #000 1px, transparent 1px),
+            linear-gradient(to bottom, #000 1px, transparent 1px)
+          `,
+          backgroundSize: '40px 40px',
+        }}
+      />
+
+      {/* Perimetric shadow for depth */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          boxShadow: 'inset 0 0 100px rgba(0,0,0,0.03)',
+        }}
+      />
+
       {/* Header */}
-      <div className="mb-8 border-b-4 border-black pb-6">
+      <div className="mb-8 border-b-4 border-black pb-6 relative z-10">
         <div className="inline-block bg-black border-4 border-black px-6 py-3 -ml-4">
           <h1 className="font-syne font-extrabold text-5xl text-[#f9c937] uppercase tracking-tighter leading-none">
             Dashboard
@@ -89,7 +109,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Grid - Punch card style */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-10 relative z-10">
         {stats.map((stat, index) => (
           <motion.div
             key={stat.label}
@@ -127,13 +147,13 @@ export default function DashboardPage() {
 
       {/* Quick Actions - Ticket style */}
       <div>
-        <h2 className="font-archivo-black text-2xl text-black uppercase mb-6 flex items-center gap-4">
+        <h2 className="font-archivo-black text-2xl text-black uppercase mb-6 flex items-center gap-4 relative z-10">
           <span className="w-12 h-1 bg-black block" />
           Acciones Rápidas
           <span className="flex-1 h-1 bg-black block" />
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
           {quickActions.map((action, index) => (
             <motion.div
               key={action.label}
@@ -180,7 +200,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Decorative footer stripe */}
-      <div className="mt-12 flex gap-1">
+      <div className="mt-12 flex gap-1 relative z-10">
         {[...Array(12)].map((_, i) => (
           <div key={i} className={`h-2 flex-1 ${i % 2 === 0 ? 'bg-black' : 'bg-[#f9c937]'}`} />
         ))}
