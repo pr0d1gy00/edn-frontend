@@ -44,7 +44,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
 
   // Episode save state
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | string[] | null>(null);
 
   // Guest hooks
   const { guests: currentGuests } = useEpisodeGuests(episodeId || "");
@@ -183,7 +183,9 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
       router.push("/dashboard/episodes");
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Error al guardar episodio",
+        err instanceof Error
+          ? ([] as string[]).concat(err.message as string | string[])
+          : ["Error al guardar episodio"],
       );
     } finally {
       setSaving(false);
@@ -199,7 +201,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
     : isLoading
       ? "Creando..."
       : "Crear Episodio";
-
+  console.log(error);
   return (
     <div className="bg-white p-8">
       {/* Header */}
@@ -327,7 +329,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
               >
                 <option value="YOUTUBE">YouTube</option>
                 <option value="SPOTIFY">Spotify</option>
-                <option value="OTHER">Otro</option>
+                <option value="PATREON">Patreon</option>
               </select>
             </div>
 
@@ -470,11 +472,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
               </span>
               IMÁGENES
             </h3>
-            <ImageUploader
-              images={images}
-              onChange={setImages}
-              maxImages={5}
-            />
+            <ImageUploader images={images} onChange={setImages} maxImages={5} />
           </div>
         </div>
 

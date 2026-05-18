@@ -133,7 +133,12 @@ export const episodesApi = {
       headers: getAuthHeaders(false),
       body: formData,
     });
-    if (!response.ok) throw new Error("Error creating episode");
+    if (!response.ok) {
+      console.log(response);
+      const error = await response.json();
+      const message = error.message || "Error creating episode";
+      throw new Error(message);
+    }
     return response.json();
   },
 
@@ -144,17 +149,24 @@ export const episodesApi = {
   ): Promise<ApiResponse<EpisodeResponse>> => {
     // Always use FormData to avoid JSON serialization issues
     const formData = new FormData();
-    
+
     // Only append fields that have values
     if (episode.title) formData.append("title", episode.title);
-    if (episode.description) formData.append("description", episode.description);
-    if (episode.platformType) formData.append("platformType", episode.platformType);
+    if (episode.description)
+      formData.append("description", episode.description);
+    if (episode.platformType)
+      formData.append("platformType", episode.platformType);
     if (episode.contentUrl) formData.append("contentUrl", episode.contentUrl);
-    if (episode.thumbnailUrl) formData.append("thumbnailUrl", episode.thumbnailUrl);
-    if (episode.publishedAt) formData.append("publishedAt", episode.publishedAt);
-    if (episode.isExclusive !== undefined) formData.append("isExclusive", episode.isExclusive.toString());
-    if (episode.durationSeconds) formData.append("durationSeconds", episode.durationSeconds.toString());
-    if (episode.episodeNumber) formData.append("episodeNumber", episode.episodeNumber.toString());
+    if (episode.thumbnailUrl)
+      formData.append("thumbnailUrl", episode.thumbnailUrl);
+    if (episode.publishedAt)
+      formData.append("publishedAt", episode.publishedAt);
+    if (episode.isExclusive !== undefined)
+      formData.append("isExclusive", episode.isExclusive.toString());
+    if (episode.durationSeconds)
+      formData.append("durationSeconds", episode.durationSeconds.toString());
+    if (episode.episodeNumber)
+      formData.append("episodeNumber", episode.episodeNumber.toString());
 
     if (episode.images && episode.images.length > 0) {
       episode.images.forEach((file) => {
@@ -167,7 +179,11 @@ export const episodesApi = {
       headers: getAuthHeaders(false),
       body: formData,
     });
-    if (!response.ok) throw new Error("Error updating episode");
+    if (!response.ok) {
+      const error = await response.json();
+      const message = error.message || "Error updating episode";
+      throw new Error(message);
+    }
     return response.json();
   },
 

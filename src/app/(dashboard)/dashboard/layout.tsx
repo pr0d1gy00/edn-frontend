@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
 import Sidebar from './components/Sidebar';
+import { Toaster } from '@/components/ui/Toast';
 
 export default function DashboardLayout({
   children,
@@ -39,6 +40,7 @@ export default function DashboardLayout({
           {children}
         </div>
       </main>
+      <Toaster />
     </div>
   );
 }
