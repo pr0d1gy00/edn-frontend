@@ -4,7 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 const juicebox = localFont({
-  src: "../../fonts/JuiceboxScript_PERSONAL_USE_ONLY.otf",
+  src: "../fonts/JuiceboxScript_PERSONAL_USE_ONLY.otf",
   variable: "--font-juicebox",
 });
 

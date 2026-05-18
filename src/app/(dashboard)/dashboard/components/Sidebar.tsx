@@ -61,19 +61,19 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-72 bg-[#f9c937] min-h-screen border-r-4 border-black flex flex-col relative overflow-hidden">
+    <aside className="w-72 bg-white min-h-screen border-r-4 border-black flex flex-col relative overflow-hidden">
       {/* Diagonal stripes decoration */}
       <div className="absolute top-0 right-0 w-24 h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-[200%] h-full bg-black/[0.05]" style={{ clipPath: 'polygon(100% 0, 0 0, 0 100%)' }} />
+        <div className="absolute top-0 right-0 w-[200%] h-full bg-black/[0.03]" style={{ clipPath: 'polygon(100% 0, 0 0, 0 100%)' }} />
       </div>
 
       {/* Header block */}
       <div className="p-6 border-b-4 border-black relative">
-        <div className="bg-black text-[#f9c937] px-4 py-3 -mx-4 -mt-4 border-b-4 border-black">
-          <h1 className="font-syne font-extrabold text-4xl uppercase tracking-tighter leading-none">
+        <div className="bg-[#f9c937] px-4 py-4 -mx-4 -mt-4 border-b-4 border-black">
+          <h1 className="font-syne font-extrabold text-4xl uppercase tracking-tighter leading-none text-black">
             EDN
           </h1>
-          <p className="font-archivo-black text-sm uppercase mt-1 tracking-widest">
+          <p className="font-archivo-black text-sm uppercase mt-1 tracking-widest text-black/70">
             Panel de Control
           </p>
         </div>
@@ -92,22 +92,22 @@ export default function Sidebar() {
                     relative flex items-center gap-4 p-4 font-archivo-black uppercase text-black
                     border-4 border-black rounded-none transition-all duration-100
                     ${isActive
-                      ? 'bg-black text-[#f9c937] shadow-[6px_6px_0px_0px_rgba(0,0,0,0.4)]'
-                      : 'bg-white hover:bg-black hover:text-[#f9c937] shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.4)] hover:translate-x-[-2px] hover:translate-y-[-2px]'
+                      ? 'bg-[#f9c937] text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]'
+                      : 'bg-white hover:bg-black hover:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[-2px] hover:translate-y-[-2px]'
                     }
                   `}
                 >
                   {/* Number badge */}
                   <span className={`
                     absolute -top-3 -left-3 w-8 h-8 flex items-center justify-center
-                    font-archivo-black text-xs border-2 border-black rounded-full
-                    ${isActive ? 'bg-[#f9c937] text-black' : 'bg-black text-[#f9c937]'}
+                    font-archivo-black text-xs border-4 border-black rounded-none
+                    ${isActive ? 'bg-black text-[#f9c937]' : 'bg-[#f9c937] text-black'}
                   `}>
                     {item.number}
                   </span>
 
                   {/* Icon */}
-                  <div className={`flex-shrink-0 ${isActive ? 'text-[#f9c937]' : ''}`}>
+                  <div className={`flex-shrink-0 ${isActive ? '' : ''}`}>
                     {item.icon}
                   </div>
 
@@ -138,10 +138,10 @@ export default function Sidebar() {
           href="/"
           className="
             flex items-center justify-center gap-3 px-4 py-4
-            bg-black text-[#f9c937] font-archivo-black uppercase text-sm font-bold
+            bg-[#f9c937] text-black font-archivo-black uppercase text-sm font-bold
             border-4 border-black rounded-none
-            shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]
-            hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.4)]
+            shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]
+            hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.3)]
             hover:translate-x-[-2px] hover:translate-y-[-2px]
             transition-all duration-150
           "
@@ -154,7 +154,7 @@ export default function Sidebar() {
       </div>
 
       {/* EDN Logo watermark */}
-      <div className="absolute bottom-20 right-4 pointer-events-none opacity-10">
+      <div className="absolute bottom-20 right-4 pointer-events-none opacity-5">
         <span className="font-syne font-black text-8xl text-black rotate-90 origin-center">
           EDN
         </span>
