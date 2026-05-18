@@ -1,59 +1,127 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const menuItems = [
   {
-    label: 'Episodios',
-    href: '/dashboard/episodes',
+    label: "Episodios",
+    href: "/dashboard/episodes",
     icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="square" strokeWidth="3" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z" />
+      <svg
+        className="w-8 h-8"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="square"
+          strokeWidth="3"
+          d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"
+        />
       </svg>
     ),
-    number: '01',
+    number: "01",
   },
   {
-    label: 'Tour',
-    href: '/dashboard/tour',
+    label: "Tour",
+    href: "/dashboard/tour",
     icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="square" strokeWidth="3" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-        <path strokeLinecap="square" strokeWidth="3" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+      <svg
+        className="w-8 h-8"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="square"
+          strokeWidth="3"
+          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+        />
+        <path
+          strokeLinecap="square"
+          strokeWidth="3"
+          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+        />
       </svg>
     ),
-    number: '02',
+    number: "02",
   },
   {
-    label: 'Historias',
-    href: '/dashboard/historias',
+    label: "Historias",
+    href: "/dashboard/historias",
     icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="square" strokeWidth="3" d="M12 6.253v13M3 6.253h18M3 12h18M3 17.747h18" />
+      <svg
+        className="w-8 h-8"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="square"
+          strokeWidth="3"
+          d="M12 6.253v13M3 6.253h18M3 12h18M3 17.747h18"
+        />
       </svg>
     ),
-    number: '03',
+    number: "03",
   },
   {
-    label: 'Bromas',
-    href: '/dashboard/bromas',
+    label: "Bromas",
+    href: "/dashboard/bromas",
     icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="square" strokeWidth="3" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      <svg
+        className="w-8 h-8"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="square"
+          strokeWidth="3"
+          d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
       </svg>
     ),
-    number: '04',
+    number: "04",
   },
   {
-    label: 'Usuarios',
-    href: '/dashboard/users',
+    label: "Usuarios",
+    href: "/dashboard/users",
     icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="square" strokeWidth="3" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+      <svg
+        className="w-8 h-8"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="square"
+          strokeWidth="3"
+          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+        />
       </svg>
     ),
-    number: '05',
+    number: "05",
+  },
+  {
+    label: "Invitados",
+    href: "/dashboard/guests",
+    icon: (
+      <svg
+        className="w-8 h-8"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="square"
+          strokeWidth="3"
+          d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+        />
+      </svg>
+    ),
+    number: "06",
   },
 ];
 
@@ -64,7 +132,10 @@ export default function Sidebar() {
     <aside className="w-72 bg-[#f9c937] min-h-screen border-r-4 border-black flex flex-col relative overflow-hidden">
       {/* Diagonal stripes decoration */}
       <div className="absolute top-0 right-0 w-24 h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-[200%] h-full bg-black/[0.03]" style={{ clipPath: 'polygon(100% 0, 0 0, 0 100%)' }} />
+        <div
+          className="absolute top-0 right-0 w-[200%] h-full bg-black/[0.03]"
+          style={{ clipPath: "polygon(100% 0, 0 0, 0 100%)" }}
+        />
       </div>
 
       {/* Header block */}
@@ -89,25 +160,30 @@ export default function Sidebar() {
                 <Link
                   href={item.href}
                   className={`
-                    relative flex items-center gap-4 p-4 font-archivo-black uppercase text-black
+                    relative flex items-center gap-4 p-4 font-archivo-black uppercase
                     border-4 border-black rounded-none transition-all duration-100
-                    ${isActive
-                      ? 'bg-black text-[#f9c937] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]'
-                      : 'bg-white hover:bg-black hover:text-[#f9c937] shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[-2px] hover:translate-y-[-2px]'
+                    ${
+                      isActive
+                        ? "bg-black text-[#f9c937] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+                        : "bg-white hover:bg-black hover:text-[#f9c937] text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[-2px] hover:translate-y-[-2px]"
                     }
                   `}
                 >
                   {/* Number badge */}
-                  <span className={`
+                  <span
+                    className={`
                     absolute -top-3 -left-3 w-8 h-8 flex items-center justify-center
                     font-archivo-black text-xs border-4 border-black rounded-none
-                    ${isActive ? 'bg-[#f9c937] text-black' : 'bg-black text-[#f9c937]'}
-                  `}>
+                    ${isActive ? "bg-edn-neon-yellow text-black" : "bg-black text-edn-neon-yellow"}
+                  `}
+                  >
                     {item.number}
                   </span>
 
                   {/* Icon */}
-                  <div className={`flex-shrink-0 ${isActive ? 'text-[#f9c937]' : ''}`}>
+                  <div
+                    className={`flex-shrink-0 ${isActive ? "text-[#f9c937]" : ""}`}
+                  >
                     {item.icon}
                   </div>
 
@@ -118,12 +194,16 @@ export default function Sidebar() {
 
                   {/* Arrow indicator */}
                   <svg
-                    className={`absolute right-4 w-6 h-6 transition-transform ${isActive ? 'rotate-90' : ''}`}
+                    className={`absolute right-4 w-6 h-6 transition-transform ${isActive ? "rotate-90" : ""}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path strokeLinecap="square" strokeWidth="3" d="M9 5l7 7-7 7" />
+                    <path
+                      strokeLinecap="square"
+                      strokeWidth="3"
+                      d="M9 5l7 7-7 7"
+                    />
                   </svg>
                 </Link>
               </li>
@@ -146,8 +226,17 @@ export default function Sidebar() {
             transition-all duration-150
           "
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="square" strokeWidth="3" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="square"
+              strokeWidth="3"
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
           </svg>
           Volver al Inicio
         </Link>

@@ -15,6 +15,11 @@ export interface InsideJoke {
   transcriptContext: string;
 }
 
+export interface EpisodeImage {
+  id: string;
+  url: string;
+}
+
 export interface Episode {
   id: string;
   episodeNumber: number;
@@ -28,6 +33,7 @@ export interface Episode {
   durationSeconds?: number;
   guests?: Guest[];
   insideJokes?: InsideJoke[];
+  images?: EpisodeImage[];
 }
 
 export interface Pagination {

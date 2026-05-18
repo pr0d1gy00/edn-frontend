@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import type { Episode } from '@/types/episode';
+import Image from "next/image";
+import { motion } from "framer-motion";
+import type { Episode } from "@/types/episode";
 
 export const PLATFORM_COLORS: Record<string, string> = {
-  YOUTUBE: 'bg-red-600',
-  SPOTIFY: 'bg-green-500',
-  OTHER: 'bg-gray-500',
+  YOUTUBE: "bg-red-600",
+  SPOTIFY: "bg-green-500",
+  OTHER: "bg-gray-500",
 };
 
 export const PLATFORM_ICONS: Record<string, string> = {
-  YOUTUBE: '▶',
-  SPOTIFY: '♫',
-  OTHER: '🎧',
+  YOUTUBE: "▶",
+  SPOTIFY: "♫",
+  OTHER: "🎧",
 };
 
 export function formatDuration(seconds?: number): string {
-  if (!seconds) return '';
+  if (!seconds) return "";
   const mins = Math.floor(seconds / 60);
   const hrs = Math.floor(mins / 60);
   const remainingMins = mins % 60;
@@ -33,15 +33,39 @@ interface EpisodeCardProps {
   onClick: () => void;
 }
 
-export default function EpisodeCard({ episode, index, onClick }: EpisodeCardProps) {
-  const platformColor = PLATFORM_COLORS[episode.platformType] || PLATFORM_COLORS.OTHER;
-  const platformIcon = PLATFORM_ICONS[episode.platformType] || PLATFORM_ICONS.OTHER;
+export default function EpisodeCard({
+  episode,
+  index,
+  onClick,
+}: EpisodeCardProps) {
+  const platformColor =
+    PLATFORM_COLORS[episode.platformType] || PLATFORM_COLORS.OTHER;
+  const platformIcon =
+    PLATFORM_ICONS[episode.platformType] || PLATFORM_ICONS.OTHER;
   const publishedDate = new Date(episode.publishedAt);
-  const formattedDate = publishedDate.toLocaleDateString('es-AR', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
+  const formattedDate = publishedDate.toLocaleDateString("es-AR", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
   });
+
+  // Determine image to display: thumbnailUrl > first image > fallback
+  const displayImage = episode.thumbnailUrl
+    ? episode.thumbnailUrl
+    : episode.images && episode.images.length > 0
+      ? episode.images[0].url
+      : null;
+
+  // Check if URL is from S3/CDN (needs unoptimized)
+  const isCDNUrl = (url: string) => {
+    return (
+      url.includes("s3.") ||
+      url.includes("cdn.") ||
+      url.includes("idrivee2") ||
+      url.includes("facebook.com") ||
+      url.includes("r2.dev")
+    );
+  };
 
   const hasGuests = episode.guests && episode.guests.length > 0;
   const hasJokes = episode.insideJokes && episode.insideJokes.length > 0;
@@ -50,7 +74,12 @@ export default function EpisodeCard({ episode, index, onClick }: EpisodeCardProp
     <motion.article
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05, type: 'spring', stiffness: 150, damping: 20 }}
+      transition={{
+        delay: index * 0.05,
+        type: "spring",
+        stiffness: 150,
+        damping: 20,
+      }}
       onClick={onClick}
       className={`
         relative bg-white border-4 border-black rounded-md overflow-hidden
@@ -60,16 +89,27 @@ export default function EpisodeCard({ episode, index, onClick }: EpisodeCardProp
         transition-all duration-150 cursor-pointer
       `}
     >
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row h-100">
         {/* Thumbnail */}
-        <div className="relative w-full md:w-64 h-48 md:h-auto bg-[#f9c937] flex-shrink-0">
-          {episode.thumbnailUrl ? (
-            <Image
-              src={episode.thumbnailUrl}
-              alt={episode.title}
-              fill
-              className="object-cover"
-            />
+        <div className="relative w-full h-80 md:w-64 md:h-full  bg-[#f9c937] flex-shrink-0 overflow-hidden">
+          {displayImage ? (
+            <>
+              <Image
+                src={displayImage}
+                alt={episode.title}
+                fill
+                priority
+                className="object-cover"
+                unoptimized={isCDNUrl(displayImage)}
+              />
+              {/* Multiple images indicator */}
+              {episode.images && episode.images.length > 1 && (
+                <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/70 text-white font-archivo-black text-xs border-2 border-black flex items-center gap-1">
+                  <span>🖼</span>
+                  <span>{episode.images.length}</span>
+                </div>
+              )}
+            </>
           ) : (
             <div className="w-full h-full flex items-center justify-center">
               <span className="font-archivo-black text-6xl text-black/20">
@@ -84,7 +124,9 @@ export default function EpisodeCard({ episode, index, onClick }: EpisodeCardProp
           </div>
 
           {/* Platform badge */}
-          <div className={`absolute top-2 right-2 px-3 py-1 ${platformColor} text-white font-archivo-black text-xs uppercase tracking-wider rounded-sm border-2 border-black`}>
+          <div
+            className={`absolute top-2 right-2 px-3 py-1 ${platformColor} text-white font-archivo-black text-xs uppercase tracking-wider rounded-sm border-2 border-black`}
+          >
             {platformIcon} {episode.platformType}
           </div>
 
@@ -121,7 +163,9 @@ export default function EpisodeCard({ episode, index, onClick }: EpisodeCardProp
           {/* Guests */}
           {hasGuests && (
             <div className="mt-4 flex flex-wrap items-center gap-2">
-              <span className="font-archivo-black text-xs text-black/50 uppercase">Invitados:</span>
+              <span className="font-archivo-black text-xs text-black/50 uppercase">
+                Invitados:
+              </span>
               {episode.guests!.map((guest) => (
                 <span
                   key={guest.id}
@@ -136,7 +180,9 @@ export default function EpisodeCard({ episode, index, onClick }: EpisodeCardProp
           {/* Inside Jokes / Topics */}
           {hasJokes && (
             <div className="mt-3 flex flex-wrap items-center gap-2">
-              <span className="font-archivo-black text-xs text-black/50 uppercase">Tópicos:</span>
+              <span className="font-archivo-black text-xs text-black/50 uppercase">
+                Tópicos:
+              </span>
               {episode.insideJokes!.slice(0, 2).map((joke) => (
                 <span
                   key={joke.id}
