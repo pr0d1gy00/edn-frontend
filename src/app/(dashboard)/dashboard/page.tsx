@@ -47,7 +47,6 @@ const quickActions = [
   {
     label: 'Nuevo Episodio',
     href: '/dashboard/episodes/new',
-    bg: '#f9c937',
     icon: (
       <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="square" strokeWidth="3" d="M12 4v16m8-8H4" />
@@ -57,7 +56,6 @@ const quickActions = [
   {
     label: 'Agregar Tour',
     href: '/dashboard/tour/new',
-    bg: 'white',
     icon: (
       <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="square" strokeWidth="3" d="M12 4v16m8-8H4" />
@@ -67,7 +65,6 @@ const quickActions = [
   {
     label: 'Publicar Historia',
     href: '/dashboard/historias/new',
-    bg: 'white',
     icon: (
       <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="square" strokeWidth="3" d="M12 4v16m8-8H4" />
@@ -81,8 +78,8 @@ export default function DashboardPage() {
     <div className="bg-white min-h-screen p-8">
       {/* Header */}
       <div className="mb-8 border-b-4 border-black pb-6">
-        <div className="inline-block bg-[#f9c937] border-4 border-black px-6 py-3 -ml-4">
-          <h1 className="font-syne font-extrabold text-5xl text-black uppercase tracking-tighter leading-none">
+        <div className="inline-block bg-black border-4 border-black px-6 py-3 -ml-4">
+          <h1 className="font-syne font-extrabold text-5xl text-[#f9c937] uppercase tracking-tighter leading-none">
             Dashboard
           </h1>
         </div>
@@ -102,7 +99,7 @@ export default function DashboardPage() {
             className="relative"
           >
             {/* Punch card style card */}
-            <div className="bg-[#f9c937] border-4 border-black p-6 relative shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <div className="bg-white border-4 border-black p-6 relative shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
               {/* Punch holes decoration */}
               <div className="absolute left-2 top-0 bottom-0 flex flex-col justify-around py-4">
                 <div className="w-3 h-3 bg-black rounded-full" />
@@ -123,7 +120,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Decorative corner */}
-            <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-black" />
+            <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-[#f9c937]" />
           </motion.div>
         ))}
       </div>
@@ -148,7 +145,7 @@ export default function DashboardPage() {
                 href={action.href}
                 className="
                   relative flex flex-col items-center justify-center gap-4 p-8
-                  bg-[#f9c937] border-4 border-black
+                  bg-white border-4 border-black
                   shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]
                   hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)]
                   hover:translate-x-[-4px] hover:translate-y-[-4px]
@@ -174,8 +171,8 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Corner accents */}
-                <div className="absolute top-2 right-2 w-4 h-4 bg-black/10" />
-                <div className="absolute bottom-2 left-2 w-4 h-4 bg-black/10" />
+                <div className="absolute top-2 right-2 w-4 h-4 bg-[#f9c937]" />
+                <div className="absolute bottom-2 left-2 w-4 h-4 bg-[#f9c937]" />
               </Link>
             </motion.div>
           ))}
