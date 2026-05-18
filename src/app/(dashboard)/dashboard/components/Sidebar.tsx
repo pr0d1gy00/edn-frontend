@@ -61,15 +61,15 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-72 bg-white min-h-screen border-r-4 border-black flex flex-col relative overflow-hidden">
+    <aside className="w-72 bg-black min-h-screen border-r-4 border-[#f9c937] flex flex-col relative overflow-hidden">
       {/* Diagonal stripes decoration */}
       <div className="absolute top-0 right-0 w-24 h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-[200%] h-full bg-black/[0.03]" style={{ clipPath: 'polygon(100% 0, 0 0, 0 100%)' }} />
+        <div className="absolute top-0 right-0 w-[200%] h-full bg-[#f9c937]/[0.05]" style={{ clipPath: 'polygon(100% 0, 0 0, 0 100%)' }} />
       </div>
 
       {/* Header block */}
-      <div className="p-6 border-b-4 border-black relative">
-        <div className="bg-[#f9c937] px-4 py-4 -mx-4 -mt-4 border-b-4 border-black">
+      <div className="p-6 border-b-4 border-[#f9c937] relative">
+        <div className="bg-[#f9c937] px-4 py-4 -mx-4 -mt-4 border-b-4 border-[#f9c937]">
           <h1 className="font-syne font-extrabold text-4xl uppercase tracking-tighter leading-none text-black">
             EDN
           </h1>
@@ -89,25 +89,25 @@ export default function Sidebar() {
                 <Link
                   href={item.href}
                   className={`
-                    relative flex items-center gap-4 p-4 font-archivo-black uppercase text-black
-                    border-4 border-black rounded-none transition-all duration-100
+                    relative flex items-center gap-4 p-4 font-archivo-black uppercase text-white
+                    border-4 border-[#f9c937] rounded-none transition-all duration-100
                     ${isActive
-                      ? 'bg-[#f9c937] text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]'
-                      : 'bg-white hover:bg-black hover:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[-2px] hover:translate-y-[-2px]'
+                      ? 'bg-[#f9c937] text-black shadow-[6px_6px_0px_0px_rgba(249,201,55,0.4)]'
+                      : 'bg-transparent hover:bg-[#f9c937] hover:text-black shadow-none hover:shadow-[6px_6px_0px_0px_rgba(249,201,55,0.4)] hover:translate-x-[-2px] hover:translate-y-[-2px]'
                     }
                   `}
                 >
                   {/* Number badge */}
                   <span className={`
                     absolute -top-3 -left-3 w-8 h-8 flex items-center justify-center
-                    font-archivo-black text-xs border-4 border-black rounded-none
+                    font-archivo-black text-xs border-4 border-[#f9c937] rounded-none
                     ${isActive ? 'bg-black text-[#f9c937]' : 'bg-[#f9c937] text-black'}
                   `}>
                     {item.number}
                   </span>
 
                   {/* Icon */}
-                  <div className={`flex-shrink-0 ${isActive ? '' : ''}`}>
+                  <div className={`flex-shrink-0 ${isActive ? '' : 'text-[#f9c937]/70'}`}>
                     {item.icon}
                   </div>
 
@@ -118,7 +118,7 @@ export default function Sidebar() {
 
                   {/* Arrow indicator */}
                   <svg
-                    className={`absolute right-4 w-6 h-6 transition-transform ${isActive ? 'rotate-90' : ''}`}
+                    className={`absolute right-4 w-6 h-6 transition-transform ${isActive ? 'rotate-90 text-black' : 'text-[#f9c937]'}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -133,15 +133,15 @@ export default function Sidebar() {
       </nav>
 
       {/* Footer block */}
-      <div className="p-4 border-t-4 border-black relative">
+      <div className="p-4 border-t-4 border-[#f9c937] relative">
         <Link
           href="/"
           className="
             flex items-center justify-center gap-3 px-4 py-4
             bg-[#f9c937] text-black font-archivo-black uppercase text-sm font-bold
-            border-4 border-black rounded-none
-            shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]
-            hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.3)]
+            border-4 border-[#f9c937] rounded-none
+            shadow-[4px_4px_0px_0px_rgba(249,201,55,0.3)]
+            hover:shadow-[6px_6px_0px_0px_rgba(249,201,55,0.4)]
             hover:translate-x-[-2px] hover:translate-y-[-2px]
             transition-all duration-150
           "
@@ -154,8 +154,8 @@ export default function Sidebar() {
       </div>
 
       {/* EDN Logo watermark */}
-      <div className="absolute bottom-20 right-4 pointer-events-none opacity-5">
-        <span className="font-syne font-black text-8xl text-black rotate-90 origin-center">
+      <div className="absolute bottom-20 right-4 pointer-events-none opacity-10">
+        <span className="font-syne font-black text-8xl text-[#f9c937] rotate-90 origin-center">
           EDN
         </span>
       </div>
