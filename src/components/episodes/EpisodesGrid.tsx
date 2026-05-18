@@ -82,7 +82,7 @@ export default function EpisodesGrid({
           {[1, 2, 3, 4].map((i) => (
             <div
               key={i}
-              className="h-48 bg-white/10 border-4 border-black rounded-md animate-pulse"
+              className="h-48 bg-black/10 border-4 border-black rounded-md animate-pulse"
             />
           ))}
         </div>
@@ -100,7 +100,7 @@ export default function EpisodesGrid({
         </div>
       ) : episodes.length === 0 ? (
         <div className="text-center py-16">
-          <p className="font-syne text-3xl text-white/40 uppercase">
+          <p className="font-syne text-3xl text-black/40 uppercase">
             No hay episodios disponibles
           </p>
         </div>
@@ -141,21 +141,24 @@ export default function EpisodesGrid({
   // PREVIEW MODE: self-contained section with header
   if (mode === "preview") {
     return (
-      <section id="episodes" className="py-16 bg-black border-t-4 border-black">
+      <section
+        id="episodes"
+        className="py-16 bg-black border-t-4 border-edn-neon-yellow"
+      >
         {/* Header */}
         <header className="px-8 mb-8">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <h2 className="font-syne text-4xl md:text-5xl font-extrabold text-[#f9c937] uppercase tracking-tight">
+              <h2 className="font-syne text-4xl md:text-5xl font-extrabold text-edn-yellow-neon uppercase tracking-tight">
                 EPISODIOS
               </h2>
-              <div className="mt-4 w-48 h-2 bg-[#f9c937]" />
+              <div className="mt-4 w-48 h-2 bg-edn-yellow-neon" />
             </div>
             {showVerTodos && (
               <Link
                 href="/all-episodes"
                 className={`
-                  px-6 py-3 bg-[#f9c937] border-4 border-black rounded-sm
+                  px-6 py-3 bg-edn-neon-yellow border-4 border-black rounded-sm
                   font-archivo-black text-black uppercase tracking-wider
                   shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
                   hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]
@@ -167,7 +170,7 @@ export default function EpisodesGrid({
               </Link>
             )}
           </div>
-          <p className="font-plus-jakarta text-white/60 mt-4 text-lg">
+          <p className="font-plus-jakarta text-black/60 mt-4 text-lg">
             Los &uacute;ltimos episodios de la Escuela de Nada
           </p>
         </header>
