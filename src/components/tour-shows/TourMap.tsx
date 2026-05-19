@@ -80,29 +80,29 @@ function TourShowModal({ show, onClose }: TourShowModalProps) {
           {hasImages ? (
             <div className="relative h-64 bg-[#f9c937]">
               <Image
-                src={show.images[currentImageIndex]}
+                src={show.images?.[currentImageIndex] ?? ''}
                 alt={show.city}
                 fill
                 className="object-cover"
               />
               {/* Image carousel controls */}
-              {show.images.length > 1 && (
+              {show.images && show.images.length > 1 && (
                 <>
                   <button
-                    onClick={() => setCurrentImageIndex((prev) => (prev === 0 ? show.images.length - 1 : prev - 1))}
+                    onClick={() => setCurrentImageIndex((prev) => (prev === 0 ? (show.images?.length ?? 1) - 1 : prev - 1))}
                     className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-black text-[#f9c937] border-2 border-black rounded-sm flex items-center justify-center hover:bg-black/80 transition-colors"
                   >
                     ←
                   </button>
                   <button
-                    onClick={() => setCurrentImageIndex((prev) => (prev === show.images.length - 1 ? 0 : prev + 1))}
+                    onClick={() => setCurrentImageIndex((prev) => (prev === (show.images?.length ?? 1) - 1 ? 0 : prev + 1))}
                     className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-black text-[#f9c937] border-2 border-black rounded-sm flex items-center justify-center hover:bg-black/80 transition-colors"
                   >
                     →
                   </button>
                   {/* Dots indicator */}
                   <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                    {show.images.map((_, idx) => (
+                    {show.images?.map((_, idx) => (
                       <button
                         key={idx}
                         onClick={() => setCurrentImageIndex(idx)}
@@ -338,10 +338,20 @@ export default function TourMap() {
 
         {/* Neo-brutalist zoom controls */}
         <div className="absolute bottom-4 right-4 flex flex-col gap-2 z-[400]">
+<button
+            onClick={() => {
+              const map = document.querySelector('.leaflet-container') as any;
+              if (map?._leaflet_map) map._leaflet_map.zoomIn();
+            }}
+            className="w-12 h-12 bg-[#f9c937] border-4 border-black rounded-sm flex items-center justify-center text-2xl font-archivo-black text-black hover:bg-[#f9c937]/80 transition-colors"
+            style={{ boxShadow: '4px 4px 0px_0px_rgba(0,0,0,1)' }}
+          >
+            +
+          </button>
           <button
             onClick={() => {
-              const map = document.querySelector('.leaflet-container');
-              if (map?._leaflet_map) map._leaflet_map.zoomIn();
+              const map = document.querySelector('.leaflet-container') as any;
+              if (map?._leaflet_map) map._leaflet_map.zoomOut();
             }}
             className="w-12 h-12 bg-[#f9c937] border-4 border-black rounded-sm flex items-center justify-center text-2xl font-archivo-black text-black hover:bg-[#f9c937]/80 transition-colors"
             style={{ boxShadow: '4px 4px 0px 0px rgba(0,0,0,1)' }}

@@ -1,6 +1,6 @@
 'use client';
 
-import TourShowsTicker, { TourMap } from '@/components/tour-shows';
+import { TourShowsTicker, TourMap } from '@/components/tour-shows';
 
 export default function TourPage() {
   return (

@@ -20,28 +20,12 @@ export function Toaster({
       position={position}
       theme="dark"
       richColors
-      toastOptions={{
+toastOptions={{
         style: {
           background: "#000000",
           border: "3px solid #f9c937",
           color: "#ffffff",
           fontFamily: "var(--font-archivo-black), system-ui",
-        },
-        success: {
-          style: {
-            background: "#000000",
-            border: "3px solid #22c55e",
-            color: "#ffffff",
-          },
-          icon: null,
-        },
-        error: {
-          style: {
-            background: "#000000",
-            border: "3px solid #ef4444",
-            color: "#ffffff",
-          },
-          icon: null,
         },
       }}
     />

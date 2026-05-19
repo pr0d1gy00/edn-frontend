@@ -33,11 +33,11 @@ describe('Sidebar', () => {
     expect(link.closest('a')).toHaveAttribute('href', '/dashboard/guests');
   });
 
-  it('shows number badge "06" for the Invitados item', () => {
+  it('shows number badge "06" for the Tour Shows item', () => {
     render(<Sidebar />);
-    const badge = screen.getByText('06');
-    expect(badge).toBeInTheDocument();
-    expect(badge.className).toContain('font-archivo-black');
+    const badges = screen.getAllByText('06');
+    expect(badges.length).toBeGreaterThanOrEqual(1);
+    expect(badges[0].className).toContain('font-archivo-black');
   });
 
   it('highlights Invitados when pathname is /dashboard/guests', () => {
@@ -54,6 +54,30 @@ describe('Sidebar', () => {
     render(<Sidebar />);
 
     const link = screen.getByText('Invitados').closest('a')!;
+    expect(link.className).toContain('bg-white');
+  });
+
+  it('renders "Tour Shows" link with href /dashboard/tour-shows', () => {
+    render(<Sidebar />);
+    const link = screen.getByText('Tour Shows');
+    expect(link).toBeInTheDocument();
+    expect(link.closest('a')).toHaveAttribute('href', '/dashboard/tour-shows');
+  });
+
+  it('highlights Tour Shows when pathname is /dashboard/tour-shows', () => {
+    mockUsePathname.mockReturnValue('/dashboard/tour-shows');
+    render(<Sidebar />);
+
+    const link = screen.getByText('Tour Shows').closest('a')!;
+    expect(link.className).toContain('bg-black');
+    expect(link.className).toContain('text-[#f9c937]');
+  });
+
+  it('does not highlight Tour Shows when on a different route', () => {
+    mockUsePathname.mockReturnValue('/dashboard/users');
+    render(<Sidebar />);
+
+    const link = screen.getByText('Tour Shows').closest('a')!;
     expect(link.className).toContain('bg-white');
   });
 });

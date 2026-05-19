@@ -24,8 +24,8 @@ const menuItems = [
     number: "01",
   },
   {
-    label: "Tour",
-    href: "/dashboard/tour",
+    label: "Tour Shows",
+    href: "/dashboard/tour-shows",
     icon: (
       <svg
         className="w-8 h-8"
@@ -36,12 +36,7 @@ const menuItems = [
         <path
           strokeLinecap="square"
           strokeWidth="3"
-          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-        />
-        <path
-          strokeLinecap="square"
-          strokeWidth="3"
-          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
         />
       </svg>
     ),
@@ -129,11 +124,11 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-72 bg-[#f9c937] min-h-screen border-r-4 border-black flex flex-col relative overflow-hidden">
+    <aside className="w-72 bg-edn-neon-yellow min-h-screen border-r-4 border-black flex flex-col relative overflow-hidden">
       {/* Diagonal stripes decoration */}
       <div className="absolute top-0 right-0 w-24 h-full overflow-hidden pointer-events-none">
         <div
-          className="absolute top-0 right-0 w-[200%] h-full bg-black/[0.03]"
+          className="absolute top-0 right-0 w-[200%] h-full bg-black/3"
           style={{ clipPath: "polygon(100% 0, 0 0, 0 100%)" }}
         />
       </div>
@@ -141,10 +136,10 @@ export default function Sidebar() {
       {/* Header block */}
       <div className="p-6 border-b-4 border-black relative">
         <div className="bg-black px-4 py-4 -mx-4 -mt-4 border-b-4 border-black">
-          <h1 className="font-syne font-extrabold text-4xl uppercase tracking-tighter leading-none text-[#f9c937]">
+          <h1 className="font-syne font-extrabold text-4xl uppercase tracking-tighter leading-none text-edn-neon-yellow">
             EDN
           </h1>
-          <p className="font-archivo-black text-sm uppercase mt-1 tracking-widest text-[#f9c937]/70">
+          <p className="font-archivo-black text-sm uppercase mt-1 tracking-widest text-edn-neon-yellow/70">
             Panel de Control
           </p>
         </div>
@@ -164,8 +159,8 @@ export default function Sidebar() {
                     border-4 border-black rounded-none transition-all duration-100
                     ${
                       isActive
-                        ? "bg-black text-[#f9c937] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
-                        : "bg-white hover:bg-black hover:text-[#f9c937] text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[-2px] hover:translate-y-[-2px]"
+                        ? "bg-black text-edn-neon-yellow shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+                        : "bg-white hover:bg-black hover:text-edn-neon-yellow text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[-2px] hover:translate-y-[-2px]"
                     }
                   `}
                 >
@@ -182,7 +177,7 @@ export default function Sidebar() {
 
                   {/* Icon */}
                   <div
-                    className={`flex-shrink-0 ${isActive ? "text-[#f9c937]" : ""}`}
+                    className={`shrink-0 ${isActive ? "text-edn-neon-yellow" : ""}`}
                   >
                     {item.icon}
                   </div>
@@ -218,7 +213,7 @@ export default function Sidebar() {
           href="/"
           className="
             flex items-center justify-center gap-3 px-4 py-4
-            bg-black text-[#f9c937] font-archivo-black uppercase text-sm font-bold
+            bg-black text-edn-neon-yellow font-archivo-black uppercase text-sm font-bold
             border-4 border-black rounded-none
             shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]
             hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.4)]
