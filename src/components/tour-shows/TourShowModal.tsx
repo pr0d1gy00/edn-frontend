@@ -1,231 +1,336 @@
-'use client';
+"use client";
 
-import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
-import { useTourShowById } from '@/hooks/useTourShowById';
+import { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import dynamic from "next/dynamic";
+import type { TourShow, TourShowImage } from "@/types/tourShow";
+import { tourShowsApi } from "@/services/tourShowsApi";
+
+// Dynamic map component to avoid SSR issues
+const MapWithMarker = dynamic(
+  () => import("react-leaflet").then((mod) => {
+    const L = require("leaflet");
+    const { MapContainer, TileLayer, Marker, Popup } = mod;
+
+    // Fix marker icons
+    delete L.Icon.Default.prototype._getIconUrl;
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
+      iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+      shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+    });
+
+    const customIcon = L.divIcon({
+      className: "custom-marker",
+      html: `<div style="
+        width:40px;height:40px;background:#f9c937;border:3px solid #000;
+        box-shadow:3px 3px 0px #000;display:flex;align-items:center;justify-content:center;
+      "><span style="font-size:20px;">📍</span></div>`,
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+    });
+
+    return function MapMarker({ position }: { position: [number, number] }) {
+      return (
+        <MapContainer center={position} zoom={13} scrollWheelZoom={false} style={{ height: "100%", width: "100%" }}>
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Marker position={position} icon={customIcon}>
+            <Popup>
+              <div style={{ padding: "8px", fontFamily: "Archivo Black, sans-serif" }}>
+                Show Location
+              </div>
+            </Popup>
+          </Marker>
+        </MapContainer>
+      );
+    };
+  }),
+  { ssr: false, loading: () => <div className="w-full h-full bg-[#e5e5e5] animate-pulse" /> }
+);
 
 const STATUS_LABELS: Record<string, string> = {
-  AVAILABLE: 'DISPONIBLE',
-  FEW_TICKETS: '¡ÚLTIMAS!',
-  SOLD_OUT: 'AGOTADO',
+  AVAILABLE: "DISPONIBLE",
+  FEW_TICKETS: "¡ÚLTIMAS!",
+  SOLD_OUT: "AGOTADO",
 };
 
 const STATUS_COLORS: Record<string, string> = {
-  AVAILABLE: 'bg-green-500',
-  FEW_TICKETS: 'bg-orange-500',
-  SOLD_OUT: 'bg-red-500',
+  AVAILABLE: "bg-green-500",
+  FEW_TICKETS: "bg-orange-500",
+  SOLD_OUT: "bg-red-500",
 };
 
 function formatShowDate(isoString: string): string {
   const date = new Date(isoString);
-  return date.toLocaleDateString('es-AR', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
+  return date.toLocaleDateString("es-AR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 }
 
+function isCDNUrl(url: string): boolean {
+  return (
+    url.includes("s3.") ||
+    url.includes("cdn.") ||
+    url.includes("idrivee2") ||
+    url.includes("facebook.com") ||
+    url.includes("r2.dev")
+  );
+}
+
 interface TourShowModalProps {
-  showId: string;
-  isOpen: boolean;
+  show: TourShow | null;
   onClose: () => void;
 }
 
-export default function TourShowModal({ showId, isOpen, onClose }: TourShowModalProps) {
-  const { tourShow, loading, error } = useTourShowById(isOpen ? showId : '');
+export default function TourShowModal({ show, onClose }: TourShowModalProps) {
+  const router = useRouter();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const position: [number, number] = [
+    show?.latitude || 0,
+    show?.longitude || 0,
+  ];
+  const statusLabel =
+    STATUS_LABELS[show?.ticketStatus || "AVAILABLE"] || "DISPONIBLE";
+  const statusColor =
+    STATUS_COLORS[show?.ticketStatus || "AVAILABLE"] || "bg-green-500";
+  const hasImages = show?.images && show.images.length > 0;
+  const canBuy = show?.ticketStatus !== "SOLD_OUT" && show?.ticketUrl;
+  const imagesForCarousel = hasImages
+    ? show.images.map((img: TourShowImage) => img.url)
+    : [];
 
-  if (!isOpen) return null;
+  const goToPrev = () => {
+    if (imagesForCarousel.length <= 1) return;
+    setCurrentImageIndex((prev) =>
+      prev === 0 ? imagesForCarousel.length - 1 : prev - 1,
+    );
+  };
 
-  const statusLabel = tourShow ? STATUS_LABELS[tourShow.ticketStatus] || 'DISPONIBLE' : '';
-  const statusColor = tourShow ? STATUS_COLORS[tourShow.ticketStatus] || 'bg-green-500' : '';
-  const hasImages = tourShow?.images && tourShow.images.length > 0;
-  const canBuy = tourShow?.ticketStatus !== 'SOLD_OUT' && tourShow?.ticketUrl;
+  const goToNext = () => {
+    if (imagesForCarousel.length <= 1) return;
+    setCurrentImageIndex((prev) =>
+      prev === imagesForCarousel.length - 1 ? 0 : prev + 1,
+    );
+  };
 
+  const handleEdit = () => {
+    onClose();
+    if (show) router.push(`/dashboard/tour-shows/${show.id}`);
+  };
+
+  const handleDelete = async () => {
+    if (!show) return;
+    setIsDeleting(true);
+    try {
+      await tourShowsApi.deleteTourShow(show.id);
+      onClose();
+      window.location.reload();
+    } catch {
+      setIsDeleting(false);
+    }
+  };
+
+  const hasCoordinates = show?.latitude != null && show?.longitude != null;
   return (
     <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/80"
-          onClick={onClose}
-        >
+      {show ? (
+        <>
           <motion.div
-            initial={{ scale: 0.8, rotate: -2 }}
-            animate={{ scale: 1, rotate: 0 }}
-            exit={{ scale: 0.8, rotate: 2 }}
-            onClick={(e) => e.stopPropagation()}
-            className="bg-white border-4 border-black rounded-md shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/80"
+            onClick={onClose}
           >
-            {/* Header area */}
-            <div className="relative">
-              {hasImages ? (
-                <div className="relative h-64 bg-[#f9c937] border-b-4 border-black">
-                  <Image
-                    src={tourShow!.images[0]}
-                    alt={tourShow!.city}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              ) : (
-                <div className="h-40 bg-[#f9c937] border-b-4 border-black flex items-center justify-center">
-                  <span className="font-archivo-black text-8xl text-black/20 uppercase">
-                    {tourShow ? tourShow.city.charAt(0) : '?'}
-                  </span>
-                </div>
-              )}
+            <motion.div
+              initial={{ scale: 0.8, rotate: -2 }}
+              animate={{ scale: 1, rotate: 0 }}
+              exit={{ scale: 0.8, rotate: 2 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white border-4 border-black rounded-md shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+            >
+              {/* Image Carousel */}
+              <div className="relative">
+                {imagesForCarousel.length > 0 ? (
+                  <div className="relative h-64 bg-[#f9c937] border-b-4 border-black flex items-center justify-center">
+                    <Image
+                      src={imagesForCarousel[currentImageIndex]}
+                      alt={`${show?.city} - Imagen ${currentImageIndex + 1}`}
+                      fill
+                      className="object-cover"
+                      unoptimized={isCDNUrl(
+                        imagesForCarousel[currentImageIndex],
+                      )}
+                    />
 
-              {/* Close button */}
-              <button
-                onClick={onClose}
-                className="absolute top-4 right-4 w-12 h-12 bg-black text-[#f9c937] font-archivo-black text-2xl border-2 border-black rounded-sm hover:bg-black/80 transition-colors"
-              >
-                ✕
-              </button>
+                    {/* Carousel controls */}
+                    {imagesForCarousel.length > 1 && (
+                      <>
+                        <button
+                          onClick={goToPrev}
+                          className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 text-white font-archivo-black text-lg border-2 border-black hover:bg-black transition-colors flex items-center justify-center"
+                        >
+                          ‹
+                        </button>
+                        <button
+                          onClick={goToNext}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 text-white font-archivo-black text-lg border-2 border-black hover:bg-black transition-colors flex items-center justify-center"
+                        >
+                          ›
+                        </button>
 
-              {/* Status badge */}
-              {tourShow && (
-                <div className={`absolute top-4 left-4 px-3 py-1 ${statusColor} border-2 border-black rounded-sm`}>
-                  <span className="font-archivo-black text-sm text-white uppercase tracking-wider">
+                        {/* Dot indicators */}
+                        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                          {imagesForCarousel.map((_, idx) => (
+                            <button
+                              key={idx}
+                              onClick={() => setCurrentImageIndex(idx)}
+                              className={`w-2.5 h-2.5 rounded-full border-2 border-black transition-colors ${
+                                idx === currentImageIndex
+                                  ? "bg-[#f9c937]"
+                                  : "bg-black/50"
+                              }`}
+                            />
+                          ))}
+                        </div>
+
+                        {/* Image counter */}
+                        <div className="absolute top-3 left-3 px-2 py-1 bg-black text-[#f9c937] font-archivo-black text-xs border-2 border-black">
+                          {currentImageIndex + 1}/{imagesForCarousel.length}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                ) : (
+                  <div className="h-40 bg-[#f9c937] border-b-4 border-black flex items-center justify-center">
+                    <span className="font-archivo-black text-8xl text-black/20 uppercase">
+                      {show?.city?.charAt(0) || "?"}
+                    </span>
+                  </div>
+                )}
+
+                {/* Close button */}
+                <button
+                  onClick={onClose}
+                  className="absolute top-3 right-3 w-10 h-10 bg-black text-[#f9c937] font-archivo-black text-xl border-2 border-black rounded-sm hover:bg-black/80 transition-colors z-10"
+                >
+                  ✕
+                </button>
+
+                {/* Status badge */}
+                <div
+                  className={`absolute top-3 left-3 px-3 py-1 ${statusColor} border-2 border-black rounded-sm z-10`}
+                >
+                  <span className="font-archivo-black text-xs text-white uppercase tracking-wider">
                     {statusLabel}
                   </span>
                 </div>
-              )}
-            </div>
+              </div>
 
-            {/* Content */}
-            <div className="p-6">
-              {loading ? (
-                <div className="space-y-4">
-                  <div className="h-8 bg-black/10 rounded-sm animate-pulse w-3/4" />
-                  <div className="h-4 bg-black/10 rounded-sm animate-pulse w-full" />
-                  <div className="h-4 bg-black/10 rounded-sm animate-pulse w-2/3" />
-                  <div className="h-4 bg-black/10 rounded-sm animate-pulse w-1/2" />
-                </div>
-              ) : error ? (
-                <div className="text-center py-8">
-                  <p className="font-archivo-black text-xl text-red-500 uppercase">{error}</p>
-                  <button
-                    onClick={onClose}
-                    className="mt-4 px-6 py-3 bg-black text-[#f9c937] font-archivo-black uppercase border-4 border-black hover:bg-black/80 transition-colors"
-                  >
-                    Cerrar
-                  </button>
-                </div>
-              ) : tourShow ? (
-                <>
-                  {/* City heading */}
-                  <h2 className="font-syne font-extrabold text-4xl text-black uppercase leading-tight">
-                    {tourShow.city}
-                  </h2>
-                  <p className="font-archivo-black text-lg text-black/60 uppercase mt-1">
-                    {tourShow.country}
-                  </p>
+              {/* Content */}
+              <div className="p-6">
+                {/* Venue info */}
+                <h2 className="font-syne font-extrabold text-3xl text-black uppercase leading-tight">
+                  {show?.city || "Unknown"}
+                </h2>
+                <p className="font-archivo-black text-lg text-black/60 uppercase mt-1">
+                  {show?.country || ""}
+                </p>
 
-                  {/* Details */}
-                  <div className="mt-6 space-y-3">
-                    <div className="flex items-start gap-3">
-                      <span className="text-2xl">📍</span>
-                      <p className="font-plus-jakarta text-black font-medium">
-                        {tourShow.venueName}
-                      </p>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <span className="text-2xl">📅</span>
-                      <p className="font-plus-jakarta text-black font-medium">
-                        {formatShowDate(tourShow.showDate)}
-                      </p>
-                    </div>
-
-                    {tourShow.latitude != null && tourShow.longitude != null && (
-                      <div className="flex items-start gap-3">
-                        <span className="text-2xl">🌍</span>
-                        <p className="font-plus-jakarta text-black/60 text-sm">
-                          {tourShow.latitude}, {tourShow.longitude}
-                        </p>
-                      </div>
-                    )}
+                <div className="mt-4 space-y-3">
+                  <div className="flex items-start gap-3">
+                    <span className="text-xl">📍</span>
+                    <p className="font-plus-jakarta text-black font-medium">
+                      {show?.venueName || ""}
+                    </p>
                   </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-xl">📅</span>
+                    <p className="font-plus-jakarta text-black font-medium">
+                      {show ? formatShowDate(show.showDate) : ""}
+                    </p>
+                  </div>
+                </div>
 
-                  {/* Images gallery */}
-                  {hasImages && (
-                    <div className="mt-6">
-                      <p className="font-archivo-black text-xs text-black/50 uppercase mb-3">
-                        Imágenes ({tourShow.images.length})
-                      </p>
-                      <div className="flex flex-wrap gap-3">
-                        {tourShow.images.map((url, index) => (
-                          <div
-                            key={index}
-                            className="relative w-20 h-20 border-4 border-black rounded-sm overflow-hidden"
-                          >
-                            <Image
-                              src={url}
-                              alt={`${tourShow.city} ${index + 1}`}
-                              fill
-                              className="object-cover"
-                            />
-                          </div>
-                        ))}
-                      </div>
+                {/* Map embed */}
+                <div className="mt-6 h-64 border-4 border-black">
+                  {hasCoordinates ? (
+                    <MapWithMarker position={position} />
+                  ) : (
+                    <div className="w-full h-32 bg-[#f9c937] border-4 border-black flex items-center justify-center">
+                      <span className="font-archivo-black text-sm text-black/60 uppercase">
+                        Ubicación no disponible
+                      </span>
                     </div>
                   )}
+                </div>
 
-                  {/* Metadata */}
-                  <div className="mt-6 space-y-2 font-plus-jakarta text-sm text-black/60">
-                    {tourShow.createdAt && (
-                      <p>
-                        Creado:{' '}
-                        {new Date(tourShow.createdAt).toLocaleDateString('es-AR', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        })}
-                      </p>
-                    )}
-                    {tourShow.updatedAt && (
-                      <p>
-                        Actualizado:{' '}
-                        {new Date(tourShow.updatedAt).toLocaleDateString('es-AR', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        })}
-                      </p>
-                    )}
+                {/* Image thumbnails */}
+                {hasImages && (
+                  <div className="mt-6">
+                    <p className="font-archivo-black text-xs text-black/50 uppercase mb-3">
+                      Imágenes ({show.images.length})
+                    </p>
+                    <div className="flex flex-wrap gap-3">
+                      {show.images.map((img: TourShowImage, index: number) => (
+                        <button
+                          key={img.id}
+                          onClick={() => setCurrentImageIndex(index)}
+                          className={`relative w-16 h-16 border-4 rounded-sm overflow-hidden transition-transform hover:scale-110 ${
+                            index === currentImageIndex
+                              ? "border-[#f9c937]"
+                              : "border-black"
+                          }`}
+                        >
+                          <Image
+                            src={img.url}
+                            alt={`${show?.city} ${index + 1}`}
+                            fill
+                            className="object-cover"
+                            unoptimized={isCDNUrl(img.url)}
+                          />
+                        </button>
+                      ))}
+                    </div>
                   </div>
+                )}
 
-                  {/* Actions */}
-                  <div className="mt-8 flex gap-4">
-                    <button
-                      onClick={onClose}
-                      className="flex-1 py-4 bg-black text-[#f9c937] font-archivo-black uppercase border-4 border-black hover:bg-black/80 transition-colors"
+                {/* Action buttons */}
+                <div className="mt-8 flex gap-3">
+                  {canBuy && (
+                    <a
+                      href={show.ticketUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 py-4 bg-[#f9c937] text-black font-archivo-black uppercase text-center border-4 border-black hover:bg-[#e5b800] transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                     >
-                      Cerrar
-                    </button>
+                      COMPRAR ENTRADAS
+                    </a>
+                  )}
+                </div>
 
-                    {canBuy && (
-                      <a
-                        href={tourShow.ticketUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 py-4 bg-[#f9c937] text-black font-archivo-black uppercase text-center border-4 border-black hover:bg-[#e5b800] transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-                      >
-                        COMPRAR ENTRADAS
-                      </a>
-                    )}
-                  </div>
-                </>
-              ) : null}
-            </div>
+                {/* Delete confirmation text */}
+                {showDeleteConfirm && (
+                  <p className="mt-3 font-plus-jakarta text-sm text-red-500 text-center">
+                    ¿Estás seguro de eliminar este show?
+                  </p>
+                )}
+              </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      )}
+        </>
+      ) : null}
     </AnimatePresence>
   );
 }

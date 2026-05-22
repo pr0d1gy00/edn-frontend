@@ -2,27 +2,46 @@
 
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
+import type { TourShow } from "@/types/tourShow";
 
-interface TourShow {
-  id: number;
-  city: string;
-  country: string;
-  venueName: string;
-  showDate: string;
-  ticketUrl: string;
-  ticketStatus: "AVAILABLE" | "FEW_TICKETS" | "SOLD_OUT";
-  latitude?: number;
-  longitude?: number;
-  images?: string[];
-}
-
-const STATUS_LABELS: Record<string, { text: string; color: string }> = {
-  AVAILABLE: { text: "ENTRADAS DISPONIBLES", color: "bg-green-500" },
-  FEW_TICKETS: { text: "¡ULTIMAS ENTRADAS!", color: "bg-orange-500" },
-  SOLD_OUT: { text: "AGOTADO", color: "bg-red-500" },
+const STATUS_LABELS: Record<
+  string,
+  { text: string; bg: string; textColor: string }
+> = {
+  AVAILABLE: {
+    text: "DISPONIBLE",
+    bg: "bg-green-500",
+    textColor: "text-white",
+  },
+  FEW_TICKETS: {
+    text: "¡ÚLTIMAS!",
+    bg: "bg-orange-500",
+    textColor: "text-white",
+  },
+  SOLD_OUT: { text: "AGOTADO", bg: "bg-red-500", textColor: "text-white" },
 };
 
-function TourShowCard({ show }: { show: TourShow }) {
+function isCDNUrl(url: string): boolean {
+  return (
+    url.includes("s3.") ||
+    url.includes("cdn.") ||
+    url.includes("idrivee2") ||
+    url.includes("facebook.com") ||
+    url.includes("r2.dev")
+  );
+}
+
+interface TourShowsTickerProps {
+  onShowClick?: (show: TourShow) => void;
+}
+
+function TourShowCard({
+  show,
+  onClick,
+}: {
+  show: TourShow;
+  onClick?: () => void;
+}) {
   const statusInfo =
     STATUS_LABELS[show.ticketStatus] || STATUS_LABELS.AVAILABLE;
   const date = new Date(show.showDate);
@@ -32,61 +51,95 @@ function TourShowCard({ show }: { show: TourShow }) {
     year: "numeric",
   });
 
+  const validImages = (show.images || []).filter(
+    (img) => img.url && img.url.trim() !== "",
+  );
+  const hasImages = validImages.length > 0;
+
   return (
-    <div className="shrink-0 w-72 mx-3">
-      <div className="bg-white border-4 border-black rounded-md shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
+    <div className="shrink-0 w-80 mx-3 cursor-pointer group" onClick={onClick}>
+      {/* Main card container - neo-brutalist */}
+      <div className="bg-white border-4 border-black rounded-none overflow-hidden shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] group-hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] group-hover:translate-x-[-4px] group-hover:translate-y-[-4px] transition-all duration-150">
         {/* Image area */}
-        <div className="relative h-32 bg-edn-neon-yellow border-b-4 border-black">
-          {show.images && show.images.length > 0 ? (
+        <div className="relative h-40 bg-[#f9c937] border-b-4 border-black">
+          {hasImages ? (
             <Image
-              src={show.images[0]}
+              src={validImages[0].url}
               alt={show.city}
               fill
-              className="object-cover"
+              className="object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
               priority
+              unoptimized={isCDNUrl(validImages[0].url)}
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <span className="font-archivo-black text-4xl text-black/20 uppercase">
+            <div className="w-full h-full flex items-center justify-center bg-black">
+              <span className="font-archivo-black text-8xl text-[#f9c937] uppercase">
                 {show.city.charAt(0)}
               </span>
             </div>
           )}
-          {/* Status badge */}
-          <div
-            className={`absolute top-2 right-2 px-2 py-1 ${statusInfo.color} border-2 border-black rounded-sm`}
-          >
-            <span className="font-archivo-black text-xs text-white uppercase tracking-wider">
-              {statusInfo.text}
-            </span>
-          </div>
-        </div>
 
-        {/* Content */}
-        <div className="p-4">
-          <h3 className="font-syne font-extrabold text-xl text-black uppercase leading-tight">
-            {show.city}
-          </h3>
-          <p className="font-archivo-black text-sm text-black/60 uppercase">
-            {show.country}
-          </p>
-          <p className="font-plus-jakarta text-sm text-black/80 mt-1">
-            {show.venueName}
-          </p>
-          <div className="mt-3 flex items-center justify-between">
-            <span className="font-archivo-black text-sm text-black">
-              {formattedDate}
-            </span>
-            {show.ticketStatus !== "SOLD_OUT" && show.ticketUrl && (
+          {/* Status badge - always prominent, top-left */}
+          <div className="absolute top-0 left-0">
+            <div
+              className={`px-4 py-2 ${statusInfo.bg} border-b-4 border-r-4 border-black`}
+            >
+              <span
+                className={`font-archivo-black text-sm ${statusInfo.textColor} uppercase tracking-wider`}
+              >
+                {statusInfo.text}
+              </span>
+            </div>
+          </div>
+
+          {/* Buy button - only if available */}
+          {show.ticketStatus !== "SOLD_OUT" && show.ticketUrl && (
+            <div className="absolute bottom-2 right-2">
               <a
                 href={show.ticketUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3 py-1.5 bg-black text-edn-neon-yellow font-archivo-black text-xs uppercase tracking-wider rounded-sm border-2 border-black hover:bg-black/80 transition-colors"
+                onClick={(e) => e.stopPropagation()}
+                className="block px-4 py-2 bg-edn-neon-yellow text-black font-archivo-black text-xs uppercase tracking-wider border-2 border-[#f9c937] hover:bg-[#f9c937] hover:text-black transition-colors"
               >
-                COMPRAR
+                COMPRAR →
               </a>
-            )}
+            </div>
+          )}
+        </div>
+
+        {/* Content area */}
+        <div className="p-5 bg-white">
+          {/* City & Country */}
+          <h3 className="font-syne font-extrabold text-2xl text-black uppercase leading-tight tracking-tight">
+            {show.city}
+          </h3>
+          <p className="font-archivo-black text-sm text-black/60 uppercase mt-1 tracking-widest">
+            {show.country}
+          </p>
+
+          {/* Venue */}
+          <div className="mt-3 flex items-center gap-2">
+            <span className="text-lg">📍</span>
+            <p className="font-plus-jakarta text-sm text-black font-medium">
+              {show.venueName}
+            </p>
+          </div>
+
+          {/* Date */}
+          <div className="mt-2 flex items-center gap-2">
+            <span className="text-lg">📅</span>
+            <p className="font-archivo-black text-sm text-black uppercase">
+              {formattedDate}
+            </p>
+          </div>
+
+          {/* Bottom action bar */}
+          <div className="mt-4 pt-4 border-t-4 border-black flex items-center justify-between">
+            <span className="font-archivo-black text-xs text-black/40 uppercase">
+              Ver detalles →
+            </span>
+            <div className="w-3 h-3 bg-black rounded-full" />
           </div>
         </div>
       </div>
@@ -94,12 +147,13 @@ function TourShowCard({ show }: { show: TourShow }) {
   );
 }
 
-export default function TourShowsTicker() {
+export default function TourShowsTicker({ onShowClick }: TourShowsTickerProps) {
   const [shows, setShows] = useState<TourShow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isPaused, setIsPaused] = useState(false);
   const tickerRef = useRef<HTMLDivElement>(null);
+
+  const CARD_WIDTH = 320; // w-80 + mx-3 * 2
 
   useEffect(() => {
     const fetchTourShows = async () => {
@@ -125,15 +179,27 @@ export default function TourShowsTicker() {
     fetchTourShows();
   }, []);
 
+  const scrollLeft = () => {
+    if (tickerRef.current) {
+      tickerRef.current.scrollBy({ left: -CARD_WIDTH, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (tickerRef.current) {
+      tickerRef.current.scrollBy({ left: CARD_WIDTH, behavior: "smooth" });
+    }
+  };
+
   if (isLoading || shows.length === 0) {
     return (
-      <div className="py-8 bg-black border-t-4 border-black">
+      <div className="py-12 bg-black border-t-4 border-[#f9c937]">
         <div className="overflow-hidden">
           <div className="flex gap-4 animate-pulse">
             {[1, 2, 3, 4].map((i) => (
               <div
                 key={i}
-                className="flex-shrink-0 w-72 h-48 bg-white/20 rounded-md"
+                className="flex-shrink-0 w-80 h-64 bg-white/10 border-4 border-black"
               />
             ))}
           </div>
@@ -146,38 +212,73 @@ export default function TourShowsTicker() {
     return null;
   }
 
-  // Duplicate shows for seamless loop
-  const duplicatedShows = [...shows, ...shows, ...shows, ...shows];
-
   return (
-    <div className="py-8 bg-black border-t-4 border-black">
-      {/* Section header */}
-      <div className="px-8 mb-6">
-        <h2 className="font-syne text-3xl md:text-4xl font-extrabold text-[#f9c937] uppercase tracking-tight">
-          TOUR MUNDIAL
-        </h2>
-        <div className="mt-2 w-32 h-2 bg-[#f9c937]" />
+    <div className="py-12 bg-black border-t-4 border-edn-neon-yellow">
+      {/* Section header - brutalist style */}
+      <div className="px-8 mb-8 flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-4">
+            <h2 className="font-syne text-4xl md:text-5xl font-black text-edn-neon-yellow uppercase tracking-tighter">
+              TOUR
+            </h2>
+            <h2 className="font-syne text-4xl md:text-5xl font-black text-white uppercase tracking-tighter">
+              MUNDIAL
+            </h2>
+          </div>
+          <div className="flex-1 h-4 bg-edn-neon-yellow mt-2 mb-2" />
+          <p className="mt-2 font-archivo-black text-sm text-white/60 uppercase tracking-widest">
+            Fechas confirmadas 2026
+          </p>
+        </div>
+
+        {/* Navigation arrows */}
+        <div className="flex gap-2 mr-4">
+          <button
+            onClick={scrollLeft}
+            className="w-12 h-12 bg-edn-neon-yellow border-4 border-black flex items-center justify-center text-3xl font-archivo-black text-black hover:bg-[#e5b800] transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            aria-label="Anterior"
+          >
+            ‹
+          </button>
+          <button
+            onClick={scrollRight}
+            className="w-12 h-12 bg-edn-neon-yellow border-4 border-black flex items-center justify-center text-3xl font-archivo-black text-black hover:bg-[#e5b800] transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            aria-label="Siguiente"
+          >
+            ›
+          </button>
+        </div>
       </div>
 
-      {/* Scrolling ticker */}
-      <div
-        className="relative overflow-hidden"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-      >
+      {/* Scrolling carousel */}
+      <div className="relative">
         {/* Left fade gradient */}
-        <div className="absolute left-0 top-0 bottom-0 w-24 bg-linear-to-r from-black to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
         {/* Right fade gradient */}
-        <div className="absolute right-0 top-0 bottom-0 w-24 bg-linear-to-l from-black to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
 
         <div
           ref={tickerRef}
-          className={`flex animate-ticker ${isPaused ? "pause-animation" : ""}`}
+          className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 px-8"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          {duplicatedShows.map((show, index) => (
-            <TourShowCard key={`${show.id}-${index}`} show={show} />
+          {shows.map((show, index) => (
+            <TourShowCard
+              key={`${show.id}-${index}`}
+              show={show}
+              onClick={onShowClick ? () => onShowClick(show) : undefined}
+            />
           ))}
         </div>
+      </div>
+
+      {/* Bottom decorative bar */}
+      <div className="mt-8 flex items-center justify-center gap-4 px-8">
+        <div className="flex-1 h-1 bg-[#f9c937]" />
+        <span className="font-archivo-black text-xs text-[#f9c937] uppercase">
+          ✦ EDN TOUR 2026 ✦
+        </span>
+        <div className="flex-1 h-1 bg-[#f9c937]" />
       </div>
     </div>
   );

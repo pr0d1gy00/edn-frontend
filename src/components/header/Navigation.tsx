@@ -16,7 +16,7 @@ const navItems: NavItem[] = [
   { href: "/", label: "Inicio" },
   { href: "/#tour-carousel", label: "Tour", hasHash: true },
   { href: "/#episodes", label: "Episodios", hasHash: true },
-  { href: "/historias", label: "Historias" },
+  { href: "/#stories", label: "Historias", hasHash: true },
 ];
 
 const containerVariants: Variants = {
@@ -138,12 +138,14 @@ export default function Navigation() {
                 </div>
 
                 {/* Dashboard link */}
+                {user.role === "ADMIN" && (
                 <Link
                   href="/dashboard"
                   className="block px-4 py-3 font-archivo-black text-black text-sm uppercase text-left hover:bg-black hover:text-edn-neon-yellow transition-colors border-b-2 border-black"
                 >
                   Dashboard
                 </Link>
+                )}
 
                 {/* Logout button */}
                 <button

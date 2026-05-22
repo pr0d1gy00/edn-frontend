@@ -23,11 +23,20 @@ export default function TourShowsPage() {
     loading: tourShowsLoading,
     error: tourShowsError,
     meta,
-  } = useTourShows({ page, limit, ticketStatus: ticketStatus || undefined, upcoming: upcoming || undefined, search: search || undefined });
+  } = useTourShows({
+    page,
+    limit,
+    ticketStatus: ticketStatus || undefined,
+    upcoming: upcoming || undefined,
+    search: search || undefined,
+  });
 
-  const handleTourShowClick = useCallback((show: TourShow) => {
-    router.push(`/dashboard/tour-shows/${show.id}`);
-  }, [router]);
+  const handleTourShowClick = useCallback(
+    (show: TourShow) => {
+      router.push(`/dashboard/tour-shows/${show.id}`);
+    },
+    [router],
+  );
 
   const handleAddClick = useCallback(() => {
     router.push("/dashboard/tour-shows/new");
@@ -91,7 +100,10 @@ export default function TourShowsPage() {
       {/* Filters bar */}
       <div className="flex flex-wrap items-center gap-4 mb-6">
         <div className="flex-1 min-w-[200px]">
-          <label htmlFor="show-status-filter" className="block font-archivo-black uppercase text-xs text-black mb-1 tracking-wide">
+          <label
+            htmlFor="show-status-filter"
+            className="block font-archivo-black uppercase text-xs text-black mb-1 tracking-wide"
+          >
             Estado
           </label>
           <select
@@ -115,7 +127,10 @@ export default function TourShowsPage() {
             onChange={handleUpcomingToggle}
             className="w-5 h-5 border-4 border-black accent-[#f9c937]"
           />
-          <label htmlFor="upcoming-filter" className="font-archivo-black uppercase text-sm text-black cursor-pointer">
+          <label
+            htmlFor="upcoming-filter"
+            className="font-archivo-black uppercase text-sm text-black cursor-pointer"
+          >
             Solo próximos
           </label>
         </div>

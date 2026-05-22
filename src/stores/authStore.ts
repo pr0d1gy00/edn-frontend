@@ -5,6 +5,7 @@ interface User {
   id: string;
   username: string;
   email: string;
+  role: string;
 }
 
 interface AuthState {
@@ -53,6 +54,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     // Start automatic token refresh
     get().startTokenRefresh();
   },
+
 
   logout: () => {
     // Stop token refresh interval

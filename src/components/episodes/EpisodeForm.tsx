@@ -136,7 +136,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
       const newImageFiles = images
         .filter((img) => img.isNew && img.file)
         .map((img) => img.file!);
-
+      const existingImagesIds = images.map(i=>i.id)
       const episodeData = {
         episodeNumber: parseInt(form.episodeNumber),
         title: form.title,
@@ -150,6 +150,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
           ? parseInt(form.durationSeconds)
           : undefined,
         images: newImageFiles.length > 0 ? newImageFiles : undefined,
+        existingImagesIds: existingImagesIds.length > 0 ? existingImagesIds : undefined
       };
 
       let savedEpisodeId = episodeId;

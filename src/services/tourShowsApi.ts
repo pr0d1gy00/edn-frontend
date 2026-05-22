@@ -1,21 +1,7 @@
 import Cookies from "js-cookie";
+import type { TourShow } from "@/types/tourShow";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-
-export interface TourShow {
-  id: string;
-  city: string;
-  country: string;
-  venueName: string;
-  showDate: string;
-  ticketUrl: string;
-  ticketStatus: "AVAILABLE" | "FEW_TICKETS" | "SOLD_OUT";
-  latitude?: number;
-  longitude?: number;
-  images: string[];
-  createdAt?: string;
-  updatedAt?: string;
-}
 
 interface ApiResponse<T> {
   data: T;
@@ -62,13 +48,21 @@ export const tourShowsApi = {
     if (upcoming !== undefined) params.set("upcoming", String(upcoming));
     if (search?.trim()) params.set("search", search.trim());
 
-    const response = await fetch(`${API_BASE}/tour-shows?${params.toString()}`, {
-      method: "GET",
-      headers: getAuthHeaders(),
-    });
+    const response = await fetch(
+      `${API_BASE}/tour-shows?${params.toString()}`,
+      {
+        method: "GET",
+        headers: getAuthHeaders(),
+      },
+    );
 
     if (!response.ok) throw new Error("Error al cargar fechas de tour");
-    return response.json();
+    const json = await response.json();
+    // Handle { data: [...], meta: {...} } wrapper or direct PaginatedResponse
+    if (json.data && Array.isArray(json.data)) {
+      return { data: json.data, meta: json.meta };
+    }
+    return json;
   },
 
   // GET /tour-shows/:id — single show
@@ -79,7 +73,9 @@ export const tourShowsApi = {
     });
 
     if (!response.ok) throw new Error("Error al cargar fecha de tour");
-    return response.json();
+    const data = await response.json();
+    // Handle { data: TourShow } wrapper or direct TourShow
+    return data.data ?? data;
   },
 
   // POST /tour-shows — create with multipart FormData
@@ -113,7 +109,9 @@ export const tourShowsApi = {
   },
 
   // DELETE /tour-shows/:id — remove show
-  deleteTourShow: async (id: string): Promise<ApiResponse<{ success: boolean }>> => {
+  deleteTourShow: async (
+    id: string,
+  ): Promise<ApiResponse<{ success: boolean }>> => {
     const response = await fetch(`${API_BASE}/tour-shows/${id}`, {
       method: "DELETE",
       headers: getAuthHeaders(),

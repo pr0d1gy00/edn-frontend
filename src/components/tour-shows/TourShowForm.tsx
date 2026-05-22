@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import type { TourShow } from "@/types/tourShow";
@@ -89,9 +89,7 @@ export default function TourShowForm({ mode, initialData }: TourShowFormProps) {
   const [country, setCountry] = useState(initialData?.country || "");
   const [venueName, setVenueName] = useState(initialData?.venueName || "");
   const [showDate, setShowDate] = useState(
-    initialData?.showDate
-      ? initialData.showDate.substring(0, 16)
-      : "",
+    initialData?.showDate ? initialData.showDate.substring(0, 16) : "",
   );
   const [ticketUrl, setTicketUrl] = useState(initialData?.ticketUrl || "");
   const [ticketStatus, setTicketStatus] = useState<
@@ -104,7 +102,18 @@ export default function TourShowForm({ mode, initialData }: TourShowFormProps) {
     initialData?.longitude?.toString() || "",
   );
   const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [existingImages, setExistingImages] = useState<{url:string, id:string}[]>([]);
   const [errors, setErrors] = useState<ValidationErrors>({});
+
+  const handleRemoveExisting = useCallback((index: number) => {
+    setExistingImages((prev) => prev.filter((_, i) => i !== index));
+  }, []);
+
+  // Sync existingImages when initialData loads (mode=edit starts with null, then tourShow)
+  useEffect(() => {
+    if (!initialData) return;
+    setExistingImages((initialData.images || []).map((img) => ({ url: img.url, id: img.id })));
+  }, [initialData]);
 
   const loading = mode === "create" ? createLoading : updateLoading;
   const apiError = mode === "create" ? createError : updateError;
@@ -126,7 +135,7 @@ export default function TourShowForm({ mode, initialData }: TourShowFormProps) {
       setErrors(validationErrors);
       return;
     }
-
+    const allImages = existingImages.map(img=>img.id)
     setErrors({});
 
     const formData = new FormData();
@@ -144,9 +153,12 @@ export default function TourShowForm({ mode, initialData }: TourShowFormProps) {
       formData.append("longitude", longitude.trim());
     }
 
+    // Append existing image URLs (to keep on backend)
+      formData.append("existingImageIds", JSON.stringify(allImages));
+
     // Append new image files
     imageFiles.forEach((file) => {
-      formData.append("images", file);
+      formData.append("files", file);
     });
 
     if (mode === "create") {
@@ -425,6 +437,8 @@ export default function TourShowForm({ mode, initialData }: TourShowFormProps) {
           <ImageUpload
             files={imageFiles}
             onChange={setImageFiles}
+            existingImages={existingImages}
+            onRemoveExisting={handleRemoveExisting}
           />
         </div>
       </div>

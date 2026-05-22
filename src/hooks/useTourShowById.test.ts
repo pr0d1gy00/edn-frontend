@@ -38,7 +38,7 @@ describe('useTourShowById', () => {
       showDate: '2026-06-15T20:00:00Z',
       ticketUrl: 'https://tickets.example.com',
       ticketStatus: 'AVAILABLE' as const,
-      images: ['https://cdn.example.com/img1.jpg'],
+      images: [{ id: 'img-1', url: 'https://cdn.example.com/img1.jpg', isPrimary: true, sortOrder: 0 }],
     };
     mockGetTourShowById.mockResolvedValue(mockShow);
 

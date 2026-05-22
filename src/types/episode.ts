@@ -25,7 +25,7 @@ export interface Episode {
   episodeNumber: number;
   title: string;
   description: string;
-  platformType: 'YOUTUBE' | 'SPOTIFY' | 'OTHER';
+  platformType: 'YOUTUBE' | 'SPOTIFY' | 'PATREON' | 'OTHER';
   contentUrl?: string;
   thumbnailUrl?: string;
   publishedAt: string;

@@ -46,5 +46,9 @@ export const toastError = {
   update: () => toast.error("Error al actualizar el usuario"),
   delete: () => toast.error("Error al eliminar el usuario"),
 };
+export const toastNotLoggedIn = {
+  vote: () => toast.error("Mira carajito! Inicia sesión para votar")
+};
+
 
 export { toast };

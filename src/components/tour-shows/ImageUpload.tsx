@@ -6,6 +6,8 @@ import Image from 'next/image';
 interface ImageUploadProps {
   files: File[];
   onChange: (files: File[]) => void;
+  existingImages?: {url:string, id:string}[]; // URLs from backend
+  onRemoveExisting?: (index: number) => void; // called when user removes an existing image
   error?: string;
   maxFiles?: number;
 }
@@ -13,6 +15,8 @@ interface ImageUploadProps {
 export default function ImageUpload({
   files,
   onChange,
+  existingImages = [],
+  onRemoveExisting,
   error,
   maxFiles = 5,
 }: ImageUploadProps) {
@@ -27,17 +31,17 @@ export default function ImageUpload({
         f.type.startsWith('image/'),
       );
 
-      if (files.length + newFiles.length > maxFiles) {
-        onChange([...files]);
+      const totalAfterAdd = files.length + existingImages.length + newFiles.length;
+      if (totalAfterAdd > maxFiles) {
         return;
       }
 
       onChange([...files, ...newFiles]);
     },
-    [files, maxFiles, onChange],
+    [files, existingImages, maxFiles, onChange],
   );
 
-  const handleRemove = useCallback(
+  const handleRemoveNew = useCallback(
     (index: number) => {
       const updated = files.filter((_, i) => i !== index);
       onChange(updated);
@@ -64,6 +68,7 @@ export default function ImageUpload({
   }, []);
 
   const isExceeded = error && error.includes('Máximo');
+  const totalCount = files.length + existingImages.length;
 
   return (
     <div>
@@ -95,7 +100,7 @@ export default function ImageUpload({
           Arrastrá tus imágenes o hacé click para seleccionar
         </p>
         <p className="font-plus-jakarta text-xs text-black/40 mt-1">
-          {files.length}/{maxFiles} imágenes
+          {totalCount}/{maxFiles} imágenes
         </p>
       </div>
 
@@ -106,17 +111,48 @@ export default function ImageUpload({
         </p>
       )}
 
-      {/* Previews */}
+      {/* Existing images from backend */}
+      {existingImages.length > 0 && (
+        <div className="flex flex-wrap gap-3 mt-4">
+          {existingImages.map((img, index) => (
+            <div
+              key={`existing-${index}`}
+              className="relative w-20 h-20 border-4 border-black rounded-sm overflow-hidden"
+            >
+              <Image
+                src={img.url}
+                alt={`Imagen existente ${index + 1}`}
+                fill
+                className="object-cover"
+              />
+              {onRemoveExisting && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onRemoveExisting(index);
+                  }}
+                  className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 text-white font-archivo-black text-xs border-2 border-black rounded-sm hover:bg-red-600 transition-colors flex items-center justify-center"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* New file previews */}
       {files.length > 0 && (
         <div className="flex flex-wrap gap-3 mt-4">
           {files.map((file, index) => (
             <div
-              key={`${file.name}-${index}`}
+              key={`new-${file.name}-${index}`}
               className="relative w-20 h-20 border-4 border-black rounded-sm overflow-hidden"
             >
               <Image
                 src={URL.createObjectURL(file)}
-                alt={`Imagen ${index + 1}`}
+                alt={`Imagen nueva ${index + 1}`}
                 fill
                 className="object-cover"
               />
@@ -124,7 +160,7 @@ export default function ImageUpload({
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleRemove(index);
+                  handleRemoveNew(index);
                 }}
                 className="absolute -top-1 -right-1 w-6 h-6 bg-black text-[#f9c937] font-archivo-black text-xs border-2 border-black rounded-sm hover:bg-red-500 hover:text-white transition-colors flex items-center justify-center"
               >

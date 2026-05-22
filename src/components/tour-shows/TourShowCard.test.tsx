@@ -29,7 +29,10 @@ const soldOutShow: TourShow = {
 const showWithImages: TourShow = {
   ...baseShow,
   id: 'show-4',
-  images: ['https://example.com/image1.jpg', 'https://example.com/image2.jpg'],
+  images: [
+    { id: 'img-1', url: 'https://example.com/image1.jpg', isPrimary: true, sortOrder: 0 },
+    { id: 'img-2', url: 'https://example.com/image2.jpg', isPrimary: false, sortOrder: 1 },
+  ],
 };
 
 const showNoTicketUrl: TourShow = {

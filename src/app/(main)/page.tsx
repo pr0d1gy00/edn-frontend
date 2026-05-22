@@ -1,10 +1,16 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
+import type { TourShow } from "@/types/tourShow";
 import Image from "next/image";
-import { motion, useMotionValue, useSpring } from "framer-motion";
-import { TourShowsTicker, TourMap } from "@/components/tour-shows";
+import { useMotionValue, useSpring, motion } from "framer-motion";
+import {
+  TourShowsTicker,
+  TourMap,
+  TourShowModal,
+} from "@/components/tour-shows";
 import EpisodesGrid from "@/components/episodes/EpisodesGrid";
+import { StoryPromptsCarousel } from "@/components/story-prompts";
 
 const SPOTLIGHT_RADIUS = 200;
 const FADE_DELAY = 5000;
@@ -22,6 +28,9 @@ export default function Home() {
   const [trailPoints, setTrailPoints] = useState<TrailPoint[]>([]);
   const pointIdRef = useRef(0);
   const [isHovering, setIsHovering] = useState(false);
+  const [selectedTourShow, setSelectedTourShow] = useState<TourShow | null>(
+    null,
+  );
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -205,7 +214,7 @@ export default function Home() {
 
       {/* Tour Shows Ticker - outside the hero container */}
       <section id="tour-carousel">
-        <TourShowsTicker />
+        <TourShowsTicker onShowClick={setSelectedTourShow} />
       </section>
 
       {/* Tour Map */}
@@ -213,8 +222,20 @@ export default function Home() {
         <TourMap />
       </section>
 
+      {/* Tour Show Modal */}
+      <TourShowModal
+        show={selectedTourShow}
+        onClose={() => setSelectedTourShow(null)}
+      />
+
       {/* Episodes Grid — preview mode */}
       <EpisodesGrid mode="preview" />
+
+      {/* Story Prompts Carousel */}
+      <section id="stories">
+
+        <StoryPromptsCarousel />
+      </section>
     </>
   );
 }

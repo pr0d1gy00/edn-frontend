@@ -30,7 +30,7 @@ interface EpisodeResponse {
   episodeNumber: number;
   title: string;
   description: string;
-  platformType: "YOUTUBE" | "SPOTIFY" | "OTHER";
+  platformType: "YOUTUBE" | "SPOTIFY" | "PATREON" | "OTHER";
   contentUrl?: string;
   thumbnailUrl?: string;
   publishedAt: string;
@@ -45,13 +45,14 @@ interface CreateEpisodeDto {
   episodeNumber: number;
   title: string;
   description: string;
-  platformType: "YOUTUBE" | "SPOTIFY" | "OTHER";
+  platformType: "YOUTUBE" | "SPOTIFY" | "PATREON" | "OTHER";
   contentUrl?: string;
   thumbnailUrl?: string;
   publishedAt: string;
   isExclusive: boolean;
   durationSeconds?: number;
   images?: File[];
+  existingImagesIds?: string[];
 }
 
 interface UpdateEpisodeDto extends Partial<CreateEpisodeDto> {}
@@ -173,7 +174,7 @@ export const episodesApi = {
         formData.append("files", file);
       });
     }
-
+    episode.existingImagesIds ? formData.append("existingImageIds", JSON.stringify(episode.existingImagesIds)) : null;
     const response = await fetch(`${API_BASE}/episodes/${id}`, {
       method: "PATCH",
       headers: getAuthHeaders(false),

@@ -62,14 +62,14 @@ describe('TourShow types', () => {
       ticketStatus: 'FEW_TICKETS',
       latitude: -33.464,
       longitude: -70.610,
-      images: ['https://cdn.example.com/img1.jpg'],
+      images: [{ id: 'img-1', url: 'https://cdn.example.com/img1.jpg', isPrimary: true, sortOrder: 0 }],
       createdAt: '2026-01-01T00:00:00Z',
       updatedAt: '2026-05-01T00:00:00Z',
     };
 
     expect(withCoords.latitude).toBe(-33.464);
     expect(withCoords.longitude).toBe(-70.610);
-    expect(withCoords.images).toEqual(['https://cdn.example.com/img1.jpg']);
+    expect(withCoords.images).toEqual([{ id: 'img-1', url: 'https://cdn.example.com/img1.jpg', isPrimary: true, sortOrder: 0 }]);
     expect(withCoords.createdAt).toBe('2026-01-01T00:00:00Z');
     expect(withCoords.updatedAt).toBe('2026-05-01T00:00:00Z');
   });

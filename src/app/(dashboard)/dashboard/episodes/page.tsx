@@ -218,6 +218,7 @@ export default function EpisodesAdminPage() {
                     inline-block px-3 py-1.5 font-archivo-black text-xs uppercase border-2 border-black
                     ${episode.platformType === "YOUTUBE" ? "bg-red-600 text-white" : ""}
                     ${episode.platformType === "SPOTIFY" ? "bg-green-500 text-white" : ""}
+                    ${episode.platformType === "PATREON" ? "bg-gray-500 text-white" : ""}
                     ${episode.platformType === "OTHER" ? "bg-gray-500 text-white" : ""}
                   `}
                     >

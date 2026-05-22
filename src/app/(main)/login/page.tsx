@@ -93,6 +93,7 @@ export default function LoginPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           username: data.username,
+
           email: data.email,
           password: data.password,
         }),
@@ -147,15 +148,17 @@ export default function LoginPage() {
       console.log(result);
       if (result.accessToken) {
         const decodedData: {
-          id: string;
+          sub: string;
           username: string;
           email: string;
+          role: string;
         } = jwtDecode(result.accessToken);
         useAuthStore.getState().login(
           {
-            id: decodedData.id,
+            id: decodedData.sub,
             username: decodedData.username,
             email: decodedData.email,
+            role: decodedData.role,
           },
           result.accessToken,
           result.refreshToken,

@@ -1,27 +1,21 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import type { TourShow } from '@/types/tourShow';
+import Image from "next/image";
+import { motion } from "framer-motion";
+import type { TourShow } from "@/types/tourShow";
 
-const STATUS_LABELS: Record<string, string> = {
-  AVAILABLE: 'DISPONIBLE',
-  FEW_TICKETS: '¡ÚLTIMAS!',
-  SOLD_OUT: 'AGOTADO',
-};
-
-const STATUS_COLORS: Record<string, string> = {
-  AVAILABLE: 'bg-green-500',
-  FEW_TICKETS: 'bg-orange-500',
-  SOLD_OUT: 'bg-red-500',
+const STATUS_LABELS: Record<string, { text: string; bg: string; textColor: string }> = {
+  AVAILABLE: { text: "DISPONIBLE", bg: "bg-green-500", textColor: "text-white" },
+  FEW_TICKETS: { text: "¡ÚLTIMAS!", bg: "bg-orange-500", textColor: "text-white" },
+  SOLD_OUT: { text: "AGOTADO", bg: "bg-red-500", textColor: "text-white" },
 };
 
 function formatShowDate(isoString: string): string {
   const date = new Date(isoString);
-  return date.toLocaleDateString('es-AR', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
+  return date.toLocaleDateString("es-AR", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
   });
 }
 
@@ -31,99 +25,120 @@ interface TourShowCardProps {
   onClick: () => void;
 }
 
-export default function TourShowCard({ show, index, onClick }: TourShowCardProps) {
-  const statusLabel = STATUS_LABELS[show.ticketStatus] || 'DISPONIBLE';
-  const statusColor = STATUS_COLORS[show.ticketStatus] || 'bg-green-500';
+export default function TourShowCard({
+  show,
+  index,
+  onClick,
+}: TourShowCardProps) {
+  const statusInfo =
+    STATUS_LABELS[show.ticketStatus] || STATUS_LABELS.AVAILABLE;
   const formattedDate = formatShowDate(show.showDate);
-  const hasImages = show.images && show.images.length > 0;
-  const canBuy = show.ticketStatus !== 'SOLD_OUT' && show.ticketUrl;
+  const validImages = (show.images || []).filter(
+    (img) => img.url && img.url.trim() !== "",
+  );
+  const hasImages = validImages.length > 0;
+  const canBuy = show.ticketStatus !== "SOLD_OUT" && show.ticketUrl;
 
   return (
     <motion.article
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05, type: 'spring', stiffness: 150, damping: 20 }}
+      transition={{
+        delay: index * 0.05,
+        type: "spring",
+        stiffness: 150,
+        damping: 20,
+      }}
       onClick={onClick}
-      className={`
-        relative bg-white border-4 border-black rounded-md overflow-hidden
-        shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
-        hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]
-        hover:translate-x-[-4px] hover:translate-y-[-4px]
-        transition-all duration-150 cursor-pointer
-      `}
+      className="relative bg-white border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-[-2px] hover:-translate-y-[-2px] transition-all duration-150 cursor-pointer overflow-hidden"
     >
       {/* Image / Header area */}
-      <div className="relative h-32 bg-[#f9c937] border-b-4 border-black">
+      <div className="relative h-36 bg-[#f9c937] border-b-4 border-black">
         {hasImages ? (
           <Image
-            src={show.images[0]}
+            src={validImages[0].url}
             alt={show.city}
             fill
-            className="object-cover"
+            className="object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+            unoptimized={
+              validImages[0].url.includes("s3.") ||
+              validImages[0].url.includes("cdn.") ||
+              validImages[0].url.includes("r2.dev")
+            }
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <span className="font-archivo-black text-6xl text-black/20 uppercase">
+          <div className="w-full h-full flex items-center justify-center bg-black">
+            <span className="font-archivo-black text-7xl text-[#f9c937] uppercase">
               {show.city.charAt(0)}
             </span>
           </div>
         )}
 
-        {/* Status badge */}
-        <div
-          className={`
-            absolute top-2 right-2 px-3 py-1 ${statusColor} border-2 border-black rounded-sm
-          `}
-        >
-          <span className="font-archivo-black text-xs text-white uppercase tracking-wider">
-            {statusLabel}
-          </span>
+        {/* Status badge - prominent, top-left corner */}
+        <div className="absolute top-0 left-0">
+          <div className={`px-4 py-2 ${statusInfo.bg} border-b-4 border-r-4 border-black`}>
+            <span className={`font-archivo-black text-xs ${statusInfo.textColor} uppercase tracking-wider`}>
+              {statusInfo.text}
+            </span>
+          </div>
         </div>
+
+        {/* Image count badge */}
+        {hasImages && show.images.length > 1 && (
+          <div className="absolute bottom-2 right-2 px-2 py-1 bg-black text-[#f9c937] font-archivo-black text-xs border-2 border-[#f9c937]">
+            {show.images.length} 📷
+          </div>
+        )}
       </div>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="p-5">
         <div className="flex items-start justify-between gap-2">
           <div>
-            <h3 className="font-syne font-extrabold text-xl text-black uppercase leading-tight">
+            <h3 className="font-syne font-extrabold text-2xl text-black uppercase leading-tight tracking-tight">
               {show.city}
             </h3>
-            <p className="font-archivo-black text-sm text-black/60 uppercase mt-0.5">
+            <p className="font-archivo-black text-xs text-black/60 uppercase mt-1 tracking-widest">
               {show.country}
             </p>
           </div>
         </div>
 
-        <p className="font-plus-jakarta text-sm text-black/80 mt-2">
-          {show.venueName}
-        </p>
+        {/* Venue */}
+        <div className="mt-3 flex items-center gap-2">
+          <span className="text-lg">📍</span>
+          <p className="font-plus-jakarta text-sm text-black font-medium">
+            {show.venueName}
+          </p>
+        </div>
 
-        <div className="mt-3 flex items-center justify-between">
-          <span className="font-archivo-black text-sm text-black">
+        {/* Date */}
+        <div className="mt-2 flex items-center gap-2">
+          <span className="text-lg">📅</span>
+          <p className="font-archivo-black text-sm text-black">
             {formattedDate}
-          </span>
+          </p>
+        </div>
 
-          {canBuy && (
+        {/* Action area */}
+        <div className="mt-4 pt-4 border-t-4 border-black flex items-center justify-between">
+          {canBuy ? (
             <a
               href={show.ticketUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="px-3 py-1.5 bg-black text-[#f9c937] font-archivo-black text-xs uppercase tracking-wider rounded-sm border-2 border-black hover:bg-black/80 transition-colors"
+              className="px-4 py-2 bg-[#f9c937] text-black font-archivo-black text-xs uppercase tracking-wider border-2 border-black hover:bg-black hover:text-[#f9c937] transition-colors"
             >
               COMPRAR
             </a>
-          )}
-        </div>
-
-        {/* Multiple images indicator */}
-        {hasImages && show.images.length > 1 && (
-          <div className="mt-2 flex items-center gap-1">
+          ) : (
             <span className="font-archivo-black text-xs text-black/40 uppercase">
-              +{show.images.length - 1} foto{show.images.length - 1 !== 1 ? 's' : ''}
+              Sin entradas disponibles
             </span>
-          </div>
-        )}
+          )}
+          <div className="w-3 h-3 bg-black rounded-full" />
+        </div>
       </div>
     </motion.article>
   );
