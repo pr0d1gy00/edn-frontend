@@ -56,6 +56,14 @@ function TourShowCard({
   );
   const hasImages = validImages.length > 0;
 
+  if(!show){
+    return(
+      <div>
+        <h2>No hay tour</h2>
+        </div>
+    )
+  }
+
   return (
     <div className="shrink-0 w-80 mx-3 cursor-pointer group" onClick={onClick}>
       {/* Main card container - neo-brutalist */}
@@ -191,7 +199,7 @@ export default function TourShowsTicker({ onShowClick }: TourShowsTickerProps) {
     }
   };
 
-  if (isLoading || shows.length === 0) {
+  if (isLoading) {
     return (
       <div className="py-12 bg-black border-t-4 border-[#f9c937]">
         <div className="overflow-hidden">
@@ -207,7 +215,25 @@ export default function TourShowsTicker({ onShowClick }: TourShowsTickerProps) {
       </div>
     );
   }
-
+  if(shows.length === 0){
+    return (
+      <div className="py-12 bg-black border-t-4 border-[#f9c937]">
+        <div className="flex items-center gap-4">
+            <h2 className="font-syne text-4xl md:text-5xl font-black text-edn-neon-yellow uppercase tracking-tighter">
+              TOUR
+            </h2>
+            <h2 className="font-syne text-4xl md:text-5xl font-black text-white uppercase tracking-tighter">
+              MUNDIAL
+            </h2>
+          </div>
+        <div className="text-center py-16">
+          <p className="font-syne text-3xl text-white uppercase">
+            No hay fechas de tour
+          </p>
+        </div>
+      </div>
+    );
+  }
   if (error) {
     return null;
   }

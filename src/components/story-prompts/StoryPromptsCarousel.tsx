@@ -69,7 +69,24 @@ export default function StoryPromptsCarousel() {
   }
 
   if (prompts.length === 0) {
-    return null;
+    return (
+      <section
+        id="story-prompts"
+        className="py-16 bg-black border-t-4 border-[#f9c937]"
+      >
+        <div className="px-8 mb-8">
+          <h2 className="font-syne text-4xl md:text-5xl font-extrabold text-[#f9c937] uppercase tracking-tight">
+            HISTORIAS DE LA COMUNIDAD
+          </h2>
+          <div className="mt-4 w-48 h-2 bg-[#f9c937]" />
+        </div>
+        <div className="px-8">
+          <p className="text-white/70 font-syne text-xl text-center py-12">
+            No hay historias para votar por ahora. ¡Volvé más tarde!
+          </p>
+        </div>
+      </section>
+    );
   }
 
   const previewPrompts = prompts.slice(0, PREVIEW_LIMIT);

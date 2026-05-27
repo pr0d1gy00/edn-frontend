@@ -100,7 +100,7 @@ export default function EpisodesGrid({
         </div>
       ) : episodes.length === 0 ? (
         <div className="text-center py-16">
-          <p className="font-syne text-3xl text-black/40 uppercase">
+          <p className="font-syne text-3xl text-white uppercase">
             No hay episodios disponibles
           </p>
         </div>

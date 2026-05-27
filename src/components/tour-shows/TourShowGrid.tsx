@@ -53,7 +53,7 @@ export default function TourShowGrid({
   if (shows.length === 0) {
     return (
       <div className="text-center py-16">
-        <p className="font-syne text-3xl text-black/40 uppercase">
+        <p className="font-syne text-3xl text-white uppercase">
           No hay fechas de tour
         </p>
         <button
