@@ -3,6 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
 const menuItems = [
   {
     label: "Episodios",
@@ -99,13 +104,58 @@ const menuItems = [
     ),
     number: "05",
   },
+  {
+    label: "Prompts",
+    href: "/dashboard/prompts",
+    icon: (
+      <svg
+        className="w-8 h-8"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="square"
+          strokeWidth="3"
+          d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+        />
+      </svg>
+    ),
+    number: "06",
+  },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
 
   return (
-    <aside className="w-72 bg-edn-neon-yellow min-h-screen border-r-4 border-black flex flex-col relative overflow-hidden">
+    <>
+      {/* Overlay backdrop — only visible on mobile when sidebar is open */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/80 z-40 md:hidden"
+          onClick={onClose}
+        />
+      )}
+
+      <aside
+        className={`
+          fixed inset-y-0 left-0 z-50 w-64 bg-edn-neon-yellow min-h-screen border-r-4 border-black flex flex-col overflow-hidden
+          transform transition-transform duration-150
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
+          md:relative md:translate-x-0 md:w-64
+          lg:w-72
+        `}
+      >
+      {/* Mobile close button */}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 w-10 h-10 bg-black text-edn-neon-yellow font-archivo-black text-xl border-4 border-black hover:bg-black/80 md:hidden flex items-center justify-center"
+        aria-label="Close sidebar"
+      >
+        ✕
+      </button>
+
       {/* Diagonal stripes decoration */}
       <div className="absolute top-0 right-0 w-24 h-full overflow-hidden pointer-events-none">
         <div
@@ -225,5 +275,6 @@ export default function Sidebar() {
         </span>
       </div>
     </aside>
+    </>
   );
 }
