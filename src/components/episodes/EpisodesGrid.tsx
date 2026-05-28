@@ -15,7 +15,7 @@ import EpisodeModal from "./EpisodeModal";
 import LimitSelector from "./LimitSelector";
 import PageIndicator from "./PageIndicator";
 
-const DEFAULT_API_BASE = "http://localhost:3000";
+const DEFAULT_API_BASE = `${process.env.NEXT_PUBLIC_API_URL}`;
 const PREVIEW_LIMIT = 6;
 const FULL_DEFAULT_LIMIT = 15;
 

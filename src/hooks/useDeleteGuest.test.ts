@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useDeleteGuest } from '@/hooks/useDeleteGuest';
 
-const API_BASE = 'http://localhost:3000';
+const API_BASE = `${process.env.NEXT_PUBLIC_API_URL_LOCAL}`;
 const MOCK_TOKEN = 'test-jwt-token';
 
 vi.mock('@/stores/authStore', () => ({

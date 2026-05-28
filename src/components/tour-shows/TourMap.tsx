@@ -25,7 +25,7 @@ export default function TourMap() {
   useEffect(() => {
     const fetchTourShows = async () => {
       try {
-        const response = await fetch('http://localhost:3000/tour-shows');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tour-shows`);
         if (!response.ok) throw new Error('Error fetching tour shows');
         const data = await response.json();
 

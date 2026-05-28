@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import GuestSelect from '@/components/episodes/GuestSelect';
 
-const API_BASE = 'http://localhost:3000';
+const API_BASE = `${process.env.NEXT_PUBLIC_API_URL_LOCAL}`;
 
 describe('GuestSelect pure helpers', () => {
   it('formatGuestOption maps guest to select option', async () => {

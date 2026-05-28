@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import EpisodeForm from '@/components/episodes/EpisodeForm';
 
-const API_BASE = 'http://localhost:3000';
+const API_BASE =`${process.env.NEXT_PUBLIC_API_URL_LOCAL}`;
 
 // Mock dependencies
 vi.mock('next/navigation', () => ({

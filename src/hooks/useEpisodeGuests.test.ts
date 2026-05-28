@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { useEpisodeGuests } from '@/hooks/useEpisodeGuests';
 
-const API_BASE = 'http://localhost:3000';
+const API_BASE = `${process.env.NEXT_PUBLIC_API_URL_LOCAL}`;
 
 describe('useEpisodeGuests', () => {
   beforeEach(() => {
