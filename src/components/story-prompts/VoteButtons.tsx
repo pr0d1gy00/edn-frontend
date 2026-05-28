@@ -78,11 +78,11 @@ export default function VoteButtons({
     }
 
     // Yellow and white confetti (EDN colors)
-    fire(0.25, { spread: 26, startVelocity: 55, color: "#f9c937" });
-    fire(0.2, { spread: 60, color: "#ffffff" });
-    fire(0.35, { spread: 100, decay: 0.91, color: "#f9c937" });
-    fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, color: "#f9c937" });
-    fire(0.1, { spread: 120, startVelocity: 45, color: "#ffffff" });
+    fire(0.25, { spread: 26, startVelocity: 55, colors: ["#f9c937"] });
+    fire(0.2, { spread: 60, colors: ["#ffffff"] });
+    fire(0.35, { spread: 100, decay: 0.91, colors: ["#f9c937"] });
+    fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, colors: ["#f9c937"] });
+    fire(0.1, { spread: 120, startVelocity: 45, colors: ["#ffffff"] });
   };
 
   const handleVote = async (newVote: 1 | -1) => {

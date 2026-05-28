@@ -159,7 +159,6 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
         await episodesApi.updateEpisode(episodeId, episodeData);
       } else {
         const result = await episodesApi.createEpisode(episodeData);
-        savedEpisodeId = result.id;
       }
 
       // Sync guests
@@ -210,7 +209,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
         <button
           type="button"
           onClick={() => router.push("/dashboard/episodes")}
-          className="flex items-center gap-2 px-4 py-2 bg-black text-[#f9c937] font-archivo-black uppercase text-sm border-4 border-black hover:bg-[#f9c937] hover:text-black transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-black text-edn-neon-yellow font-archivo-black uppercase text-sm border-4 border-black hover:bg-edn-neon-yellow hover:text-black transition-colors"
         >
           <svg
             className="w-4 h-4"
@@ -263,7 +262,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
               onChange={(e) =>
                 setForm({ ...form, episodeNumber: e.target.value })
               }
-              className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937]/20"
+              className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-edn-neon-yellow/20"
               placeholder="Ej: 101"
             />
           </div>
@@ -282,7 +281,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
               required
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
-              className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937]/20"
+              className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-edn-neon-yellow/20"
               placeholder="Episode 101: Gran invitado especial"
             />
           </div>
@@ -303,7 +302,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
                 setForm({ ...form, description: e.target.value })
               }
               rows={4}
-              className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937]/20 resize-none"
+              className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-edn-neon-yellow/20 resize-none"
               placeholder="Descripción detallada del episodio..."
             />
           </div>
@@ -326,7 +325,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
                     platformType: e.target.value as Episode["platformType"],
                   })
                 }
-                className="w-full px-4 py-3 bg-white border-4 border-black font-archivo-black text-black uppercase focus:outline-none focus:bg-[#f9c937]/20 cursor-pointer"
+                className="w-full px-4 py-3 bg-white border-4 border-black font-archivo-black text-black uppercase focus:outline-none focus:bg-edn-neon-yellow/20 cursor-pointer"
               >
                 <option value="YOUTUBE">YouTube</option>
                 <option value="SPOTIFY">Spotify</option>
@@ -348,7 +347,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
                 onChange={(e) =>
                   setForm({ ...form, durationSeconds: e.target.value })
                 }
-                className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937]/20"
+                className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-edn-neon-yellow/20"
                 placeholder="Ej: 45"
               />
             </div>
@@ -370,7 +369,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
                 onChange={(e) =>
                   setForm({ ...form, contentUrl: e.target.value })
                 }
-                className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937]/20"
+                className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-edn-neon-yellow/20"
                 placeholder="https://youtube.com/..."
               />
             </div>
@@ -389,7 +388,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
                 onChange={(e) =>
                   setForm({ ...form, thumbnailUrl: e.target.value })
                 }
-                className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937]/20"
+                className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-edn-neon-yellow/20"
                 placeholder="https://picsum.photos/..."
               />
             </div>
@@ -413,7 +412,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
                   publishedAt: new Date(e.target.value).toISOString(),
                 })
               }
-              className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black focus:outline-none focus:bg-[#f9c937]/20"
+              className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black focus:outline-none focus:bg-edn-neon-yellow/20"
             />
           </div>
 
@@ -426,7 +425,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
               onChange={(e) =>
                 setForm({ ...form, isExclusive: e.target.checked })
               }
-              className="w-6 h-6 bg-white border-4 border-black cursor-pointer accent-[#f9c937]"
+              className="w-6 h-6 bg-white border-4 border-black cursor-pointer accent-edn-neon-yellow"
             />
             <label
               htmlFor="episode-exclusive"
@@ -442,7 +441,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
           {/* Invitados Section */}
           <div>
             <h3 className="font-archivo-black text-xl text-black uppercase mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-[#f9c937] border-2 border-black rounded-sm flex items-center justify-center text-lg">
+              <span className="w-8 h-8 bg-edn-neon-yellow border-2 border-black rounded-sm flex items-center justify-center text-lg">
                 👥
               </span>
               INVITADOS
@@ -468,7 +467,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
           {/* Images Section */}
           <div>
             <h3 className="font-archivo-black text-xl text-black uppercase mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-[#f9c937] border-2 border-black rounded-sm flex items-center justify-center text-lg">
+              <span className="w-8 h-8 bg-edn-neon-yellow border-2 border-black rounded-sm flex items-center justify-center text-lg">
                 🖼
               </span>
               IMÁGENES
@@ -478,23 +477,23 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
         </div>
 
         {/* Submit */}
-        <div className="p-6 bg-black/[0.03] border-t-4 border-black">
+        <div className="p-6 bg-black/3 border-t-4 border-black">
           <div className="flex gap-4">
             <button
               type="button"
               onClick={() => router.push("/dashboard/episodes")}
-              className="flex-1 py-4 bg-white text-black font-archivo-black uppercase text-sm border-4 border-black hover:bg-black/[0.05] transition-colors"
+              className="flex-1 py-4 bg-white text-black font-archivo-black uppercase text-sm border-4 border-black hover:bg-black/5 transition-colors"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 py-4 bg-black text-[#f9c937] font-archivo-black uppercase text-sm border-4 border-black hover:bg-black/80 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              className="flex-1 py-4 bg-black text-edn-neon-yellow font-archivo-black uppercase text-sm border-4 border-black hover:bg-black/80 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-[#f9c937] border-t-transparent rounded-full animate-spin" />
+                  <div className="w-4 h-4 border-2 border-edn-neon-yellow border-t-transparent rounded-full animate-spin" />
                   {submitLabel}
                 </>
               ) : (

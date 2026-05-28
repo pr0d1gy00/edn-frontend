@@ -93,7 +93,7 @@ export default function EpisodesGrid({
           </p>
           <button
             onClick={() => setCurrentPage(1)}
-            className="mt-4 px-6 py-3 bg-[#f9c937] border-4 border-black font-archivo-black text-black uppercase rounded-sm hover:bg-[#e5b800] transition-colors"
+            className="mt-4 px-6 py-3 bg-edn-neon-yellow border-4 border-black font-archivo-black text-black uppercase rounded-sm hover:bg-edn-neon-yellow/80 transition-colors"
           >
             Reintentar
           </button>
@@ -162,7 +162,7 @@ export default function EpisodesGrid({
                   font-archivo-black text-black uppercase tracking-wider
                   shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
                   hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]
-                  hover:translate-x-[-2px] hover:translate-y-[-2px]
+                  hover:translate-x-0.5 hover:translate-y-0.5
                   transition-all duration-150
                 `}
               >

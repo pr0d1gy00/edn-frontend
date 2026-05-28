@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -8,50 +8,11 @@ import dynamic from "next/dynamic";
 import type { TourShow, TourShowImage } from "@/types/tourShow";
 import { tourShowsApi } from "@/services/tourShowsApi";
 
-// Dynamic map component to avoid SSR issues
-const MapWithMarker = dynamic(
-  () => import("react-leaflet").then((mod) => {
-    const L = require("leaflet");
-    const { MapContainer, TileLayer, Marker, Popup } = mod;
-
-    // Fix marker icons
-    delete L.Icon.Default.prototype._getIconUrl;
-    L.Icon.Default.mergeOptions({
-      iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
-      iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
-      shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-    });
-
-    const customIcon = L.divIcon({
-      className: "custom-marker",
-      html: `<div style="
-        width:40px;height:40px;background:#f9c937;border:3px solid #000;
-        box-shadow:3px 3px 0px #000;display:flex;align-items:center;justify-content:center;
-      "><span style="font-size:20px;">📍</span></div>`,
-      iconSize: [40, 40],
-      iconAnchor: [20, 40],
-    });
-
-    return function MapMarker({ position }: { position: [number, number] }) {
-      return (
-        <MapContainer center={position} zoom={13} scrollWheelZoom={false} style={{ height: "100%", width: "100%" }}>
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <Marker position={position} icon={customIcon}>
-            <Popup>
-              <div style={{ padding: "8px", fontFamily: "Archivo Black, sans-serif" }}>
-                Show Location
-              </div>
-            </Popup>
-          </Marker>
-        </MapContainer>
-      );
-    };
-  }),
-  { ssr: false, loading: () => <div className="w-full h-full bg-[#e5e5e5] animate-pulse" /> }
-);
+// Dynamic import for SSR safety
+const LocationMap = dynamic(() => import("./LocationMap"), {
+  ssr: false,
+  loading: () => <div className="w-full h-full bg-[#e5e5e5] animate-pulse" />,
+});
 
 const STATUS_LABELS: Record<string, string> = {
   AVAILABLE: "DISPONIBLE",
@@ -266,7 +227,7 @@ export default function TourShowModal({ show, onClose }: TourShowModalProps) {
                 {/* Map embed */}
                 <div className="mt-6 h-64 border-4 border-black">
                   {hasCoordinates ? (
-                    <MapWithMarker position={position} />
+                    <LocationMap position={position} />
                   ) : (
                     <div className="w-full h-32 bg-[#f9c937] border-4 border-black flex items-center justify-center">
                       <span className="font-archivo-black text-sm text-black/60 uppercase">

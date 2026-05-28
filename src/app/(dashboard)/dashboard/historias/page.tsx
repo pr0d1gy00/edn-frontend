@@ -57,11 +57,11 @@ export default function HistoriasAdminPage() {
       });
     }
 
-    fire(0.25, { spread: 26, startVelocity: 55, color: "#f9c937" });
-    fire(0.2, { spread: 60, color: "#ffffff" });
-    fire(0.35, { spread: 100, decay: 0.91, color: "#f9c937" });
-    fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, color: "#f9c937" });
-    fire(0.1, { spread: 120, startVelocity: 45, color: "#ffffff" });
+    fire(0.25, { spread: 26, startVelocity: 55, colors: ["#f9c937"] });
+    fire(0.2, { spread: 60, colors: ["#ffffff"] });
+    fire(0.35, { spread: 100, decay: 0.91, colors: ["#f9c937"] });
+    fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, colors: ["#f9c937"] });
+    fire(0.1, { spread: 120, startVelocity: 45, colors: ["#ffffff"] });
   };
 
   const handleApprove = async (story: StoryAdmin) => {
@@ -240,7 +240,7 @@ export default function HistoriasAdminPage() {
                   bg-white border-4 border-black
                   shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]
                   hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]
-                  hover:translate-x-[-2px] hover:translate-y-[-2px]
+                  hover-translate-x-0.5 hover-translate-y-0.5
                   transition-all duration-150
                 `}
               >
@@ -319,7 +319,7 @@ export default function HistoriasAdminPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[1000] bg-black/80 backdrop-blur-sm"
+              className="fixed inset-0 z-1000 bg-black/80 backdrop-blur-sm"
               onClick={() => setSelectedStory(null)}
             />
 
@@ -328,7 +328,7 @@ export default function HistoriasAdminPage() {
               initial={{ opacity: 0, scale: 0.9, rotate: -1 }}
               animate={{ opacity: 1, scale: 1, rotate: 0 }}
               exit={{ opacity: 0, scale: 0.9, rotate: 1 }}
-              className="fixed inset-0 z-[1001] flex items-center justify-center p-4 pointer-events-none"
+              className="fixed inset-0 z-1001 flex items-center justify-center p-4 pointer-events-none"
             >
               <div
                 className="bg-white border-4 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] w-full max-w-3xl max-h-[90vh] overflow-y-auto pointer-events-auto"
