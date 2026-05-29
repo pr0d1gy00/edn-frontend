@@ -14,7 +14,7 @@ const menuItems = [
     href: "/dashboard/episodes",
     icon: (
       <svg
-        className="w-8 h-8"
+        className="w-4 h-4 lg:w-8 lg:h-8"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -33,7 +33,7 @@ const menuItems = [
     href: "/dashboard/tour-shows",
     icon: (
       <svg
-        className="w-8 h-8"
+        className="w-4 h-4 lg:w-8 lg:h-8"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -52,7 +52,7 @@ const menuItems = [
     href: "/dashboard/historias",
     icon: (
       <svg
-        className="w-8 h-8"
+        className="w-4 h-4 lg:w-8 lg:h-8"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -71,7 +71,7 @@ const menuItems = [
     href: "/dashboard/users",
     icon: (
       <svg
-        className="w-8 h-8"
+        className="w-4 h-4 lg:w-8 lg:h-8"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -90,7 +90,7 @@ const menuItems = [
     href: "/dashboard/guests",
     icon: (
       <svg
-        className="w-8 h-8"
+        className="w-4 h-4 lg:w-8 lg:h-8"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -109,7 +109,7 @@ const menuItems = [
     href: "/dashboard/prompts",
     icon: (
       <svg
-        className="w-8 h-8"
+        className="w-4 h-4 lg:w-8 lg:h-8"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -140,24 +140,23 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
       <aside
         className={`
-          fixed inset-y-0 left-0 z-50 w-64 bg-edn-neon-yellow min-h-screen border-r-4 border-black flex flex-col overflow-hidden
-          transform transition-transform duration-150
+          fixed inset-y-0 left-0 z-50 w-64 lg:w-72 bg-edn-neon-yellow min-h-screen border-r-4 border-black flex flex-col overflow-hidden
+          transform transition-transform duration-200 ease-out
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
-          md:relative md:translate-x-0 md:w-64
-          lg:w-72
+          lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 lg:flex-shrink-0
         `}
       >
       {/* Mobile close button */}
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 w-10 h-10 bg-black text-edn-neon-yellow font-archivo-black text-xl border-4 border-black hover:bg-black/80 md:hidden flex items-center justify-center"
+        className="absolute top-3 right-3 w-9 h-9 lg:w-10 lg:h-10 bg-black text-edn-neon-yellow font-archivo-black text-lg lg:text-xl border-3 lg:border-4 border-black hover:bg-black/80 lg:hidden flex items-center justify-center z-10"
         aria-label="Close sidebar"
       >
         ✕
       </button>
 
-      {/* Diagonal stripes decoration */}
-      <div className="absolute top-0 right-0 w-24 h-full overflow-hidden pointer-events-none">
+      {/* Diagonal stripes decoration - hidden on small mobile */}
+      <div className="absolute top-0 right-0 w-16 lg:w-24 h-full overflow-hidden pointer-events-none">
         <div
           className="absolute top-0 right-0 w-[200%] h-full bg-black/3"
           style={{ clipPath: "polygon(100% 0, 0 0, 0 100%)" }}
@@ -165,41 +164,42 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       </div>
 
       {/* Header block */}
-      <div className="p-6 border-b-4 border-black relative">
-        <div className="bg-black px-4 py-4 -mx-4 -mt-4 border-b-4 border-black">
-          <h1 className="font-syne font-extrabold text-4xl uppercase tracking-tighter leading-none text-edn-neon-yellow">
+      <div className="p-4 lg:p-6 border-b-4 border-black relative">
+        <div className="bg-black px-3 lg:px-4 py-3 lg:py-4 -mx-3 lg:-mx-4 -mt-3 lg:-mt-4 border-b-4 border-black">
+          <h1 className="font-syne font-extrabold text-2xl lg:text-4xl uppercase tracking-tighter leading-none text-edn-neon-yellow">
             EDN
           </h1>
-          <p className="font-archivo-black text-sm uppercase mt-1 tracking-widest text-edn-neon-yellow/70">
+          <p className="font-archivo-black text-xs lg:text-sm uppercase mt-1 tracking-widest text-edn-neon-yellow/70 hidden sm:block">
             Panel de Control
           </p>
         </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 relative">
-        <ul className="space-y-3">
+      <nav className="flex-1 p-2 lg:p-4 relative overflow-y-auto">
+        <ul className="space-y-2 sm:space-y-3 lg:space-y-4">
           {menuItems.map((item) => {
             const isActive = pathname === item.href;
             return (
               <li key={item.href}>
                 <Link
                   href={item.href}
+                  onClick={onClose}
                   className={`
-                    relative flex items-center gap-4 p-4 font-archivo-black uppercase
-                    border-4 border-black rounded-none transition-all duration-100
+                    relative flex items-center gap-2 lg:gap-4 p-3 lg:p-4 font-archivo-black uppercase
+                    border-3 lg:border-4 border-black rounded-none transition-all duration-100
                     ${
                       isActive
-                        ? "bg-black text-edn-neon-yellow shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
-                        : "bg-white hover:bg-black hover:text-edn-neon-yellow text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[-2px] hover:translate-y-[-2px]"
+                        ? "bg-black text-edn-neon-yellow shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] lg:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+                        : "bg-white hover:bg-black hover:text-edn-neon-yellow text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.2)] lg:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,0.3)] lg:hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[-1px] lg:hover:translate-x-[-2px] hover:translate-y-[-1px] lg:hover:translate-y-[-2px]"
                     }
                   `}
                 >
                   {/* Number badge */}
                   <span
                     className={`
-                    absolute -top-3 -left-3 w-8 h-8 flex items-center justify-center
-                    font-archivo-black text-xs border-4 border-black rounded-none
+                    absolute -top-2 -left-2 lg:-top-3 lg:-left-3 w-5 h-5 lg:w-8 lg:h-8 flex items-center justify-center
+                    font-archivo-black text-[9px] lg:text-xs border-2 lg:border-4 border-black rounded-none
                     ${isActive ? "bg-edn-neon-yellow text-black" : "bg-black text-edn-neon-yellow"}
                   `}
                   >
@@ -208,19 +208,19 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
                   {/* Icon */}
                   <div
-                    className={`shrink-0 ${isActive ? "text-edn-neon-yellow" : ""}`}
+                    className={`shrink-0 w-4 h-4 lg:w-8 lg:h-8 ${isActive ? "text-edn-neon-yellow" : ""}`}
                   >
                     {item.icon}
                   </div>
 
                   {/* Label */}
-                  <span className="font-bold text-lg tracking-wide">
+                  <span className="font-bold text-sm lg:text-lg tracking-wide truncate">
                     {item.label}
                   </span>
 
-                  {/* Arrow indicator */}
+                  {/* Arrow indicator - hidden on mobile */}
                   <svg
-                    className={`absolute right-4 w-6 h-6 transition-transform ${isActive ? "rotate-90" : ""}`}
+                    className={`absolute right-2 lg:right-4 w-4 h-4 lg:w-6 lg:h-6 transition-transform hidden sm:block ${isActive ? "rotate-90" : ""}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -239,21 +239,22 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       </nav>
 
       {/* Footer block */}
-      <div className="p-4 border-t-4 border-black relative">
+      <div className="p-2 lg:p-4 border-t-4 border-black relative">
         <Link
           href="/"
+          onClick={onClose}
           className="
-            flex items-center justify-center gap-3 px-4 py-4
-            bg-black text-edn-neon-yellow font-archivo-black uppercase text-sm font-bold
-            border-4 border-black rounded-none
-            shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]
-            hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.4)]
-            hover:translate-x-[-2px] hover:translate-y-[-2px]
+            flex items-center justify-center gap-2 lg:gap-3 px-3 lg:px-4 py-2.5 lg:py-4
+            bg-black text-edn-neon-yellow font-archivo-black uppercase text-xs lg:text-sm font-bold
+            border-3 lg:border-4 border-black rounded-none
+            shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] lg:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]
+            hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,0.4)] lg:hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.4)]
+            hover:translate-x-[-1px] lg:hover:translate-x-[-2px] hover:translate-y-[-1px] lg:hover:translate-y-[-2px]
             transition-all duration-150
           "
         >
           <svg
-            className="w-5 h-5"
+            className="w-4 h-4 lg:w-5 lg:h-5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -264,13 +265,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               d="M10 19l-7-7m0 0l7-7m-7 7h18"
             />
           </svg>
-          Volver al Inicio
+          <span className="hidden sm:inline">Volver al Inicio</span>
+          <span className="sm:hidden">Inicio</span>
         </Link>
       </div>
 
-      {/* EDN Logo watermark */}
-      <div className="absolute bottom-20 right-4 pointer-events-none opacity-10">
-        <span className="font-syne font-black text-8xl text-black rotate-90 origin-center">
+      {/* EDN Logo watermark - hidden on mobile */}
+      <div className="absolute bottom-16 lg:bottom-20 right-2 lg:right-4 pointer-events-none opacity-10 hidden md:block">
+        <span className="font-syne font-black text-6xl lg:text-8xl text-black rotate-90 origin-center">
           EDN
         </span>
       </div>

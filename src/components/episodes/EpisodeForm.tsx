@@ -203,13 +203,13 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
       : "Crear Episodio";
   console.log(error);
   return (
-    <div className="bg-white p-8">
+    <div className="bg-white p-4 sm:p-8">
       {/* Header */}
-      <div className="flex items-center gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
         <button
           type="button"
           onClick={() => router.push("/dashboard/episodes")}
-          className="flex items-center gap-2 px-4 py-2 bg-black text-edn-neon-yellow font-archivo-black uppercase text-sm border-4 border-black hover:bg-edn-neon-yellow hover:text-black transition-colors"
+          className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-black text-edn-neon-yellow font-archivo-black uppercase text-xs sm:text-sm border-3 sm:border-4 border-black hover:bg-edn-neon-yellow hover:text-black transition-colors w-fit"
         >
           <svg
             className="w-4 h-4"
@@ -225,14 +225,14 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
           </svg>
           Volver
         </button>
-        <h1 className="font-syne font-extrabold text-3xl text-black uppercase tracking-tight">
+        <h1 className="font-syne font-extrabold text-xl sm:text-3xl text-black uppercase tracking-tight">
           {isEditMode ? "Editar Episodio" : "Nuevo Episodio"}
         </h1>
       </div>
 
       {/* Error message */}
       {error && (
-        <div className="mb-6 p-4 bg-red-500 text-white font-archivo-black uppercase border-4 border-black">
+        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-red-500 text-white font-archivo-black text-xs sm:text-sm uppercase border-3 sm:border-4 border-black">
           {error}
         </div>
       )}
@@ -243,14 +243,14 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
         animate={{ opacity: 1, y: 0 }}
         onSubmit={handleSubmit}
         noValidate
-        className="max-w-2xl bg-white border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+        className="max-w-2xl bg-white border-3 sm:border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
       >
-        <div className="p-6 space-y-6">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
           {/* Episode Number */}
           <div>
             <label
               htmlFor="episode-number"
-              className="block font-archivo-black uppercase text-sm text-black mb-2 tracking-wide"
+              className="block font-archivo-black uppercase text-xs sm:text-sm text-black mb-2 tracking-wide"
             >
               Número de Episodio *
             </label>
@@ -262,7 +262,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
               onChange={(e) =>
                 setForm({ ...form, episodeNumber: e.target.value })
               }
-              className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-edn-neon-yellow/20"
+              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border-3 sm:border-4 border-black font-plus-jakarta text-sm sm:text-base text-black placeholder-black/40 focus:outline-none focus:bg-edn-neon-yellow/20"
               placeholder="Ej: 101"
             />
           </div>
@@ -271,7 +271,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
           <div>
             <label
               htmlFor="episode-title"
-              className="block font-archivo-black uppercase text-sm text-black mb-2 tracking-wide"
+              className="block font-archivo-black uppercase text-xs sm:text-sm text-black mb-2 tracking-wide"
             >
               Título *
             </label>
@@ -281,7 +281,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
               required
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
-              className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-edn-neon-yellow/20"
+              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border-3 sm:border-4 border-black font-plus-jakarta text-sm sm:text-base text-black placeholder-black/40 focus:outline-none focus:bg-edn-neon-yellow/20"
               placeholder="Episode 101: Gran invitado especial"
             />
           </div>
@@ -290,7 +290,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
           <div>
             <label
               htmlFor="episode-description"
-              className="block font-archivo-black uppercase text-sm text-black mb-2 tracking-wide"
+              className="block font-archivo-black uppercase text-xs sm:text-sm text-black mb-2 tracking-wide"
             >
               Descripción *
             </label>
@@ -301,18 +301,18 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
               onChange={(e) =>
                 setForm({ ...form, description: e.target.value })
               }
-              rows={4}
-              className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-edn-neon-yellow/20 resize-none"
+              rows={3}
+              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border-3 sm:border-4 border-black font-plus-jakarta text-sm sm:text-base text-black placeholder-black/40 focus:outline-none focus:bg-edn-neon-yellow/20 resize-none"
               placeholder="Descripción detallada del episodio..."
             />
           </div>
 
           {/* Platform & Duration row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <div>
               <label
                 htmlFor="episode-platform"
-                className="block font-archivo-black uppercase text-sm text-black mb-2 tracking-wide"
+                className="block font-archivo-black uppercase text-xs sm:text-sm text-black mb-2 tracking-wide"
               >
                 Plataforma *
               </label>
@@ -325,7 +325,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
                     platformType: e.target.value as Episode["platformType"],
                   })
                 }
-                className="w-full px-4 py-3 bg-white border-4 border-black font-archivo-black text-black uppercase focus:outline-none focus:bg-edn-neon-yellow/20 cursor-pointer"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border-3 sm:border-4 border-black font-archivo-black text-xs sm:text-sm uppercase focus:outline-none focus:bg-edn-neon-yellow/20 cursor-pointer"
               >
                 <option value="YOUTUBE">YouTube</option>
                 <option value="SPOTIFY">Spotify</option>
@@ -336,7 +336,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
             <div>
               <label
                 htmlFor="episode-duration"
-                className="block font-archivo-black uppercase text-sm text-black mb-2 tracking-wide"
+                className="block font-archivo-black uppercase text-xs sm:text-sm text-black mb-2 tracking-wide"
               >
                 Duración (minutos)
               </label>
@@ -347,18 +347,18 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
                 onChange={(e) =>
                   setForm({ ...form, durationSeconds: e.target.value })
                 }
-                className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-edn-neon-yellow/20"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border-3 sm:border-4 border-black font-plus-jakarta text-sm sm:text-base text-black placeholder-black/40 focus:outline-none focus:bg-edn-neon-yellow/20"
                 placeholder="Ej: 45"
               />
             </div>
           </div>
 
           {/* Content URL & Thumbnail URL row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <div>
               <label
                 htmlFor="episode-content-url"
-                className="block font-archivo-black uppercase text-sm text-black mb-2 tracking-wide"
+                className="block font-archivo-black uppercase text-xs sm:text-sm text-black mb-2 tracking-wide"
               >
                 URL del Contenido
               </label>
@@ -369,7 +369,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
                 onChange={(e) =>
                   setForm({ ...form, contentUrl: e.target.value })
                 }
-                className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-edn-neon-yellow/20"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border-3 sm:border-4 border-black font-plus-jakarta text-xs sm:text-sm text-black placeholder-black/40 focus:outline-none focus:bg-edn-neon-yellow/20 truncate"
                 placeholder="https://youtube.com/..."
               />
             </div>
@@ -377,7 +377,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
             <div>
               <label
                 htmlFor="episode-thumbnail"
-                className="block font-archivo-black uppercase text-sm text-black mb-2 tracking-wide"
+                className="block font-archivo-black uppercase text-xs sm:text-sm text-black mb-2 tracking-wide"
               >
                 URL del Thumbnail
               </label>
@@ -388,7 +388,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
                 onChange={(e) =>
                   setForm({ ...form, thumbnailUrl: e.target.value })
                 }
-                className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-edn-neon-yellow/20"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border-3 sm:border-4 border-black font-plus-jakarta text-xs sm:text-sm text-black placeholder-black/40 focus:outline-none focus:bg-edn-neon-yellow/20 truncate"
                 placeholder="https://picsum.photos/..."
               />
             </div>
@@ -398,7 +398,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
           <div>
             <label
               htmlFor="episode-published"
-              className="block font-archivo-black uppercase text-sm text-black mb-2 tracking-wide"
+              className="block font-archivo-black uppercase text-xs sm:text-sm text-black mb-2 tracking-wide"
             >
               Fecha de Publicación
             </label>
@@ -412,7 +412,7 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
                   publishedAt: new Date(e.target.value).toISOString(),
                 })
               }
-              className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black focus:outline-none focus:bg-edn-neon-yellow/20"
+              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border-3 sm:border-4 border-black font-plus-jakarta text-xs sm:text-sm text-black focus:outline-none focus:bg-edn-neon-yellow/20"
             />
           </div>
 
@@ -425,23 +425,23 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
               onChange={(e) =>
                 setForm({ ...form, isExclusive: e.target.checked })
               }
-              className="w-6 h-6 bg-white border-4 border-black cursor-pointer accent-edn-neon-yellow"
+              className="w-5 h-5 sm:w-6 sm:h-6 bg-white border-3 sm:border-4 border-black cursor-pointer accent-edn-neon-yellow"
             />
             <label
               htmlFor="episode-exclusive"
-              className="font-archivo-black uppercase text-sm text-black cursor-pointer"
+              className="font-archivo-black uppercase text-xs sm:text-sm text-black cursor-pointer"
             >
               Episodio Exclusivo
             </label>
           </div>
 
           {/* Divider */}
-          <div className="border-t-4 border-black" />
+          <div className="border-t-3 sm:border-t-4 border-black" />
 
           {/* Invitados Section */}
           <div>
-            <h3 className="font-archivo-black text-xl text-black uppercase mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-edn-neon-yellow border-2 border-black rounded-sm flex items-center justify-center text-lg">
+            <h3 className="font-archivo-black text-base sm:text-xl text-black uppercase mb-3 sm:mb-4 flex items-center gap-2">
+              <span className="w-7 h-7 sm:w-8 sm:h-8 bg-edn-neon-yellow border-2 border-black rounded-sm flex items-center justify-center text-sm">
                 👥
               </span>
               INVITADOS
@@ -466,8 +466,8 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
 
           {/* Images Section */}
           <div>
-            <h3 className="font-archivo-black text-xl text-black uppercase mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-edn-neon-yellow border-2 border-black rounded-sm flex items-center justify-center text-lg">
+            <h3 className="font-archivo-black text-base sm:text-xl text-black uppercase mb-3 sm:mb-4 flex items-center gap-2">
+              <span className="w-7 h-7 sm:w-8 sm:h-8 bg-edn-neon-yellow border-2 border-black rounded-sm flex items-center justify-center text-sm">
                 🖼
               </span>
               IMÁGENES
@@ -477,19 +477,19 @@ export default function EpisodeForm({ mode, initialData }: EpisodeFormProps) {
         </div>
 
         {/* Submit */}
-        <div className="p-6 bg-black/3 border-t-4 border-black">
-          <div className="flex gap-4">
+        <div className="p-4 sm:p-6 bg-black/3 border-t-3 sm:border-t-4 border-black">
+          <div className="flex flex-col sm:flex-row gap-3">
             <button
               type="button"
               onClick={() => router.push("/dashboard/episodes")}
-              className="flex-1 py-4 bg-white text-black font-archivo-black uppercase text-sm border-4 border-black hover:bg-black/5 transition-colors"
+              className="sm:flex-1 py-3 sm:py-4 bg-white text-black font-archivo-black uppercase text-xs sm:text-sm border-3 sm:border-4 border-black hover:bg-black/5 transition-colors"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 py-4 bg-black text-edn-neon-yellow font-archivo-black uppercase text-sm border-4 border-black hover:bg-black/80 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              className="sm:flex-1 py-3 sm:py-4 bg-black text-edn-neon-yellow font-archivo-black uppercase text-xs sm:text-sm border-3 sm:border-4 border-black hover:bg-black/80 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>

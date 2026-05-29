@@ -44,11 +44,11 @@ export default function EditEpisodePage() {
 
   if (error) {
     return (
-      <div className="bg-white p-8">
-        <div className="flex items-center gap-4 mb-8">
+      <div className="bg-white p-4 sm:p-8">
+        <div className="flex items-center gap-4 mb-6 sm:mb-8">
           <button
             onClick={() => router.push("/dashboard/episodes")}
-            className="flex items-center gap-2 px-4 py-2 bg-black text-[#f9c937] font-archivo-black uppercase text-sm border-4 border-black hover:bg-[#f9c937] hover:text-black transition-colors"
+            className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-black text-[#f9c937] font-archivo-black uppercase text-xs sm:text-sm border-3 sm:border-4 border-black hover:bg-[#f9c937] hover:text-black transition-colors"
           >
             <svg
               className="w-4 h-4"
@@ -65,7 +65,7 @@ export default function EditEpisodePage() {
             Volver
           </button>
         </div>
-        <div className="p-4 bg-red-500 text-white font-archivo-black uppercase border-4 border-black">
+        <div className="p-3 sm:p-4 bg-red-500 text-white font-archivo-black text-xs sm:text-sm uppercase border-3 sm:border-4 border-black">
           {error}
         </div>
       </div>
@@ -74,11 +74,11 @@ export default function EditEpisodePage() {
 
   if (!episode) {
     return (
-      <div className="bg-white p-8">
-        <div className="flex items-center gap-4 mb-8">
+      <div className="bg-white p-4 sm:p-8">
+        <div className="flex items-center gap-4 mb-6 sm:mb-8">
           <button
             onClick={() => router.push("/dashboard/episodes")}
-            className="flex items-center gap-2 px-4 py-2 bg-black text-[#f9c937] font-archivo-black uppercase text-sm border-4 border-black hover:bg-[#f9c937] hover:text-black transition-colors"
+            className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-black text-[#f9c937] font-archivo-black uppercase text-xs sm:text-sm border-3 sm:border-4 border-black hover:bg-[#f9c937] hover:text-black transition-colors"
           >
             <svg
               className="w-4 h-4"
@@ -95,7 +95,7 @@ export default function EditEpisodePage() {
             Volver
           </button>
         </div>
-        <div className="p-4 bg-red-500 text-white font-archivo-black uppercase border-4 border-black">
+        <div className="p-3 sm:p-4 bg-red-500 text-white font-archivo-black text-xs sm:text-sm uppercase border-3 sm:border-4 border-black">
           Episodio no encontrado
         </div>
       </div>

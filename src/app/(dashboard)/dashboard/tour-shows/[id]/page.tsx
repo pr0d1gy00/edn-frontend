@@ -15,21 +15,21 @@ export default function EditTourShowPage() {
 
   if (loading) {
     return (
-      <div className="bg-white p-8 flex items-center justify-center h-64">
-        <div className="w-12 h-12 border-4 border-black border-t-transparent rounded-full animate-spin" />
+      <div className="bg-white p-4 sm:p-8 flex items-center justify-center h-48 sm:h-64">
+        <div className="w-10 sm:w-12 h-10 sm:h-12 border-4 border-black border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   if (error || !tourShow) {
     return (
-      <div className="bg-white p-8">
-        <div className="p-6 bg-red-500 text-white font-archivo-black uppercase border-4 border-black">
+      <div className="bg-white p-4 sm:p-8">
+        <div className="p-4 sm:p-6 bg-red-500 text-white font-archivo-black text-xs sm:text-sm uppercase border-3 sm:border-4 border-black">
           {error || 'Fecha no encontrada'}
         </div>
         <button
           onClick={() => router.push('/dashboard/tour-shows')}
-          className="mt-4 px-6 py-3 bg-black text-white font-archivo-black uppercase border-4 border-black hover:bg-[#f9c937] hover:text-black transition-colors"
+          className="mt-3 sm:mt-4 px-4 sm:px-6 py-2 sm:py-3 bg-black text-white font-archivo-black uppercase text-xs sm:text-sm border-3 sm:border-4 border-black hover:bg-[#f9c937] hover:text-black transition-colors"
         >
           ← Volver a Tour Shows
         </button>
@@ -48,19 +48,19 @@ export default function EditTourShowPage() {
   };
 
   return (
-    <div className="bg-white p-8">
+    <div className="bg-white p-4 sm:p-6 md:p-8">
       {/* Header */}
-      <div className="flex items-center gap-4 mb-8">
+      <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
         <button
           onClick={() => router.push('/dashboard/tour-shows')}
-          className="flex items-center gap-2 px-4 py-2 bg-black text-[#f9c937] font-archivo-black uppercase text-sm border-4 border-black hover:bg-[#f9c937] hover:text-black transition-colors"
+          className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-black text-[#f9c937] font-archivo-black uppercase text-xs sm:text-sm border-3 sm:border-4 border-black hover:bg-[#f9c937] hover:text-black transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="square" strokeWidth="3" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          Volver
+          <span className="hidden xs:inline">Volver</span>
         </button>
-        <h1 className="font-syne font-extrabold text-3xl text-black uppercase tracking-tight">
+        <h1 className="font-syne font-extrabold text-2xl sm:text-3xl text-black uppercase tracking-tight">
           Editar Show
         </h1>
       </div>
@@ -69,11 +69,11 @@ export default function EditTourShowPage() {
       <TourShowForm mode="edit" initialData={tourShow} />
 
       {/* Delete section */}
-      <div className="mt-6 flex justify-end">
+      <div className="mt-4 sm:mt-6 flex justify-end">
         <button
           onClick={handleDelete}
           disabled={deleteLoading}
-          className="px-6 py-3 bg-red-600 text-white font-archivo-black uppercase text-sm border-4 border-black rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-red-700 transition-colors disabled:opacity-50"
+          className="px-4 sm:px-6 py-2.5 sm:py-3 bg-red-600 text-white font-archivo-black uppercase text-xs sm:text-sm border-3 sm:border-4 border-black rounded-none shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] sm:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-red-700 transition-colors disabled:opacity-50"
         >
           {deleteLoading ? 'Eliminando...' : 'Eliminar show'}
         </button>

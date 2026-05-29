@@ -75,37 +75,37 @@ export default function StoryModal({ story, onClose }: StoryModalProps) {
             initial={{ opacity: 0, scale: 0.8, rotate: -2 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
             exit={{ opacity: 0, scale: 0.8, rotate: 2 }}
-            className="fixed inset-0 z-[1001] flex items-center justify-center p-4 pointer-events-none"
+            className="fixed inset-0 z-[1001] flex items-center justify-center p-2 sm:p-4 pointer-events-none"
           >
             <div
-              className="bg-white border-4 border-black rounded-none shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] w-full max-w-2xl max-h-[90vh] overflow-y-auto pointer-events-auto"
+              className="bg-white border-4 border-black rounded-none shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] w-full max-w-[calc(100%-1rem)] sm:max-w-2xl max-h-[90vh] overflow-y-auto pointer-events-auto"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header - yellow bar with close */}
-              <div className="sticky top-0 bg-[#f9c937] border-b-4 border-black p-4 flex items-center justify-between z-10">
-                <div className="flex items-center gap-3">
+              <div className="sticky top-0 bg-[#f9c937] border-b-4 border-black p-2 sm:p-4 flex items-center justify-between z-10">
+                <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                   {/* Author avatar */}
-                  <div className="w-12 h-12 bg-black border-4 border-black flex items-center justify-center overflow-hidden">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-black border-2 sm:border-4 border-black flex items-center justify-center overflow-hidden">
                     {author?.avatarUrl ? (
                       <Image
                         src={author.avatarUrl}
                         alt={author.username}
-                        width={40}
-                        height={40}
+                        width={36}
+                        height={36}
                         className="object-cover"
                         unoptimized={isCDNUrl(author.avatarUrl)}
                       />
                     ) : (
-                      <span className="font-archivo-black text-xl text-[#f9c937] uppercase">
+                      <span className="font-archivo-black text-base sm:text-xl text-[#f9c937] uppercase">
                         {author?.username?.charAt(0) || "?"}
                       </span>
                     )}
                   </div>
                   <div>
                     {isLoadingAuthor ? (
-                      <div className="w-24 h-4 bg-black/20 animate-pulse" />
+                      <div className="w-20 sm:w-24 h-4 bg-black/20 animate-pulse" />
                     ) : (
-                      <p className="font-archivo-black text-sm text-black uppercase tracking-wider">
+                      <p className="font-archivo-black text-xs sm:text-sm text-black uppercase tracking-wider">
                         @{author?.username || " autor desconocido"}
                       </p>
                     )}
@@ -114,8 +114,8 @@ export default function StoryModal({ story, onClose }: StoryModalProps) {
                     </p>
                   </div>
 
-                  {/* Vote buttons */}
-                  <div className="ml-4">
+                  {/* Vote buttons - hidden on small mobile */}
+                  <div className="ml-2 sm:ml-4 hidden sm:block">
                     <VoteButtons
                       storyId={story.id}
                       initialScore={story.score}
@@ -128,25 +128,36 @@ export default function StoryModal({ story, onClose }: StoryModalProps) {
 
                 <button
                   onClick={onClose}
-                  className="w-10 h-10 bg-black text-[#f9c937] font-archivo-black text-xl border-4 border-black hover:bg-black/80 transition-colors flex items-center justify-center"
+                  className="w-8 h-8 sm:w-10 sm:h-10 bg-black text-[#f9c937] font-archivo-black text-lg sm:text-xl border-2 sm:border-4 border-black hover:bg-black/80 transition-colors flex items-center justify-center"
                   aria-label="Cerrar"
                 >
                   ✕
                 </button>
               </div>
 
+              {/* Vote buttons - visible on mobile below header */}
+              <div className="sm:hidden bg-[#f9c937] p-2 border-b-4 border-black">
+                <VoteButtons
+                  storyId={story.id}
+                  initialScore={story.score}
+                  initialUserVote={story.userVote}
+                  size="sm"
+                  layout="horizontal"
+                />
+              </div>
+
               {/* Content */}
-              <div className="p-8">
+              <div className="p-4 sm:p-6 md:p-8">
                 {/* Title */}
-                <h2 className="font-syne font-extrabold text-3xl md:text-4xl text-black uppercase leading-tight tracking-tight mb-6">
+                <h2 className="font-syne font-extrabold text-xl sm:text-2xl md:text-3xl lg:text-4xl text-black uppercase leading-tight tracking-tight mb-4 sm:mb-6">
                   {story.title}
                 </h2>
 
                 {/* Meta info */}
-                <div className="flex items-center gap-4 mb-6 pb-6 border-b-4 border-black">
+                <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b-4 border-black flex-wrap">
                   <div className="flex items-center gap-2">
-                    <span className="text-lg">📅</span>
-                    <span className="font-archivo-black text-xs text-black/60 uppercase">
+                    <span className="text-base sm:text-lg">📅</span>
+                    <span className="font-archivo-black text-xs sm:text-sm text-black/60 uppercase">
                       {story.createdAt
                         ? new Date(story.createdAt).toLocaleDateString(
                             "es-AR",
@@ -163,14 +174,14 @@ export default function StoryModal({ story, onClose }: StoryModalProps) {
 
                 {/* Story content - full text */}
                 <div className="prose prose-lg max-w-none">
-                  <p className="font-plus-jakarta text-base text-black leading-relaxed whitespace-pre-wrap">
+                  <p className="font-plus-jakarta text-sm sm:text-base text-black leading-relaxed whitespace-pre-wrap">
                     {story.content}
                   </p>
                 </div>
               </div>
 
               {/* Footer decoration */}
-              <div className="bg-black p-4 flex items-center justify-center gap-4">
+              <div className="bg-black p-3 sm:p-4 flex items-center justify-center gap-4">
                 <div className="flex-1 h-1 bg-[#f9c937]" />
                 <span className="font-archivo-black text-xs text-[#f9c937] uppercase">
                   ✦ EDN STORIES ✦

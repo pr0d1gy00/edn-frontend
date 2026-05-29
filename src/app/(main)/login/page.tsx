@@ -178,7 +178,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex flex-col lg:flex-row">
       {/* Left side - Image */}
       <div className="hidden lg:block lg:w-1/2 relative">
         <Image
@@ -191,16 +191,16 @@ export default function LoginPage() {
         <div className="absolute inset-0 bg-[#f9c937]/30 mix-blend-overlay" />
 
         {/* Branding text on image */}
-        <div className="absolute bottom-12 left-12 right-12">
+        <div className="absolute bottom-8 sm:bottom-12 left-8 sm:left-12 right-8 sm:right-12">
           <motion.div
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, type: "spring" }}
           >
-            <h2 className="font-syne text-4xl md:text-5xl font-extrabold text-white uppercase tracking-tight drop-shadow-[3px_3px_0px_rgba(0,0,0,0.9)]">
+            <h2 className="font-syne text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white uppercase tracking-tight drop-shadow-[3px_3px_0px_rgba(0,0,0,0.9)]">
               ESCUELA DE NADA
             </h2>
-            <p className="font-plus-jakarta text-lg text-white/90 mt-2 drop-shadow-[2px_2px_0px_rgba(0,0,0,0.8)]">
+            <p className="font-plus-jakarta text-sm sm:text-base md:text-lg text-white/90 mt-2 drop-shadow-[2px_2px_0px_rgba(0,0,0,0.8)]">
               El podcast donde aprendemos a no aprender nada útil
             </p>
           </motion.div>
@@ -208,7 +208,7 @@ export default function LoginPage() {
       </div>
 
       {/* Right side - Form (YELLOW BACKGROUND) */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center bg-[#f9c937] p-8">
+      <div className="w-full lg:w-1/2 flex items-center justify-center bg-[#f9c937] p-4 sm:p-6 md:p-8">
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -216,11 +216,11 @@ export default function LoginPage() {
           className="w-full max-w-md"
         >
           {/* Logo */}
-          <div className="text-center mb-6">
-            <h1 className="font-syne text-5xl md:text-6xl font-extrabold text-black uppercase tracking-tighter leading-none">
+          <div className="text-center mb-4 sm:mb-6">
+            <h1 className="font-syne text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-black uppercase tracking-tighter leading-none">
               {isRegister ? "INSCRIBITE" : "ENTRAR"}
             </h1>
-            <div className="mt-2 mx-auto w-24 h-2 bg-black" />
+            <div className="mt-2 mx-auto w-16 sm:w-24 h-1 sm:h-2 bg-black" />
             <p className="font-plus-jakarta text-black/70 mt-4 font-medium">
               {isRegister
                 ? "Sumate a la lista de los que no saben nada"
@@ -229,14 +229,14 @@ export default function LoginPage() {
           </div>
 
           {/* Tab switcher - NEO BRUTALIST */}
-          <div className="flex mb-8 border-4 border-black">
+          <div className="flex mb-4 sm:mb-6 md:mb-8 border-4 border-black">
             <button
               onClick={() => {
                 setIsRegister(false);
                 setError(null);
                 setSuccess(null);
               }}
-              className={`flex-1 py-4 font-archivo-black uppercase tracking-wider text-lg transition-all ${
+              className={`flex-1 py-3 sm:py-4 font-archivo-black uppercase tracking-wider text-sm sm:text-base md:text-lg transition-all ${
                 !isRegister
                   ? "bg-black text-[#f9c937]"
                   : "bg-white text-black hover:bg-black/20"
@@ -250,7 +250,7 @@ export default function LoginPage() {
                 setError(null);
                 setSuccess(null);
               }}
-              className={`flex-1 py-4 font-archivo-black uppercase tracking-wider text-lg transition-all ${
+              className={`flex-1 py-3 sm:py-4 font-archivo-black uppercase tracking-wider text-sm sm:text-base md:text-lg transition-all ${
                 isRegister
                   ? "bg-black text-[#f9c937]"
                   : "bg-white text-black hover:bg-black/20"
@@ -299,16 +299,16 @@ export default function LoginPage() {
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ duration: 0.2 }}
                 onSubmit={loginForm.handleSubmit(handleLogin)}
-                className="space-y-5"
+                className="space-y-4 sm:space-y-5"
               >
                 <div>
-                  <label className="block font-archivo-black uppercase text-sm text-black mb-2 tracking-wide">
+                  <label className="block font-archivo-black uppercase text-xs sm:text-sm text-black mb-1 sm:mb-2 tracking-wide">
                     Apodo
                   </label>
                   <input
                     type="text"
                     {...loginForm.register("username")}
-                    className="w-full px-4 py-4 bg-white border-4 border-black rounded-md font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937] transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                    className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white border-4 border-black rounded-md font-plus-jakarta text-sm sm:text-base text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937] transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                     placeholder="Tu apodo de esdenauta"
                   />
                   {loginForm.formState.errors.username && (
@@ -319,13 +319,13 @@ export default function LoginPage() {
                 </div>
 
                 <div>
-                  <label className="block font-archivo-black uppercase text-sm text-black mb-2 tracking-wide">
+                  <label className="block font-archivo-black uppercase text-xs sm:text-sm text-black mb-1 sm:mb-2 tracking-wide">
                     Contraseña
                   </label>
                   <input
                     type="password"
                     {...loginForm.register("password")}
-                    className="w-full px-4 py-4 bg-white border-4 border-black rounded-md font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937] transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                    className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white border-4 border-black rounded-md font-plus-jakarta text-sm sm:text-base text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937] transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                     placeholder="Tu contraseña secreta"
                   />
                   {loginForm.formState.errors.password && (
@@ -348,12 +348,12 @@ export default function LoginPage() {
                     translateY: 0,
                     boxShadow: "0px 0px 0px 0px rgba(0,0,0,1)",
                   }}
-                  className="w-full py-5 bg-black text-[#f9c937] font-archivo-black uppercase tracking-wider text-xl rounded-md border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="w-full py-3 sm:py-4 md:py-5 bg-black text-[#f9c937] font-archivo-black uppercase tracking-wider text-base sm:text-lg md:text-xl rounded-md border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   {isLoading ? "Entrando..." : "ENTRAR A LA ESCUELA"}
                 </motion.button>
 
-                <p className="text-center font-plus-jakarta text-black/60 text-sm mt-4">
+                <p className="text-center font-plus-jakarta text-black/60 text-xs sm:text-sm mt-3 sm:mt-4">
                   ¿No tenés cuenta?{" "}
                   <button
                     type="button"
@@ -373,20 +373,20 @@ export default function LoginPage() {
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.2 }}
                 onSubmit={registerForm.handleSubmit(handleRegister)}
-                className="space-y-5"
+                className="space-y-4 sm:space-y-5"
               >
                 <div>
-                  <label className="block font-archivo-black uppercase text-sm text-black mb-2 tracking-wide">
+                  <label className="block font-archivo-black uppercase text-xs sm:text-sm text-black mb-1 sm:mb-2 tracking-wide">
                     Apodo
                   </label>
                   <input
                     type="text"
                     {...registerForm.register("username")}
-                    className="w-full px-4 py-4 bg-white border-4 border-black rounded-md font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937] transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                    className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white border-4 border-black rounded-md font-plus-jakarta text-sm sm:text-base text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937] transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                     placeholder="Ej: ElQueNoSabeNada"
                   />
                   {registerForm.formState.errors.username && (
-                    <p className="mt-2 font-black text-black text-xs uppercase ">
+                    <p className="mt-1 font-black text-black text-xs uppercase ">
                       <span className="text-red-600">Alerta! </span>
                       {registerForm.formState.errors.username.message}
                     </p>
@@ -394,17 +394,17 @@ export default function LoginPage() {
                 </div>
 
                 <div>
-                  <label className="block font-archivo-black uppercase text-sm text-black mb-2 tracking-wide">
+                  <label className="block font-archivo-black uppercase text-xs sm:text-sm text-black mb-1 sm:mb-2 tracking-wide">
                     Email
                   </label>
                   <input
                     type="email"
                     {...registerForm.register("email")}
-                    className="w-full px-4 py-4 bg-white border-4 border-black rounded-md font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937] transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                    className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white border-4 border-black rounded-md font-plus-jakarta text-sm sm:text-base text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937] transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                     placeholder="tu@email.com"
                   />
                   {registerForm.formState.errors.email && (
-                    <p className="mt-2 font-black text-black text-xs uppercase ">
+                    <p className="mt-1 font-black text-black text-xs uppercase ">
                       <span className="text-red-600">Alerta! </span>
                       {registerForm.formState.errors.email.message}
                     </p>
@@ -412,17 +412,17 @@ export default function LoginPage() {
                 </div>
 
                 <div>
-                  <label className="block font-archivo-black uppercase text-sm text-black mb-2 tracking-wide">
+                  <label className="block font-archivo-black uppercase text-xs sm:text-sm text-black mb-1 sm:mb-2 tracking-wide">
                     Contraseña
                   </label>
                   <input
                     type="password"
                     {...registerForm.register("password")}
-                    className="w-full px-4 py-4 bg-white border-4 border-black rounded-md font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937] transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                    className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white border-4 border-black rounded-md font-plus-jakarta text-sm sm:text-base text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937] transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                     placeholder="Mínimo 6 caracteres"
                   />
                   {registerForm.formState.errors.password && (
-                    <p className="mt-2 font-black text-black text-xs uppercase ">
+                    <p className="mt-1 font-black text-black text-xs uppercase ">
                       <span className="text-red-600">Alerta! </span>
                       {registerForm.formState.errors.password.message}
                     </p>
@@ -430,13 +430,13 @@ export default function LoginPage() {
                 </div>
 
                 <div>
-                  <label className="block font-archivo-black uppercase text-sm text-black mb-2 tracking-wide">
+                  <label className="block font-archivo-black uppercase text-xs sm:text-sm text-black mb-1 sm:mb-2 tracking-wide">
                     Confirmar Contraseña
                   </label>
                   <input
                     type="password"
                     {...registerForm.register("confirmPassword")}
-                    className="w-full px-4 py-4 bg-white border-4 border-black rounded-md font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937] transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                    className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white border-4 border-black rounded-md font-plus-jakarta text-sm sm:text-base text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937] transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                     placeholder="Repetí la contraseña"
                   />
                   {registerForm.formState.errors.confirmPassword && (
@@ -460,12 +460,12 @@ export default function LoginPage() {
                     translateY: 0,
                     boxShadow: "0px 0px 0px 0px rgba(0,0,0,1)",
                   }}
-                  className="w-full py-5 bg-black text-[#f9c937] font-archivo-black uppercase tracking-wider text-xl rounded-md border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="w-full py-3 sm:py-4 md:py-5 bg-black text-[#f9c937] font-archivo-black uppercase tracking-wider text-base sm:text-lg md:text-xl rounded-md border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   {isLoading ? "Inscribiendo..." : "INSCRIBIRME EN LA ESCUELA"}
                 </motion.button>
 
-                <p className="text-center font-plus-jakarta text-black/60 text-sm mt-4">
+                <p className="text-center font-plus-jakarta text-black/60 text-xs sm:text-sm mt-3 sm:mt-4">
                   ¿Ya tenés cuenta?{" "}
                   <button
                     type="button"
@@ -480,7 +480,7 @@ export default function LoginPage() {
           </AnimatePresence>
 
           {/* Back to home */}
-          <div className="mt-8 text-center">
+          <div className="mt-6 sm:mt-8 text-center">
             <Link
               href="/"
               className="font-archivo-black text-black/60 hover:text-black uppercase tracking-wide text-sm transition-colors"

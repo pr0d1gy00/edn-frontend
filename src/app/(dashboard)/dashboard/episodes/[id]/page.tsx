@@ -210,21 +210,21 @@ export default function EpisodeDetailPage() {
 
   if (loading) {
     return (
-      <div className="bg-white p-8 flex items-center justify-center h-64">
-        <div className="w-12 h-12 border-4 border-black border-t-transparent rounded-full animate-spin" />
+      <div className="bg-white p-4 sm:p-8 flex items-center justify-center h-48 sm:h-64">
+        <div className="w-10 h-10 sm:w-12 sm:h-12 border-4 border-black border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   if (error || !episode) {
     return (
-      <div className="bg-white p-8">
-        <div className="p-6 bg-red-500 text-white font-archivo-black uppercase border-4 border-black">
+      <div className="bg-white p-4 sm:p-8">
+        <div className="p-4 sm:p-6 bg-red-500 text-white font-archivo-black text-xs sm:text-sm uppercase border-3 sm:border-4 border-black">
           {error || "Episodio no encontrado"}
         </div>
         <button
           onClick={() => router.push("/dashboard/episodes")}
-          className="mt-4 px-6 py-3 bg-black text-white font-archivo-black uppercase border-4 border-black hover:bg-[#f9c937] hover:text-black transition-colors"
+          className="mt-4 px-4 sm:px-6 py-2 sm:py-3 bg-black text-white font-archivo-black uppercase text-xs sm:text-sm border-3 sm:border-4 border-black hover:bg-[#f9c937] hover:text-black transition-colors"
         >
           ← Volver a episodios
         </button>
@@ -233,12 +233,12 @@ export default function EpisodeDetailPage() {
   }
   console.log(visibleGuests);
   return (
-    <div className="bg-white p-8">
+    <div className="bg-white p-4 sm:p-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
         <button
           onClick={() => router.push("/dashboard/episodes")}
-          className="flex items-center gap-2 px-4 py-2 bg-black text-[#f9c937] font-archivo-black uppercase text-sm border-4 border-black hover:bg-[#f9c937] hover:text-black transition-colors"
+          className="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-black text-[#f9c937] font-archivo-black uppercase text-xs sm:text-sm border-3 sm:border-4 border-black hover:bg-[#f9c937] hover:text-black transition-colors w-fit"
         >
           <svg
             className="w-4 h-4"
@@ -255,16 +255,16 @@ export default function EpisodeDetailPage() {
           Volver
         </button>
 
-        <div className="w-16 h-16 bg-black text-[#f9c937] font-archivo-black text-2xl flex items-center justify-center border-4 border-black">
+        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-black text-[#f9c937] font-archivo-black text-lg sm:text-2xl flex items-center justify-center border-3 sm:border-4 border-black">
           #{episode.episodeNumber}
         </div>
       </div>
 
       {/* Episode info card */}
-      <div className="bg-white border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-8 overflow-hidden">
-        <div className="flex flex-col md:flex-row">
+      <div className="bg-white border-3 sm:border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-6 sm:mb-8 overflow-hidden">
+        <div className="flex flex-col lg:flex-row">
           {/* Image display - Carousel or single thumbnail */}
-          <div className="w-full md:w-72 h-72 md:h-auto bg-[#f9c937] relative">
+          <div className="w-full lg:w-64 xl:w-72 h-48 sm:h-64 lg:h-auto bg-[#f9c937] relative">
             {imagesForCarousel.length > 0 ? (
               <>
                 <Image
@@ -283,7 +283,7 @@ export default function EpisodeDetailPage() {
                           prev === 0 ? imagesForCarousel.length - 1 : prev - 1,
                         )
                       }
-                      className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/50 text-white font-archivo-black text-sm border-2 border-black hover:bg-black transition-colors flex items-center justify-center"
+                      className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 bg-black/50 text-white font-archivo-black text-sm border-2 border-black hover:bg-black transition-colors flex items-center justify-center"
                     >
                       ‹
                     </button>
@@ -293,7 +293,7 @@ export default function EpisodeDetailPage() {
                           prev === imagesForCarousel.length - 1 ? 0 : prev + 1,
                         )
                       }
-                      className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/50 text-white font-archivo-black text-sm border-2 border-black hover:bg-black transition-colors flex items-center justify-center"
+                      className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 bg-black/50 text-white font-archivo-black text-sm border-2 border-black hover:bg-black transition-colors flex items-center justify-center"
                     >
                       ›
                     </button>
@@ -312,7 +312,7 @@ export default function EpisodeDetailPage() {
                       ))}
                     </div>
                     {/* Image counter */}
-                    <div className="absolute top-2 left-2 px-2 py-1 bg-black text-[#f9c937] font-archivo-black text-xs border-2 border-black">
+                    <div className="absolute top-2 left-2 px-1.5 py-0.5 sm:px-2 sm:py-1 bg-black text-[#f9c937] font-archivo-black text-[10px] sm:text-xs border-2 border-black">
                       {currentImageIndex + 1}/{imagesForCarousel.length}
                     </div>
                   </>
@@ -320,7 +320,7 @@ export default function EpisodeDetailPage() {
               </>
             ) : (
               <div className="w-full h-full flex items-center justify-center">
-                <span className="font-archivo-black text-6xl text-black/20">
+                <span className="font-archivo-black text-4xl sm:text-6xl text-black/20">
                   #{episode.episodeNumber}
                 </span>
               </div>
@@ -328,31 +328,31 @@ export default function EpisodeDetailPage() {
           </div>
 
           {/* Content */}
-          <div className="flex-1 p-6">
-            <div className="flex items-start gap-4 mb-4">
-              <h1 className="font-syne font-extrabold text-2xl md:text-3xl text-black uppercase leading-tight">
+          <div className="flex-1 p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4 mb-3 sm:mb-4">
+              <h1 className="font-syne font-extrabold text-xl sm:text-2xl lg:text-3xl text-black uppercase leading-tight">
                 {episode.title}
               </h1>
               {episode.isExclusive && (
-                <span className="px-3 py-1 bg-[#f9c937] text-black font-archivo-black text-sm uppercase border-2 border-black">
+                <span className="px-2 sm:px-3 py-1 bg-[#f9c937] text-black font-archivo-black text-xs sm:text-sm uppercase border-2 border-black self-start">
                   ★ Exclusivo
                 </span>
               )}
             </div>
 
-            <p className="font-plus-jakarta text-black/70 mb-6">
+            <p className="font-plus-jakarta text-sm sm:text-base text-black/70 mb-4 sm:mb-6">
               {episode.description}
             </p>
 
             {/* Meta info */}
-            <div className="flex flex-wrap gap-6 p-4 bg-black/[0.03] border-4 border-black">
+            <div className="flex flex-wrap gap-3 sm:gap-6 p-3 sm:p-4 bg-black/[0.03] border-3 sm:border-4 border-black">
               <div>
-                <span className="font-archivo-black text-xs text-black/50 uppercase block">
+                <span className="font-archivo-black text-[10px] sm:text-xs text-black/50 uppercase block">
                   Plataforma
                 </span>
                 <span
                   className={`
-                  inline-block px-3 py-1 font-archivo-black text-sm uppercase border-2 border-black mt-1
+                  inline-block px-2 sm:px-3 py-1 font-archivo-black text-xs sm:text-sm uppercase border-2 border-black mt-1
                   ${episode.platformType === "YOUTUBE" ? "bg-red-600 text-white" : ""}
                   ${episode.platformType === "SPOTIFY" ? "bg-green-500 text-white" : ""}
                   ${episode.platformType === "OTHER" ? "bg-gray-500 text-white" : ""}
@@ -362,18 +362,18 @@ export default function EpisodeDetailPage() {
                 </span>
               </div>
               <div>
-                <span className="font-archivo-black text-xs text-black/50 uppercase block">
+                <span className="font-archivo-black text-[10px] sm:text-xs text-black/50 uppercase block">
                   Fecha
                 </span>
-                <span className="font-archivo-black text-lg text-black">
+                <span className="font-archivo-black text-sm sm:text-lg text-black">
                   {formatDate(episode.publishedAt)}
                 </span>
               </div>
               <div>
-                <span className="font-archivo-black text-xs text-black/50 uppercase block">
+                <span className="font-archivo-black text-[10px] sm:text-xs text-black/50 uppercase block">
                   Duración
                 </span>
-                <span className="font-archivo-black text-lg text-black">
+                <span className="font-archivo-black text-sm sm:text-lg text-black">
                   {formatDuration(episode.durationSeconds)}
                 </span>
               </div>
@@ -383,16 +383,16 @@ export default function EpisodeDetailPage() {
       </div>
 
       {/* Two column layout for guests and jokes */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
         {/* Guests section */}
-        <div className="border-4 border-black">
-          <div className="bg-black text-white px-4 py-3 flex items-center justify-between">
-            <h2 className="font-archivo-black uppercase text-lg">Invitados</h2>
+        <div className="border-3 sm:border-4 border-black">
+          <div className="bg-black text-white px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between">
+            <h2 className="font-archivo-black uppercase text-sm sm:text-lg">Invitados</h2>
           </div>
 
-          <div className="p-4">
+          <div className="p-3 sm:p-4">
             {/* Guest selector */}
-            <div className="mb-4">
+            <div className="mb-3 sm:mb-4">
               <GuestSelect
                 onSelect={handleSelectGuest}
                 selectedIds={visibleGuests.map((sg) => sg.guest.id)}
@@ -410,7 +410,7 @@ export default function EpisodeDetailPage() {
               <button
                 onClick={handleSyncGuests}
                 disabled={syncing}
-                className="mt-4 w-full py-3 bg-[#f9c937] text-black font-archivo-black uppercase border-4 border-black hover:bg-[#f9c937]/80 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                className="mt-3 sm:mt-4 w-full py-2.5 sm:py-3 bg-[#f9c937] text-black font-archivo-black uppercase text-xs sm:text-sm border-3 sm:border-4 border-black hover:bg-[#f9c937]/80 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {syncing ? (
                   <>
@@ -425,33 +425,33 @@ export default function EpisodeDetailPage() {
 
             {/* Guest list */}
             {episode.guests && episode.guests.length > 0 ? (
-              <div className="space-y-3 mt-4">
+              <div className="space-y-2 sm:space-y-3 mt-3 sm:mt-4">
                 {episode.guests.map((guest) => (
                   <div
                     key={guest.id}
-                    className="p-4 bg-white border-4 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
+                    className="p-3 sm:p-4 bg-white border-3 sm:border-4 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] sm:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-[#f9c937] border-2 border-black flex items-center justify-center font-archivo-black text-lg">
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#f9c937] border-2 border-black flex items-center justify-center font-archivo-black text-sm sm:text-lg">
                           {guest.name[0]}
                         </div>
-                        <h4 className="font-archivo-black text-lg text-black uppercase">
+                        <h4 className="font-archivo-black text-sm sm:text-lg text-black uppercase truncate">
                           {guest.name}
                         </h4>
                       </div>
                     </div>
-                    <p className="font-plus-jakarta text-sm text-black/70 mb-2">
+                    <p className="font-plus-jakarta text-xs sm:text-sm text-black/70 mb-2 line-clamp-2">
                       {guest.bio}
                     </p>
-                    <div className="flex gap-2">
+                    <div className="flex gap-1.5 sm:gap-2">
                       {guest.twitterHandle && (
-                        <span className="px-2 py-1 bg-black text-white font-archivo-black text-xs">
+                        <span className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-black text-white font-archivo-black text-[10px] sm:text-xs">
                           @{guest.twitterHandle}
                         </span>
                       )}
                       {guest.instagramHandle && (
-                        <span className="px-2 py-1 bg-black text-white font-archivo-black text-xs">
+                        <span className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-black text-white font-archivo-black text-[10px] sm:text-xs">
                           @{guest.instagramHandle}
                         </span>
                       )}
@@ -460,7 +460,7 @@ export default function EpisodeDetailPage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8 text-black/40 font-archivo-black uppercase">
+              <div className="text-center py-6 sm:py-8 text-black/40 font-archivo-black uppercase text-xs sm:text-sm">
                 No hay invitados
               </div>
             )}
@@ -468,32 +468,32 @@ export default function EpisodeDetailPage() {
         </div>
 
         {/* Inside jokes section */}
-        <div className="border-4 border-black">
-          <div className="bg-black text-white px-4 py-3 flex items-center justify-between">
-            <h2 className="font-archivo-black uppercase text-lg">
+        <div className="border-3 sm:border-4 border-black">
+          <div className="bg-black text-white px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between">
+            <h2 className="font-archivo-black uppercase text-sm sm:text-lg">
               Bromas Internas
             </h2>
             <button
               onClick={() => setShowJokeForm(!showJokeForm)}
-              className="px-3 py-1 bg-[#f9c937] text-black font-archivo-black text-xs uppercase border-2 border-[#f9c937] hover:bg-white hover:border-white transition-colors"
+              className="px-2 sm:px-3 py-1 bg-[#f9c937] text-black font-archivo-black text-[10px] sm:text-xs uppercase border-2 border-[#f9c937] hover:bg-white hover:border-white transition-colors"
             >
               {showJokeForm ? "Cancelar" : "+ Agregar"}
             </button>
           </div>
 
-          <div className="p-4">
+          <div className="p-3 sm:p-4">
             {/* Add joke form */}
             {showJokeForm && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
-                className="mb-6 p-4 bg-[#f9c937]/20 border-4 border-black"
+                className="mb-4 sm:mb-6 p-3 sm:p-4 bg-[#f9c937]/20 border-3 sm:border-4 border-black"
               >
-                <h3 className="font-archivo-black text-sm uppercase mb-4">
+                <h3 className="font-archivo-black text-xs sm:text-sm uppercase mb-3 sm:mb-4">
                   Nueva Broma Interna
                 </h3>
-                <div className="space-y-3">
-                  <div className="flex gap-2">
+                <div className="space-y-2 sm:space-y-3">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <input
                       type="text"
                       placeholder="Inicio (00:10:00)"
@@ -504,7 +504,7 @@ export default function EpisodeDetailPage() {
                           startTimeStamp: e.target.value,
                         })
                       }
-                      className="flex-1 px-3 py-2 bg-white border-2 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937]"
+                      className="flex-1 px-2 sm:px-3 py-2 bg-white border-2 border-black font-plus-jakarta text-xs sm:text-sm text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937]"
                     />
                     <input
                       type="text"
@@ -516,7 +516,7 @@ export default function EpisodeDetailPage() {
                           endTimeStamp: e.target.value,
                         })
                       }
-                      className="flex-1 px-3 py-2 bg-white border-2 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937]"
+                      className="flex-1 px-2 sm:px-3 py-2 bg-white border-2 border-black font-plus-jakarta text-xs sm:text-sm text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937]"
                     />
                   </div>
                   <input
@@ -526,7 +526,7 @@ export default function EpisodeDetailPage() {
                     onChange={(e) =>
                       setJokeForm({ ...jokeForm, keyConcept: e.target.value })
                     }
-                    className="w-full px-3 py-2 bg-white border-2 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937]"
+                    className="w-full px-2 sm:px-3 py-2 bg-white border-2 border-black font-plus-jakarta text-xs sm:text-sm text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937]"
                   />
                   <textarea
                     placeholder="Contexto del chiste"
@@ -537,12 +537,12 @@ export default function EpisodeDetailPage() {
                         transcriptContext: e.target.value,
                       })
                     }
-                    className="w-full px-3 py-2 bg-white border-2 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937] min-h-[80px]"
+                    className="w-full px-2 sm:px-3 py-2 bg-white border-2 border-black font-plus-jakarta text-xs sm:text-sm text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937] min-h-[60px] sm:min-h-[80px] resize-none"
                   />
                   <button
                     onClick={handleAddJoke}
                     disabled={addingJoke || !jokeForm.keyConcept.trim()}
-                    className="w-full py-3 bg-black text-[#f9c937] font-archivo-black uppercase border-2 border-black hover:bg-black/80 transition-colors disabled:opacity-50"
+                    className="w-full py-2 sm:py-3 bg-black text-[#f9c937] font-archivo-black uppercase text-xs sm:text-sm border-2 border-black hover:bg-black/80 transition-colors disabled:opacity-50"
                   >
                     {addingJoke ? "Agregando..." : "Agregar Broma"}
                   </button>
@@ -552,39 +552,39 @@ export default function EpisodeDetailPage() {
 
             {/* Jokes list */}
             {episode.insideJokes && episode.insideJokes.length > 0 ? (
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 {episode.insideJokes.map((joke) => (
                   <div
                     key={joke.id}
-                    className="p-4 bg-[#f9c937]/20 border-4 border-[#f9c937]"
+                    className="p-3 sm:p-4 bg-[#f9c937]/20 border-3 sm:border-4 border-[#f9c937]"
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="px-2 py-1 bg-[#f9c937] text-black font-archivo-black text-xs border border-black">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        <span className="px-1.5 sm:px-2 py-0.5 bg-[#f9c937] text-black font-archivo-black text-[10px] sm:text-xs border border-black">
                           ⏱ {joke.startTimeStamp}
                         </span>
-                        <span className="text-black/50">
+                        <span className="text-black/50 text-xs sm:text-sm">
                           → {joke.endTimeStamp}
                         </span>
                       </div>
                       <button
                         onClick={() => handleRemoveJoke(joke.id)}
-                        className="w-8 h-8 bg-white text-red-600 border-2 border-black font-archivo-black text-xs hover:bg-red-600 hover:text-white transition-colors"
+                        className="w-6 h-6 sm:w-8 sm:h-8 bg-white text-red-600 border-2 border-black font-archivo-black text-[10px] sm:text-xs hover:bg-red-600 hover:text-white transition-colors flex items-center justify-center"
                       >
                         ✕
                       </button>
                     </div>
-                    <h5 className="font-archivo-black text-sm text-black uppercase mb-1">
+                    <h5 className="font-archivo-black text-xs sm:text-sm text-black uppercase mb-1">
                       {joke.keyConcept}
                     </h5>
-                    <p className="font-plus-jakarta text-xs text-black/70 italic">
+                    <p className="font-plus-jakarta text-[10px] sm:text-xs text-black/70 italic line-clamp-2">
                       {joke.transcriptContext}
                     </p>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8 text-black/40 font-archivo-black uppercase">
+              <div className="text-center py-6 sm:py-8 text-black/40 font-archivo-black uppercase text-xs sm:text-sm">
                 No hay bromas internas
               </div>
             )}

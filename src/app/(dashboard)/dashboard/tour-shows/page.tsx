@@ -71,26 +71,27 @@ export default function TourShowsPage() {
   };
 
   return (
-    <div className="bg-white p-8">
+    <div className="bg-white p-4 sm:p-6 md:p-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="font-syne font-extrabold text-3xl text-black uppercase tracking-tight">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
+        <div className="min-w-0">
+          <h1 className="font-syne font-extrabold text-2xl sm:text-3xl text-black uppercase tracking-tight">
             Tour Shows
           </h1>
-          <p className="font-plus-jakarta text-black/50 mt-1">
+          <p className="font-plus-jakarta text-black/50 mt-1 text-sm sm:text-base">
             Gestiona las fechas de la gira
           </p>
         </div>
         <button
           onClick={handleAddClick}
           className="
-            px-6 py-3 bg-black text-white font-archivo-black uppercase text-sm
-            border-4 border-black rounded-none
-            shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
-            hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]
-            hover:translate-x-[-2px] hover:translate-y-[-2px]
+            px-4 sm:px-6 py-2.5 sm:py-3 bg-black text-white font-archivo-black uppercase text-xs sm:text-sm
+            border-3 sm:border-4 border-black rounded-none
+            shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] sm:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
+            hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] sm:hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]
+            hover:translate-x-[-1px] hover:translate-y-[-1px] sm:hover:translate-x-[-2px] sm:hover:translate-y-[-2px]
             transition-all duration-150
+            whitespace-nowrap
           "
         >
           + Nuevo Show
@@ -98,8 +99,8 @@ export default function TourShowsPage() {
       </div>
 
       {/* Filters bar */}
-      <div className="flex flex-wrap items-center gap-4 mb-6">
-        <div className="flex-1 min-w-[200px]">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+        <div className="flex-1 min-w-0">
           <label
             htmlFor="show-status-filter"
             className="block font-archivo-black uppercase text-xs text-black mb-1 tracking-wide"
@@ -110,7 +111,7 @@ export default function TourShowsPage() {
             id="show-status-filter"
             value={ticketStatus}
             onChange={handleStatusChange}
-            className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black focus:outline-none focus:bg-[#f9c937]/20"
+            className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border-3 sm:border-4 border-black font-plus-jakarta text-black text-sm focus:outline-none focus:bg-[#f9c937]/20"
           >
             <option value="">TODOS</option>
             <option value="AVAILABLE">DISPONIBLE</option>
@@ -119,13 +120,13 @@ export default function TourShowsPage() {
           </select>
         </div>
 
-        <div className="flex items-center gap-2 pt-5">
+        <div className="flex items-center gap-2 pt-0 sm:pt-5">
           <input
             id="upcoming-filter"
             type="checkbox"
             checked={upcoming}
             onChange={handleUpcomingToggle}
-            className="w-5 h-5 border-4 border-black accent-[#f9c937]"
+            className="w-5 h-5 border-4 border-black accent-[#f9c937] flex-shrink-0"
           />
           <label
             htmlFor="upcoming-filter"
@@ -137,19 +138,19 @@ export default function TourShowsPage() {
       </div>
 
       {/* Search bar */}
-      <div className="mb-6">
+      <div className="mb-4 sm:mb-6">
         <input
           type="text"
           value={search}
           onChange={handleSearchChange}
           placeholder="Buscar por ciudad o país..."
-          className="w-full px-4 py-3 bg-white border-4 border-black font-plus-jakarta text-black placeholder-black/40 focus:outline-none focus:bg-[#f9c937]/20"
+          className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white border-3 sm:border-4 border-black font-plus-jakarta text-black text-sm placeholder-black/40 focus:outline-none focus:bg-[#f9c937]/20"
         />
       </div>
 
       {/* Pagination controls */}
       {meta && (
-        <div className="flex items-center justify-between mb-6 p-4 bg-black/[0.03] border-4 border-black">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 sm:mb-6 p-3 sm:p-4 bg-black/[0.03] border-3 sm:border-4 border-black">
           <LimitSelector value={limit} onChange={handleLimitChange} />
           <PageIndicator
             page={page}

@@ -65,11 +65,11 @@ function TourShowCard({
   }
 
   return (
-    <div className="shrink-0 w-80 mx-3 cursor-pointer group" onClick={onClick}>
+    <div className="shrink-0 w-[280px] sm:w-80 md:w-80 lg:w-80 mx-2 sm:mx-3 cursor-pointer group" onClick={onClick}>
       {/* Main card container - neo-brutalist */}
-      <div className="bg-white border-4 border-black rounded-none overflow-hidden shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] group-hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] group-hover:translate-x-[-4px] group-hover:translate-y-[-4px] transition-all duration-150">
+      <div className="bg-white border-3 sm:border-4 border-black rounded-none overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] sm:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] group-hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] sm:group-hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] group-hover:translate-x-[-2px] group-hover:translate-y-[-2px] sm:group-hover:translate-x-[-4px] sm:group-hover:translate-y-[-4px] transition-all duration-150">
         {/* Image area */}
-        <div className="relative h-40 bg-[#f9c937] border-b-4 border-black">
+        <div className="relative h-32 sm:h-40 bg-[#f9c937] border-b-3 sm:border-b-4 border-black">
           {hasImages ? (
             <Image
               src={validImages[0].url}
@@ -81,7 +81,7 @@ function TourShowCard({
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-black">
-              <span className="font-archivo-black text-8xl text-[#f9c937] uppercase">
+              <span className="font-archivo-black text-6xl sm:text-8xl text-[#f9c937] uppercase">
                 {show.city.charAt(0)}
               </span>
             </div>
@@ -90,10 +90,10 @@ function TourShowCard({
           {/* Status badge - always prominent, top-left */}
           <div className="absolute top-0 left-0">
             <div
-              className={`px-4 py-2 ${statusInfo.bg} border-b-4 border-r-4 border-black`}
+              className={`px-3 sm:px-4 py-1.5 sm:py-2 ${statusInfo.bg} border-b-3 sm:border-b-4 border-r-3 sm:border-r-4 border-black`}
             >
               <span
-                className={`font-archivo-black text-sm ${statusInfo.textColor} uppercase tracking-wider`}
+                className={`font-archivo-black text-xs sm:text-sm ${statusInfo.textColor} uppercase tracking-wider`}
               >
                 {statusInfo.text}
               </span>
@@ -102,13 +102,13 @@ function TourShowCard({
 
           {/* Buy button - only if available */}
           {show.ticketStatus !== "SOLD_OUT" && show.ticketUrl && (
-            <div className="absolute bottom-2 right-2">
+            <div className="absolute bottom-1.5 sm:bottom-2 right-1.5 sm:right-2">
               <a
                 href={show.ticketUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="block px-4 py-2 bg-edn-neon-yellow text-black font-archivo-black text-xs uppercase tracking-wider border-2 border-[#f9c937] hover:bg-[#f9c937] hover:text-black transition-colors"
+                className="block px-2.5 sm:px-4 py-1.5 sm:py-2 bg-edn-neon-yellow text-black font-archivo-black text-xs uppercase tracking-wider border-2 border-[#f9c937] hover:bg-[#f9c937] hover:text-black transition-colors"
               >
                 COMPRAR →
               </a>
@@ -117,37 +117,37 @@ function TourShowCard({
         </div>
 
         {/* Content area */}
-        <div className="p-5 bg-white">
+        <div className="p-3 sm:p-4 md:p-5 bg-white">
           {/* City & Country */}
-          <h3 className="font-syne font-extrabold text-2xl text-black uppercase leading-tight tracking-tight">
+          <h3 className="font-syne font-extrabold text-xl sm:text-2xl text-black uppercase leading-tight tracking-tight">
             {show.city}
           </h3>
-          <p className="font-archivo-black text-sm text-black/60 uppercase mt-1 tracking-widest">
+          <p className="font-archivo-black text-xs sm:text-sm text-black/60 uppercase mt-0.5 sm:mt-1 tracking-widest">
             {show.country}
           </p>
 
           {/* Venue */}
-          <div className="mt-3 flex items-center gap-2">
-            <span className="text-lg">📍</span>
-            <p className="font-plus-jakarta text-sm text-black font-medium">
+          <div className="mt-2 sm:mt-3 flex items-center gap-1.5 sm:gap-2">
+            <span className="text-base sm:text-lg">📍</span>
+            <p className="font-plus-jakarta text-xs sm:text-sm text-black font-medium">
               {show.venueName}
             </p>
           </div>
 
           {/* Date */}
-          <div className="mt-2 flex items-center gap-2">
-            <span className="text-lg">📅</span>
-            <p className="font-archivo-black text-sm text-black uppercase">
+          <div className="mt-1.5 sm:mt-2 flex items-center gap-1.5 sm:gap-2">
+            <span className="text-base sm:text-lg">📅</span>
+            <p className="font-archivo-black text-xs sm:text-sm text-black uppercase">
               {formattedDate}
             </p>
           </div>
 
           {/* Bottom action bar */}
-          <div className="mt-4 pt-4 border-t-4 border-black flex items-center justify-between">
+          <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t-3 sm:border-t-4 border-black flex items-center justify-between">
             <span className="font-archivo-black text-xs text-black/40 uppercase">
               Ver detalles →
             </span>
-            <div className="w-3 h-3 bg-black rounded-full" />
+            <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-black rounded-full" />
           </div>
         </div>
       </div>
@@ -239,36 +239,36 @@ export default function TourShowsTicker({ onShowClick }: TourShowsTickerProps) {
   }
 
   return (
-    <div className="py-12 bg-black border-t-4 border-edn-neon-yellow">
+    <div className="py-8 sm:py-10 md:py-12 lg:py-16 bg-black border-t-4 border-edn-neon-yellow">
       {/* Section header - brutalist style */}
-      <div className="px-8 mb-8 flex items-center justify-between">
+      <div className="px-4 sm:px-6 md:px-8 mb-6 sm:mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-4">
-            <h2 className="font-syne text-4xl md:text-5xl font-black text-edn-neon-yellow uppercase tracking-tighter">
+          <div className="flex flex-col xs:flex-row items-start xs:items-center gap-2 sm:gap-4">
+            <h2 className="font-syne text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-edn-neon-yellow uppercase tracking-tighter leading-none">
               TOUR
             </h2>
-            <h2 className="font-syne text-4xl md:text-5xl font-black text-white uppercase tracking-tighter">
+            <h2 className="font-syne text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tighter leading-none">
               MUNDIAL
             </h2>
           </div>
-          <div className="flex-1 h-4 bg-edn-neon-yellow mt-2 mb-2" />
-          <p className="mt-2 font-archivo-black text-sm text-white/60 uppercase tracking-widest">
+          <div className="flex-1 h-1 sm:h-2 bg-edn-neon-yellow mt-2 sm:mt-3 mb-2 sm:mb-3 w-32 sm:w-48" />
+          <p className="mt-1 sm:mt-2 font-archivo-black text-xs sm:text-sm text-white/60 uppercase tracking-widest">
             Fechas confirmadas 2026
           </p>
         </div>
 
         {/* Navigation arrows */}
-        <div className="flex gap-2 mr-4">
+        <div className="flex gap-2">
           <button
             onClick={scrollLeft}
-            className="w-12 h-12 bg-edn-neon-yellow border-4 border-black flex items-center justify-center text-3xl font-archivo-black text-black hover:bg-[#e5b800] transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            className="w-10 sm:w-12 h-10 sm:h-12 bg-edn-neon-yellow border-3 sm:border-4 border-black flex items-center justify-center text-2xl sm:text-3xl font-archivo-black text-black hover:bg-[#e5b800] transition-colors shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] sm:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             aria-label="Anterior"
           >
             ‹
           </button>
           <button
             onClick={scrollRight}
-            className="w-12 h-12 bg-edn-neon-yellow border-4 border-black flex items-center justify-center text-3xl font-archivo-black text-black hover:bg-[#e5b800] transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            className="w-10 sm:w-12 h-10 sm:h-12 bg-edn-neon-yellow border-3 sm:border-4 border-black flex items-center justify-center text-2xl sm:text-3xl font-archivo-black text-black hover:bg-[#e5b800] transition-colors shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] sm:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             aria-label="Siguiente"
           >
             ›
@@ -278,14 +278,10 @@ export default function TourShowsTicker({ onShowClick }: TourShowsTickerProps) {
 
       {/* Scrolling carousel */}
       <div className="relative">
-        {/* Left fade gradient */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-        {/* Right fade gradient */}
-        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
 
         <div
           ref={tickerRef}
-          className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 px-8"
+          className="flex gap-4 sm:gap-6 overflow-x-auto scrollbar-hide pb-3 sm:pb-4 px-4 sm:px-6 md:px-8"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {shows.map((show, index) => (
@@ -299,12 +295,12 @@ export default function TourShowsTicker({ onShowClick }: TourShowsTickerProps) {
       </div>
 
       {/* Bottom decorative bar */}
-      <div className="mt-8 flex items-center justify-center gap-4 px-8">
-        <div className="flex-1 h-1 bg-[#f9c937]" />
-        <span className="font-archivo-black text-xs text-[#f9c937] uppercase">
+      <div className="mt-6 sm:mt-8 flex items-center justify-center gap-3 sm:gap-4 px-4 sm:px-6 md:px-8">
+        <div className="flex-1 h-0.5 sm:h-1 bg-[#f9c937]" />
+        <span className="font-archivo-black text-xs sm:text-sm text-[#f9c937] uppercase">
           ✦ EDN TOUR 2026 ✦
         </span>
-        <div className="flex-1 h-1 bg-[#f9c937]" />
+        <div className="flex-1 h-0.5 sm:h-1 bg-[#f9c937]" />
       </div>
     </div>
   );

@@ -132,7 +132,7 @@ export default function Home() {
     <>
       <div
         ref={containerRef}
-        className="relative w-full h-[calc(100vh-4rem)] overflow-hidden"
+        className="relative w-full px-4 h-[calc(100vh-4rem)] overflow-hidden"
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -159,7 +159,7 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
-          className="absolute inset-0 z-30 flex flex-col items-center justify-center"
+          className="absolute inset-0 z-30 flex flex-col items-center justify-center px-4"
         >
           {/* ESCUELA DE NADA */}
           <motion.div
@@ -173,10 +173,10 @@ export default function Home() {
             }}
             className="text-center"
           >
-            <h1 className="font-syne text-6xl md:text-8xl lg:text-9xl uppercase tracking-tighter text-black font-extrabold leading-none drop-shadow-[2px_2px_0px_rgba(255,255,255,0.8)]">
+            <h1 className="font-syne text-2xl sm:text-4xl md:text-6xl lg:text-8xl uppercase tracking-tighter text-black font-extrabold leading-none drop-shadow-[2px_2px_0px_rgba(255,255,255,0.8)]">
               ESCUELA
             </h1>
-            <h1 className="font-syne text-6xl md:text-8xl lg:text-9xl uppercase tracking-tighter text-black font-extrabold leading-none -mt-2 md:-mt-4 drop-shadow-[2px_2px_0px_rgba(255,255,255,0.8)]">
+            <h1 className="font-syne text-2xl sm:text-4xl md:text-6xl lg:text-8xl uppercase tracking-tighter text-black font-extrabold leading-none -mt-1 sm:-mt-2 md:-mt-4 drop-shadow-[2px_2px_0px_rgba(255,255,255,0.8)]">
               DE NADA
             </h1>
           </motion.div>
@@ -191,7 +191,7 @@ export default function Home() {
               damping: 20,
               delay: 0.6,
             }}
-            className="font-syne font-bold text-xl md:text-2xl lg:text-3xl text-black/80 mt-6 md:mt-8 max-w-lg text-center px-4 drop-shadow-[1px_1px_0px_rgba(255,255,255,0.6)]"
+            className="font-syne font-bold text-sm sm:text-base md:text-xl lg:text-2xl text-black/80 mt-4 sm:mt-6 md:mt-8 max-w-lg text-center drop-shadow-[1px_1px_0px_rgba(255,255,255,0.6)]"
           >
             el mejor podcast de esta mierda caballero!
           </motion.p>
@@ -203,9 +203,9 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.5 }}
-            className="absolute bottom-8 right-8 z-40"
+            className="absolute bottom-4 right-4 sm:bottom-8 sm:right-8 z-40"
           >
-            <span className="font-plus-jakarta text-sm text-white uppercase tracking-wider drop-shadow-[1px_1px_2px_rgba(0,0,0,0.8)]">
+            <span className="font-plus-jakarta text-xs sm:text-sm text-white uppercase tracking-wider drop-shadow-[1px_1px_2px_rgba(0,0,0,0.8)]">
               move your mouse to explore
             </span>
           </motion.div>

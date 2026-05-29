@@ -61,7 +61,7 @@ function MapView({ shows, onMarkerClick }: MapViewProps) {
     <MapContainer
       center={[20, 0]}
       zoom={2}
-      style={{ height: '100%', width: '100%', minHeight: '700px', background: '#e5e5e5' }}
+      style={{ height: '100%', width: '100%', minHeight: '100%', background: '#e5e5e5' }}
       zoomControl={false}
     >
       <TileLayer

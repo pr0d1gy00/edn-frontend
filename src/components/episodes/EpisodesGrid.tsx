@@ -146,13 +146,13 @@ export default function EpisodesGrid({
         className="py-16 bg-black border-t-4 border-edn-neon-yellow"
       >
         {/* Header */}
-        <header className="px-8 mb-8">
+        <header className="px-4 sm:px-8 mb-6 sm:mb-8">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <h2 className="font-syne text-4xl md:text-5xl font-extrabold text-edn-yellow-neon uppercase tracking-tight">
+              <h2 className="font-syne text-3xl sm:text-4xl md:text-5xl font-extrabold text-edn-yellow-neon uppercase tracking-tight">
                 EPISODIOS
               </h2>
-              <div className="mt-4 w-48 h-2 bg-edn-yellow-neon" />
+              <div className="mt-3 sm:mt-4 w-32 sm:w-48 h-2 sm:h-2 bg-edn-yellow-neon" />
             </div>
             {showVerTodos && (
               <Link
@@ -197,12 +197,12 @@ export default function EpisodesGrid({
   return (
     <>
       {/* Controls bar: limit selector */}
-      <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-4 mb-8 ">
+      <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-4 mb-6 sm:mb-8 px-4 sm:px-8">
         <LimitSelector value={limit} onChange={handleLimitChange} />
       </div>
 
       {/* Grid */}
-      <main className="px-8">
+      <main className="px-4 sm:px-8">
         <div className="max-w-6xl mx-auto">{gridContent}</div>
       </main>
 

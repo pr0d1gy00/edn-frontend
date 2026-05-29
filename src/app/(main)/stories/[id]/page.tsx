@@ -114,14 +114,14 @@ export default function StoryPromptDetailPage() {
 
 
       {/* Header */}
-      <header className="px-8 py-12">
+      <header className="px-4 sm:px-8 py-8 md:py-12">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-start gap-4 flex-wrap">
             <div className="flex-1">
               <p className="font-archivo-black text-xs text-black/40 uppercase tracking-widest mb-2">
                 STORY PROMPTS
               </p>
-              <h1 className="font-syne text-5xl md:text-7xl font-extrabold text-black uppercase tracking-tight leading-none">
+              <h1 className="font-syne text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold text-black uppercase tracking-tight leading-none">
                 {prompt.title}
               </h1>
             </div>
@@ -163,9 +163,9 @@ export default function StoryPromptDetailPage() {
       )}
 
       {/* Description */}
-      <section className="px-8 py-8">
+      <section className="px-4 sm:px-8 py-6 md:py-8">
         <div className="max-w-6xl mx-auto">
-          <div className="bg-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <div className="bg-white border-4 border-black p-4 sm:p-6 md:p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <h2 className="font-archivo-black text-sm text-black/40 uppercase tracking-widest mb-4">
               Descripción
             </h2>

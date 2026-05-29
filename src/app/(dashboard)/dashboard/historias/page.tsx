@@ -198,7 +198,7 @@ export default function HistoriasAdminPage() {
       )}
 
       {/* Stats bar */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         <div className="bg-yellow-400 border-4 border-black p-4">
           <p className="font-archivo-black text-xs uppercase text-black/60">Pendientes</p>
           <p className="font-syne font-extrabold text-3xl text-black">
